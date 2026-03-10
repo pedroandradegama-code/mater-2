@@ -5,15 +5,12 @@ import BottomNav from '@/components/BottomNav';
 import UpgradeModal from '@/components/UpgradeModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, LogOut } from 'lucide-react';
+import { LogOut } from 'lucide-react';
 import { format } from 'date-fns';
-import { ptBR } from 'date-fns/locale';
-import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { getHueForSex } from '@/lib/pregnancy-data';
+import { DatePickerButton } from '@/components/WheelDatePicker';
 
 export default function Perfil() {
   const { signOut } = useAuth();
@@ -60,17 +57,9 @@ export default function Perfil() {
 
           <div>
             <label className="text-xs text-muted-foreground">Data da última menstruação</label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline" className={cn("w-full rounded-xl justify-start mt-1", !dum && "text-muted-foreground")}>
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {dum ? format(dum, "dd/MM/yyyy") : 'Selecione'}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="center">
-                <Calendar mode="single" selected={dum} onSelect={setDum} locale={ptBR} initialFocus className="p-3 pointer-events-auto" />
-              </PopoverContent>
-            </Popover>
+            <div className="mt-1">
+              <DatePickerButton value={dum} onChange={setDum} label="Selecione a data" title="Data da última menstruação" />
+            </div>
           </div>
 
           <div>

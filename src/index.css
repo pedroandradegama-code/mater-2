@@ -7,7 +7,7 @@
 @layer base {
   :root {
     --hue: 280;
-    --background: var(--hue) 20% 97%;
+    --background: var(--hue) 40% 97%;
     --foreground: var(--hue) 30% 15%;
 
     --card: var(--hue) 15% 98%;
@@ -47,13 +47,13 @@
     --sidebar-ring: 217.2 91.2% 59.8%;
 
     /* Custom tokens */
-    --glass-bg: var(--hue) 30% 98% / 0.7;
-    --glass-border: var(--hue) 40% 80% / 0.3;
-    --gradient-hero-from: var(--hue) 65% 60%;
-    --gradient-hero-to: var(--hue) 50% 45%;
+    --glass-bg: var(--hue) 30% 98% / 0.55;
+    --glass-border: 0 0% 100% / 0.75;
+    --gradient-hero-from: var(--hue) 65% 55%;
+    --gradient-hero-to: var(--hue) 55% 42%;
     --gradient-hero-accent: var(--hue) 70% 70%;
-    --shadow-card: 0 8px 32px hsl(var(--hue) 30% 50% / 0.12);
-    --shadow-elevated: 0 16px 48px hsl(var(--hue) 30% 40% / 0.18);
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.06);
+    --shadow-elevated: 0 16px 48px rgba(0, 0, 0, 0.12);
 
     --font-display: 'Cormorant Garamond', serif;
     --font-body: 'DM Sans', sans-serif;
@@ -79,6 +79,9 @@
     --border: var(--hue) 15% 20%;
     --input: var(--hue) 15% 20%;
     --ring: var(--hue) 60% 55%;
+
+    --glass-bg: var(--hue) 20% 12% / 0.6;
+    --glass-border: 0 0% 100% / 0.1;
   }
 }
 
@@ -99,21 +102,31 @@
 
 @layer components {
   .glass-card {
-    background: hsl(var(--glass-bg));
+    background: rgba(255, 255, 255, 0.55);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    border-radius: 24px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+  }
+
+  .dark .glass-card {
+    background: hsl(var(--glass-bg));
     border: 1px solid hsl(var(--glass-border));
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-card);
   }
 
   .glass-card-elevated {
-    background: hsl(var(--glass-bg));
+    background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 28px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
+  }
+
+  .dark .glass-card-elevated {
+    background: hsl(var(--glass-bg));
     border: 1px solid hsl(var(--glass-border));
-    border-radius: calc(var(--radius) + 4px);
-    box-shadow: var(--shadow-elevated);
   }
 
   .gradient-hero {
@@ -122,10 +135,11 @@
 
   .gradient-mesh-bg {
     background:
-      radial-gradient(ellipse at 20% 50%, hsl(var(--hue) 60% 90% / 0.5) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, hsl(var(--hue) 50% 85% / 0.4) 0%, transparent 50%),
-      radial-gradient(ellipse at 40% 80%, hsl(var(--hue) 70% 92% / 0.3) 0%, transparent 50%),
-      hsl(var(--background));
+      radial-gradient(ellipse at 20% 20%, hsl(var(--hue) 80% 90% / 0.5) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, hsl(calc(var(--hue) + 30) 60% 92% / 0.4) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 50%, hsl(calc(var(--hue) - 20) 50% 95% / 0.3) 0%, transparent 70%),
+      hsl(var(--hue) 40% 97%);
+    min-height: 100vh;
   }
 
   .app-container {
@@ -137,5 +151,13 @@
     @apply fixed bottom-0 left-1/2 -translate-x-1/2 z-50;
     max-width: 430px;
     width: 100%;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
   }
 }
