@@ -5,7 +5,6 @@ import { calculatePregnancyInfo, getWeekData, weekEmojis, getGreeting } from '@/
 import { Bell, Calculator, CalendarDays, BookOpen, MessageCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { Progress } from '@/components/ui/progress';
 import BottomNav from '@/components/BottomNav';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -58,31 +57,37 @@ export default function Dashboard() {
           </button>
         </div>
 
-        {/* Hero Card */}
-        <div className="gradient-hero rounded-2xl p-6 text-primary-foreground mb-4 animate-fade-in">
-          <div className="flex items-start justify-between mb-4">
-            <div>
-              <div className="text-4xl font-display font-bold">
-                {info.weeks}<span className="text-lg font-normal opacity-80">sem</span> {info.days}<span className="text-lg font-normal opacity-80">d</span>
+        {/* Hero Card with decorative circles */}
+        <div className="gradient-hero rounded-[28px] p-6 text-primary-foreground mb-4 animate-fade-in relative overflow-hidden">
+          {/* Decorative circles */}
+          <div className="absolute -top-[30px] -right-[30px] w-[120px] h-[120px] rounded-full bg-white/10" />
+          <div className="absolute -bottom-[20px] left-[20px] w-[70px] h-[70px] rounded-full bg-white/[0.07]" />
+
+          <div className="relative z-10">
+            <div className="flex items-start justify-between mb-4">
+              <div>
+                <div className="text-4xl font-display font-bold">
+                  {info.weeks}<span className="text-lg font-normal opacity-80">sem</span> {info.days}<span className="text-lg font-normal opacity-80">d</span>
+                </div>
+                <p className="text-sm opacity-80 mt-1">{info.trimester}º trimestre</p>
               </div>
-              <p className="text-sm opacity-80 mt-1">{info.trimester}º trimestre</p>
+              <div className="text-5xl">{emoji}</div>
             </div>
-            <div className="text-5xl">{emoji}</div>
-          </div>
 
-          <div className="mb-3">
-            <div className="flex justify-between text-xs opacity-80 mb-1">
-              <span>{Math.round(info.progress)}% concluída</span>
-              <span>{info.daysRemaining} dias restantes</span>
+            <div className="mb-3">
+              <div className="flex justify-between text-xs opacity-80 mb-1">
+                <span>{Math.round(info.progress)}% concluída</span>
+                <span>{info.daysRemaining} dias restantes</span>
+              </div>
+              <div className="h-2 bg-primary-foreground/20 rounded-full overflow-hidden">
+                <div className="h-full bg-primary-foreground/80 rounded-full transition-all" style={{ width: `${info.progress}%` }} />
+              </div>
             </div>
-            <div className="h-2 bg-primary-foreground/20 rounded-full overflow-hidden">
-              <div className="h-full bg-primary-foreground/80 rounded-full transition-all" style={{ width: `${info.progress}%` }} />
-            </div>
-          </div>
 
-          <p className="text-sm opacity-90">
-            DPP: {format(info.dpp, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
-          </p>
+            <p className="text-sm opacity-90">
+              DPP: {format(info.dpp, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+            </p>
+          </div>
         </div>
 
         {/* Week comparison card */}

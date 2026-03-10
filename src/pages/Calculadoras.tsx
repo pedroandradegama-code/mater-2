@@ -1,23 +1,17 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useProfile } from '@/hooks/useProfile';
-import { useAuth } from '@/hooks/useAuth';
 import BottomNav from '@/components/BottomNav';
-import UpgradeModal from '@/components/UpgradeModal';
-import { calculatePregnancyInfo } from '@/lib/pregnancy-data';
+import { calculatePregnancyInfo, chineseTable, getZodiacSign } from '@/lib/pregnancy-data';
 import { format, addDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { CalendarIcon, ArrowLeft } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { chineseTable, getZodiacSign } from '@/lib/pregnancy-data';
-import { useEffect, useRef } from 'react';
+import { DatePickerButton } from '@/components/WheelDatePicker';
 
 const calculators = [
   { id: 'idade', title: 'Idade Gestacional', emoji: '📅' },
@@ -36,7 +30,6 @@ export default function Calculadoras() {
   const [selected, setSelected] = useState<string | null>(null);
   const [gemelar, setGemelar] = useState(false);
   const { profile } = useProfile();
-  const navigate = useNavigate();
 
   if (selected) {
     return (
@@ -56,12 +49,10 @@ export default function Calculadoras() {
     <div className="gradient-mesh-bg min-h-screen pb-20">
       <div className="app-container px-5 pt-6">
         <h1 className="font-display text-3xl font-semibold mb-4">Calculadoras</h1>
-
         <div className="flex items-center gap-3 mb-4 glass-card p-3">
           <Switch id="gemelar" checked={gemelar} onCheckedChange={setGemelar} />
           <Label htmlFor="gemelar" className="text-sm">Gestação gemelar?</Label>
         </div>
-
         <div className="grid grid-cols-2 gap-3">
           {calculators.map(calc => (
             <button
@@ -82,7 +73,6 @@ export default function Calculadoras() {
 
 function CalculatorView({ id, profile, gemelar }: { id: string; profile: any; gemelar: boolean }) {
   const dum = profile?.dum ? new Date(profile.dum) : undefined;
-
   switch (id) {
     case 'idade': return <IdadeGestacional dum={dum} gemelar={gemelar} />;
     case 'meses': return <SemanasMeses />;
@@ -101,7 +91,12 @@ function CalculatorView({ id, profile, gemelar }: { id: string; profile: any; ge
 function IdadeGestacional({ dum: defaultDum, gemelar }: { dum?: Date; gemelar: boolean }) {
   const [dum, setDum] = useState<Date | undefined>(defaultDum);
 
-  if (!dum) return <DatePickerInline label="Data da última menstruação" onSelect={setDum} />;
+  if (!dum) return (
+    <div className="space-y-3">
+      <p className="text-sm text-muted-foreground">Data da última menstruação</p>
+      <DatePickerButton value={dum} onChange={setDum} label="Selecione a data" />
+    </div>
+  );
 
   const info = calculatePregnancyInfo(dum);
   const dppAdjusted = gemelar ? addDays(info.dpp, -14) : info.dpp;
@@ -146,7 +141,12 @@ function PeriodoFertil({ dum }: { dum?: Date }) {
   const [dumDate, setDumDate] = useState<Date | undefined>(dum);
   const [ciclo, setCiclo] = useState(28);
 
-  if (!dumDate) return <DatePickerInline label="Data da última menstruação" onSelect={setDumDate} />;
+  if (!dumDate) return (
+    <div className="space-y-3">
+      <p className="text-sm text-muted-foreground">Data da última menstruação</p>
+      <DatePickerButton value={dumDate} onChange={setDumDate} label="Selecione a data" />
+    </div>
+  );
 
   const ovulation = addDays(dumDate, ciclo - 14);
   const fertileStart = addDays(ovulation, -5);
@@ -230,28 +230,48 @@ function Hidratacao() {
 function TabelaChinesa({ dum }: { dum?: Date }) {
   const [birthDate, setBirthDate] = useState<Date>();
   const [conceptionDate, setConceptionDate] = useState<Date | undefined>(dum ? addDays(dum, 14) : undefined);
+  const [step, setStep] = useState<'birth' | 'conception' | 'result'>(dum ? 'birth' : 'birth');
 
-  if (!birthDate) return <DatePickerInline label="Data de nascimento da mãe" onSelect={setBirthDate} />;
-  if (!conceptionDate) return <DatePickerInline label="Data da concepção" onSelect={setConceptionDate} />;
+  if (!birthDate) return (
+    <div className="space-y-4 animate-fade-in">
+      <h2 className="font-display text-2xl font-semibold">Tabela Chinesa</h2>
+      <p className="text-sm text-muted-foreground">Data de nascimento da mãe</p>
+      <DatePickerButton value={birthDate} onChange={(d) => { setBirthDate(d); }} label="Data de nascimento" title="Nascimento da mãe" minYear={1950} maxYear={2010} />
+    </div>
+  );
 
-  const lunarAge = Math.floor((conceptionDate.getTime() - birthDate.getTime()) / (365.25 * 24 * 60 * 60 * 1000)) + 1;
+  if (!conceptionDate) return (
+    <div className="space-y-4 animate-fade-in">
+      <h2 className="font-display text-2xl font-semibold">Tabela Chinesa</h2>
+      <p className="text-sm text-muted-foreground">Data da concepção (ou DUM + 14 dias)</p>
+      <DatePickerButton value={conceptionDate} onChange={setConceptionDate} label="Data da concepção" title="Data da concepção" minYear={2020} maxYear={2030} />
+    </div>
+  );
+
+  // Lunar age: current year - birth year + 1
+  const lunarAge = conceptionDate.getFullYear() - birthDate.getFullYear() + 1;
   const lunarMonth = conceptionDate.getMonth() + 1;
   const result = chineseTable[lunarAge]?.[lunarMonth];
 
   return (
     <div className="space-y-4 animate-fade-in">
       <h2 className="font-display text-2xl font-semibold">Tabela Chinesa</h2>
-      <div className="glass-card p-5 text-center space-y-3">
+      <div className="glass-card p-6 text-center space-y-4">
         <p className="text-sm text-muted-foreground">Idade lunar: {lunarAge} anos | Mês lunar: {lunarMonth}</p>
         {result ? (
-          <div className="text-4xl">
-            {result === 'menina' ? '👧🎀' : '👦💙'}
-            <p className="text-lg font-semibold mt-2 capitalize">{result}</p>
+          <div>
+            <div className="text-6xl mb-3">
+              {result === 'menina' ? '👧🎀' : '👦💙'}
+            </div>
+            <p className="font-display text-2xl font-bold capitalize text-primary">{result === 'menina' ? 'MENINA 🎀' : 'MENINO 💙'}</p>
           </div>
         ) : (
-          <p className="text-muted-foreground">Idade fora do intervalo da tabela</p>
+          <p className="text-muted-foreground">Idade fora do intervalo da tabela (18-45 anos)</p>
         )}
-        <p className="text-xs text-muted-foreground">Apenas por diversão 😄 — não possui base científica</p>
+        <p className="text-xs text-muted-foreground italic">Método tradicional sem base científica — apenas por diversão! 😄</p>
+        <Button variant="outline" onClick={() => { setBirthDate(undefined); setConceptionDate(dum ? addDays(dum, 14) : undefined); }} className="rounded-xl text-sm">
+          Recalcular
+        </Button>
       </div>
     </div>
   );
@@ -278,7 +298,7 @@ function Signos({ dum }: { dum?: Date }) {
         )}
         <div className="border-t border-border pt-3">
           <p className="text-sm text-muted-foreground mb-2 text-center">Signo do pai (opcional)</p>
-          <DatePickerInline label="Data de nascimento do pai" onSelect={setDadBirth} />
+          <DatePickerButton value={dadBirth} onChange={setDadBirth} label="Data de nascimento do pai" title="Nascimento do pai" minYear={1950} maxYear={2010} />
           {dadSign && (
             <div className="text-center mt-3">
               <p className="text-2xl">{dadSign.emoji}</p>
@@ -313,11 +333,6 @@ function Ultrassom({ dum }: { dum?: Date }) {
         </div>
         <p className="text-sm text-muted-foreground">{desc}</p>
         <p className="text-xs text-muted-foreground">Semana atual: {weeks}</p>
-        <div className="flex gap-1 mt-2">
-          {['< 24', '24-28', '29-32', '33-36', '> 36'].map((range, i) => (
-            <div key={range} className={`flex-1 h-2 rounded-full ${['bg-destructive', 'bg-green-500', 'bg-yellow-500', 'bg-orange-500', 'bg-destructive'][i]} opacity-${weeks >= [0, 24, 29, 33, 37][i] && weeks <= [23, 28, 32, 36, 42][i] ? '100' : '30'}`} />
-          ))}
-        </div>
       </div>
     </div>
   );
@@ -337,7 +352,6 @@ function Contracoes() {
       const duration = startRef.current ? Math.round((now.getTime() - startRef.current.getTime()) / 1000) : 0;
       const lastContraction = contractions[0];
       const interval = lastContraction ? Math.round((now.getTime() - lastContraction.time.getTime()) / 1000 / 60) : undefined;
-
       setContractions(prev => [{ time: now, duration, interval }, ...prev].slice(0, 5));
       setIsActive(false);
       startRef.current = null;
@@ -357,7 +371,6 @@ function Contracoes() {
           {isActive ? 'Soltar' : 'Registrar'}
         </button>
       </div>
-
       {contractions.length > 0 && (
         <div className="glass-card p-4 space-y-2">
           {contractions.map((c, i) => (
@@ -369,7 +382,6 @@ function Contracoes() {
           ))}
         </div>
       )}
-
       {frequentContractions && (
         <div className="glass-card p-4 bg-destructive/10 border-destructive/30">
           <p className="text-sm font-semibold text-destructive">⚠️ Contrações frequentes! Considere ir à maternidade.</p>
@@ -416,26 +428,6 @@ function ContagemRegressiva({ dum, gemelar }: { dum?: Date; gemelar: boolean }) 
           ))}
         </div>
       </div>
-    </div>
-  );
-}
-
-function DatePickerInline({ label, onSelect }: { label: string; onSelect: (d: Date) => void }) {
-  const [date, setDate] = useState<Date>();
-  return (
-    <div className="space-y-3">
-      <p className="text-sm text-muted-foreground">{label}</p>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button variant="outline" className={cn("w-full rounded-xl justify-start", !date && "text-muted-foreground")}>
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {date ? format(date, "dd/MM/yyyy") : 'Selecione'}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0" align="center">
-          <Calendar mode="single" selected={date} onSelect={d => { setDate(d); if (d) onSelect(d); }} initialFocus className="p-3 pointer-events-auto" />
-        </PopoverContent>
-      </Popover>
     </div>
   );
 }

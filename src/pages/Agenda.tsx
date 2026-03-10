@@ -4,44 +4,24 @@ import { useProfile } from '@/hooks/useProfile';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import BottomNav from '@/components/BottomNav';
-import UpgradeModal from '@/components/UpgradeModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Plus, Calendar as CalendarIcon } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { toast } from 'sonner';
+import { DatePickerButton } from '@/components/WheelDatePicker';
 
 export default function Agenda() {
   const { profile } = useProfile();
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const [showUpgrade, setShowUpgrade] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [form, setForm] = useState({ data: '', hora: '', tipo: 'pre-natal', medico: '', local: '', observacoes: '' });
-
-  if (profile?.plano === 'free') {
-    return (
-      <div className="gradient-mesh-bg min-h-screen pb-20">
-        <div className="app-container px-5 pt-6">
-          <h1 className="font-display text-3xl font-semibold mb-4">Agenda</h1>
-          <div className="glass-card p-8 text-center">
-            <p className="text-4xl mb-3">📅</p>
-            <p className="font-display text-xl mb-2">Recurso Premium</p>
-            <p className="text-sm text-muted-foreground mb-4">Gerencie suas consultas e exames com a agenda completa.</p>
-            <Button onClick={() => setShowUpgrade(true)} className="gradient-hero text-primary-foreground rounded-xl">
-              Desbloquear Mater Completo
-            </Button>
-          </div>
-        </div>
-        <BottomNav />
-        <UpgradeModal open={showUpgrade} onClose={() => setShowUpgrade(false)} />
-      </div>
-    );
-  }
+  const [formDate, setFormDate] = useState<Date | undefined>();
+  const [form, setForm] = useState({ hora: '', tipo: 'pre-natal', medico: '', local: '', observacoes: '' });
 
   const { data: consultas = [] } = useQuery({
     queryKey: ['consultas', user?.id],
@@ -54,7 +34,9 @@ export default function Agenda() {
 
   const addConsulta = useMutation({
     mutationFn: async () => {
-      const dateTime = new Date(`${form.data}T${form.hora || '00:00'}`).toISOString();
+      if (!formDate) throw new Error('Data obrigatória');
+      const dateStr = format(formDate, 'yyyy-MM-dd');
+      const dateTime = new Date(`${dateStr}T${form.hora || '00:00'}`).toISOString();
       const { error } = await supabase.from('consultas').insert({
         user_id: user!.id,
         data: dateTime,
@@ -68,7 +50,8 @@ export default function Agenda() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['consultas'] });
       setDialogOpen(false);
-      setForm({ data: '', hora: '', tipo: 'pre-natal', medico: '', local: '', observacoes: '' });
+      setFormDate(undefined);
+      setForm({ hora: '', tipo: 'pre-natal', medico: '', local: '', observacoes: '' });
       toast.success('Consulta adicionada!');
     },
   });
@@ -92,7 +75,7 @@ export default function Agenda() {
             <DialogContent className="glass-card-elevated max-w-sm">
               <DialogHeader><DialogTitle className="font-display text-xl">Nova Consulta</DialogTitle></DialogHeader>
               <div className="space-y-3">
-                <Input type="date" value={form.data} onChange={e => setForm(f => ({ ...f, data: e.target.value }))} className="rounded-xl" />
+                <DatePickerButton value={formDate} onChange={setFormDate} label="Data da consulta" minYear={2024} maxYear={2030} />
                 <Input type="time" value={form.hora} onChange={e => setForm(f => ({ ...f, hora: e.target.value }))} className="rounded-xl" />
                 <Select value={form.tipo} onValueChange={v => setForm(f => ({ ...f, tipo: v }))}>
                   <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
@@ -106,7 +89,7 @@ export default function Agenda() {
                 <Input placeholder="Médico" value={form.medico} onChange={e => setForm(f => ({ ...f, medico: e.target.value }))} className="rounded-xl" />
                 <Input placeholder="Local" value={form.local} onChange={e => setForm(f => ({ ...f, local: e.target.value }))} className="rounded-xl" />
                 <Textarea placeholder="Observações" value={form.observacoes} onChange={e => setForm(f => ({ ...f, observacoes: e.target.value }))} className="rounded-xl" />
-                <Button onClick={() => addConsulta.mutate()} disabled={!form.data || addConsulta.isPending} className="w-full gradient-hero text-primary-foreground rounded-xl">
+                <Button onClick={() => addConsulta.mutate()} disabled={!formDate || addConsulta.isPending} className="w-full gradient-hero text-primary-foreground rounded-xl">
                   Salvar
                 </Button>
               </div>

@@ -4,7 +4,6 @@ import { useProfile } from '@/hooks/useProfile';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import BottomNav from '@/components/BottomNav';
-import UpgradeModal from '@/components/UpgradeModal';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -28,32 +27,11 @@ export default function Diario() {
   const { profile } = useProfile();
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const [showUpgrade, setShowUpgrade] = useState(false);
   const [diarioOpen, setDiarioOpen] = useState(false);
   const [cartaOpen, setCartaOpen] = useState(false);
   const [humor, setHumor] = useState('');
   const [texto, setTexto] = useState('');
   const [cartaTexto, setCartaTexto] = useState('');
-
-  if (profile?.plano === 'free') {
-    return (
-      <div className="gradient-mesh-bg min-h-screen pb-20">
-        <div className="app-container px-5 pt-6">
-          <h1 className="font-display text-3xl font-semibold mb-4">Diário</h1>
-          <div className="glass-card p-8 text-center">
-            <p className="text-4xl mb-3">📖</p>
-            <p className="font-display text-xl mb-2">Recurso Premium</p>
-            <p className="text-sm text-muted-foreground mb-4">Registre cada momento da sua gestação.</p>
-            <Button onClick={() => setShowUpgrade(true)} className="gradient-hero text-primary-foreground rounded-xl">
-              Desbloquear Mater Completo
-            </Button>
-          </div>
-        </div>
-        <BottomNav />
-        <UpgradeModal open={showUpgrade} onClose={() => setShowUpgrade(false)} />
-      </div>
-    );
-  }
 
   const currentWeek = profile?.dum ? calculatePregnancyInfo(new Date(profile.dum)).weeks : 0;
 
