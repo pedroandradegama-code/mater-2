@@ -14,7 +14,138 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      cartas: {
+        Row: {
+          created_at: string
+          data: string
+          id: string
+          semana: number | null
+          texto: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data?: string
+          id?: string
+          semana?: number | null
+          texto: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: string
+          id?: string
+          semana?: number | null
+          texto?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      consultas: {
+        Row: {
+          created_at: string
+          data: string
+          id: string
+          local: string | null
+          medico: string | null
+          observacoes: string | null
+          tipo: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data: string
+          id?: string
+          local?: string | null
+          medico?: string | null
+          observacoes?: string | null
+          tipo?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: string
+          id?: string
+          local?: string | null
+          medico?: string | null
+          observacoes?: string | null
+          tipo?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      diario: {
+        Row: {
+          created_at: string
+          data: string
+          foto_url: string | null
+          humor: string | null
+          id: string
+          semana: number | null
+          texto_livre: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data?: string
+          foto_url?: string | null
+          humor?: string | null
+          id?: string
+          semana?: number | null
+          texto_livre?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: string
+          foto_url?: string | null
+          humor?: string | null
+          id?: string
+          semana?: number | null
+          texto_livre?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          dum: string | null
+          id: string
+          nome: string | null
+          nome_bebe: string | null
+          onboarding_completed: boolean
+          plano: string
+          sexo_bebe: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          dum?: string | null
+          id?: string
+          nome?: string | null
+          nome_bebe?: string | null
+          onboarding_completed?: boolean
+          plano?: string
+          sexo_bebe?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          dum?: string | null
+          id?: string
+          nome?: string | null
+          nome_bebe?: string | null
+          onboarding_completed?: boolean
+          plano?: string
+          sexo_bebe?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
