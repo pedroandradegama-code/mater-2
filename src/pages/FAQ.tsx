@@ -71,7 +71,7 @@ export default function FAQ() {
   const categories = Object.keys(filtered);
 
   return (
-    <div className="gradient-mesh-bg min-h-screen pb-20">
+    <div className="gradient-mesh-bg min-h-screen pb-24">
       <div className="app-container px-5 pt-6">
         <h1 className="font-display text-3xl font-semibold mb-4">Perguntas Frequentes</h1>
 
@@ -85,13 +85,13 @@ export default function FAQ() {
           />
         </div>
 
-        <div className="flex gap-2 mb-4 overflow-x-auto pb-2">
+        <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
           {Object.keys(faqData).map(cat => (
             <button
               key={cat}
               onClick={() => setSearch(search === cat ? '' : cat)}
               className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors ${
-                search === cat ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'
+                search === cat ? 'bg-primary text-primary-foreground' : 'glass-card'
               }`}
             >
               {cat}

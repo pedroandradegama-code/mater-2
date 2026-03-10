@@ -13,17 +13,125 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { DatePickerButton } from '@/components/WheelDatePicker';
 
+// Custom SVG icon components for a more authorial feel
+function IconCalendarPregnancy({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="10" width="36" height="32" rx="6" stroke="currentColor" strokeWidth="2.5" fill="hsl(var(--primary) / 0.1)" />
+      <path d="M6 20h36" stroke="currentColor" strokeWidth="2" />
+      <circle cx="16" cy="6" r="2" fill="currentColor" />
+      <circle cx="32" cy="6" r="2" fill="currentColor" />
+      <path d="M16 4v8M32 4v8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <circle cx="24" cy="31" r="6" fill="hsl(var(--primary) / 0.2)" stroke="currentColor" strokeWidth="2" />
+      <path d="M24 28v6M21 31h6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconMonthWheel({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="18" stroke="currentColor" strokeWidth="2.5" fill="hsl(var(--primary) / 0.08)" />
+      <circle cx="24" cy="24" r="10" stroke="currentColor" strokeWidth="2" strokeDasharray="4 3" />
+      <path d="M24 6v4M24 38v4M6 24h4M38 24h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <circle cx="24" cy="24" r="3" fill="hsl(var(--primary) / 0.4)" />
+    </svg>
+  );
+}
+
+function IconFertility({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 8c-6 0-12 6-12 14s6 18 12 18 12-10 12-18S30 8 24 8z" fill="hsl(var(--primary) / 0.12)" stroke="currentColor" strokeWidth="2.5" />
+      <circle cx="24" cy="24" r="4" fill="hsl(var(--primary) / 0.3)" stroke="currentColor" strokeWidth="2" />
+      <path d="M24 4v4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M18 10l2 2M30 10l-2 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconScale({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="30" width="28" height="12" rx="6" stroke="currentColor" strokeWidth="2.5" fill="hsl(var(--primary) / 0.1)" />
+      <circle cx="24" cy="20" r="10" stroke="currentColor" strokeWidth="2.5" fill="hsl(var(--primary) / 0.08)" />
+      <path d="M19 20h10M24 15v10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function IconDroplet({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 6C24 6 10 22 10 30a14 14 0 0028 0C38 22 24 6 24 6z" fill="hsl(var(--primary) / 0.15)" stroke="currentColor" strokeWidth="2.5" />
+      <path d="M20 28c0-4 4-10 4-10" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.5" />
+    </svg>
+  );
+}
+
+function IconYinYang({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="18" stroke="currentColor" strokeWidth="2.5" />
+      <path d="M24 6A18 18 0 0024 42a9 9 0 010-18 9 9 0 000-18z" fill="hsl(var(--primary) / 0.2)" />
+      <circle cx="24" cy="15" r="3" fill="currentColor" />
+      <circle cx="24" cy="33" r="3" fill="hsl(var(--primary) / 0.3)" />
+    </svg>
+  );
+}
+
+function IconStars({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M24 4l3 9h9l-7 5 3 9-8-6-8 6 3-9-7-5h9z" fill="hsl(var(--primary) / 0.2)" stroke="currentColor" strokeWidth="2" />
+      <path d="M38 20l1.5 4.5h4.5l-3.5 2.5 1.5 4.5-4-3-4 3 1.5-4.5-3.5-2.5h4.5z" fill="hsl(var(--primary) / 0.15)" stroke="currentColor" strokeWidth="1.5" />
+      <circle cx="10" cy="36" r="4" fill="hsl(var(--primary) / 0.1)" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+function IconUltrasound({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="8" width="36" height="28" rx="6" stroke="currentColor" strokeWidth="2.5" fill="hsl(var(--primary) / 0.08)" />
+      <ellipse cx="24" cy="22" rx="10" ry="8" fill="hsl(var(--primary) / 0.15)" stroke="currentColor" strokeWidth="2" />
+      <path d="M20 20c2-3 6-3 8 0" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+      <rect x="14" y="38" width="20" height="4" rx="2" fill="hsl(var(--primary) / 0.1)" stroke="currentColor" strokeWidth="1.5" />
+    </svg>
+  );
+}
+
+function IconPulse({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="24" cy="24" r="18" stroke="currentColor" strokeWidth="2.5" fill="hsl(var(--primary) / 0.06)" />
+      <path d="M8 24h8l4-10 4 20 4-14 4 8h8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function IconHourglass({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14 6h20v10L24 24l10 8v10H14V32l10-8-10-8V6z" fill="hsl(var(--primary) / 0.1)" stroke="currentColor" strokeWidth="2.5" strokeLinejoin="round" />
+      <rect x="12" y="4" width="24" height="4" rx="2" fill="currentColor" opacity="0.2" />
+      <rect x="12" y="40" width="24" height="4" rx="2" fill="currentColor" opacity="0.2" />
+      <path d="M20 38h8" stroke="hsl(var(--primary))" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 const calculators = [
-  { id: 'idade', title: 'Idade Gestacional', emoji: '📅' },
-  { id: 'meses', title: 'Semanas → Meses', emoji: '🗓️' },
-  { id: 'fertil', title: 'Período Fértil', emoji: '🌸' },
-  { id: 'imc', title: 'IMC Gestacional', emoji: '⚖️' },
-  { id: 'hidratacao', title: 'Hidratação', emoji: '💧' },
-  { id: 'chinesa', title: 'Tabela Chinesa', emoji: '🇨🇳' },
-  { id: 'signos', title: 'Signos', emoji: '⭐' },
-  { id: 'ultrassom', title: 'Melhor 3D/4D', emoji: '📸' },
-  { id: 'contracoes', title: 'Contrações', emoji: '⏱️' },
-  { id: 'contagem', title: 'Contagem Regressiva', emoji: '⏳' },
+  { id: 'idade', title: 'Idade Gestacional', desc: 'Semanas, dias e DPP', icon: IconCalendarPregnancy, featured: true },
+  { id: 'meses', title: 'Semanas → Meses', desc: 'Converta semanas em meses', icon: IconMonthWheel },
+  { id: 'fertil', title: 'Período Fértil', desc: 'Janela fértil e ovulação', icon: IconFertility },
+  { id: 'imc', title: 'IMC Gestacional', desc: 'Peso e ganho recomendado', icon: IconScale },
+  { id: 'hidratacao', title: 'Hidratação', desc: 'Meta diária de água', icon: IconDroplet },
+  { id: 'chinesa', title: 'Tabela Chinesa', desc: 'Menino ou menina?', icon: IconYinYang },
+  { id: 'signos', title: 'Signos', desc: 'Signo do bebê pela DPP', icon: IconStars },
+  { id: 'ultrassom', title: 'Melhor 3D/4D', desc: 'Momento ideal do ultrassom', icon: IconUltrasound },
+  { id: 'contracoes', title: 'Contrações', desc: 'Registre duração e intervalo', icon: IconPulse },
+  { id: 'contagem', title: 'Contagem Regressiva', desc: 'Quanto falta pro grande dia', icon: IconHourglass },
 ];
 
 export default function Calculadoras() {
@@ -33,7 +141,7 @@ export default function Calculadoras() {
 
   if (selected) {
     return (
-      <div className="gradient-mesh-bg min-h-screen pb-20">
+      <div className="gradient-mesh-bg min-h-screen pb-24">
         <div className="app-container px-5 pt-6">
           <button onClick={() => setSelected(null)} className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
             <ArrowLeft size={16} /> Voltar
@@ -46,7 +154,7 @@ export default function Calculadoras() {
   }
 
   return (
-    <div className="gradient-mesh-bg min-h-screen pb-20">
+    <div className="gradient-mesh-bg min-h-screen pb-24">
       <div className="app-container px-5 pt-6">
         <h1 className="font-display text-3xl font-semibold mb-4">Calculadoras</h1>
         <div className="flex items-center gap-3 mb-4 glass-card p-3">
@@ -54,16 +162,26 @@ export default function Calculadoras() {
           <Label htmlFor="gemelar" className="text-sm">Gestação gemelar?</Label>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          {calculators.map(calc => (
-            <button
-              key={calc.id}
-              onClick={() => setSelected(calc.id)}
-              className="glass-card p-4 text-left hover:scale-[1.02] transition-transform"
-            >
-              <div className="text-2xl mb-2">{calc.emoji}</div>
-              <div className="text-sm font-medium">{calc.title}</div>
-            </button>
-          ))}
+          {calculators.map(calc => {
+            const IconComp = calc.icon;
+            return (
+              <button
+                key={calc.id}
+                onClick={() => setSelected(calc.id)}
+                className={`glass-card p-4 text-left hover:scale-[1.02] transition-transform ${
+                  calc.featured ? 'col-span-2' : ''
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <IconComp className="w-10 h-10 text-primary flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <div className="text-sm font-semibold">{calc.title}</div>
+                    <div className="text-xs text-muted-foreground mt-0.5">{calc.desc}</div>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
         </div>
       </div>
       <BottomNav />
@@ -230,7 +348,6 @@ function Hidratacao() {
 function TabelaChinesa({ dum }: { dum?: Date }) {
   const [birthDate, setBirthDate] = useState<Date>();
   const [conceptionDate, setConceptionDate] = useState<Date | undefined>(dum ? addDays(dum, 14) : undefined);
-  const [step, setStep] = useState<'birth' | 'conception' | 'result'>(dum ? 'birth' : 'birth');
 
   if (!birthDate) return (
     <div className="space-y-4 animate-fade-in">
@@ -248,7 +365,6 @@ function TabelaChinesa({ dum }: { dum?: Date }) {
     </div>
   );
 
-  // Lunar age: current year - birth year + 1
   const lunarAge = conceptionDate.getFullYear() - birthDate.getFullYear() + 1;
   const lunarMonth = conceptionDate.getMonth() + 1;
   const result = chineseTable[lunarAge]?.[lunarMonth];
@@ -383,7 +499,7 @@ function Contracoes() {
         </div>
       )}
       {frequentContractions && (
-        <div className="glass-card p-4 bg-destructive/10 border-destructive/30">
+        <div className="glass-card p-4 border-destructive/30">
           <p className="text-sm font-semibold text-destructive">⚠️ Contrações frequentes! Considere ir à maternidade.</p>
         </div>
       )}

@@ -90,7 +90,7 @@ export default function Diario() {
   });
 
   return (
-    <div className="gradient-mesh-bg min-h-screen pb-20">
+    <div className="gradient-mesh-bg min-h-screen pb-24">
       <div className="app-container px-5 pt-6">
         <h1 className="font-display text-3xl font-semibold mb-4">Diário</h1>
 
@@ -111,7 +111,7 @@ export default function Diario() {
                   <div className="flex flex-wrap gap-2">
                     {moods.map(m => (
                       <button key={m.label} onClick={() => setHumor(m.label)}
-                        className={`px-3 py-1.5 rounded-full text-sm transition-all ${humor === m.label ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>
+                        className={`px-3 py-1.5 rounded-full text-sm transition-all ${humor === m.label ? 'bg-primary text-primary-foreground' : 'glass-card'}`}>
                         {m.emoji} {m.label}
                       </button>
                     ))}

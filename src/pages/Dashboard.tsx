@@ -43,8 +43,17 @@ export default function Dashboard() {
     { icon: MessageCircle, label: 'FAQ', path: '/faq', emoji: '💬' },
   ];
 
+  const formatConsultaTime = (data: string) => {
+    const d = new Date(data);
+    const hasTime = d.getHours() !== 0 || d.getMinutes() !== 0;
+    if (hasTime) {
+      return format(d, "dd/MM/yyyy 'às' HH:mm", { locale: ptBR });
+    }
+    return format(d, "dd/MM/yyyy", { locale: ptBR });
+  };
+
   return (
-    <div className="gradient-mesh-bg min-h-screen pb-20">
+    <div className="gradient-mesh-bg min-h-screen pb-24">
       <div className="app-container px-5 pt-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6 animate-fade-in">
@@ -95,7 +104,7 @@ export default function Dashboard() {
           <div className="glass-card p-5 mb-4 animate-fade-in">
             <h3 className="font-display text-lg font-semibold mb-3">Semana {info.weeks} — Comparativo</h3>
             <div className="flex items-center gap-4">
-              <div className="text-4xl">{emoji}</div>
+              <div className="text-5xl">{emoji}</div>
               <div className="flex-1 grid grid-cols-3 gap-2 text-center">
                 <div>
                   <p className="text-xs text-muted-foreground">Tamanho de</p>
@@ -139,7 +148,7 @@ export default function Dashboard() {
               <div className="flex-1">
                 <p className="font-medium text-sm">{nextConsulta.tipo}</p>
                 <p className="text-xs text-muted-foreground">
-                  {format(new Date(nextConsulta.data), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+                  {formatConsultaTime(nextConsulta.data)}
                   {nextConsulta.local && ` • ${nextConsulta.local}`}
                 </p>
               </div>

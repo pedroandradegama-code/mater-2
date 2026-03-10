@@ -18,7 +18,7 @@ export default function Gestacao() {
   const currentWeek = Math.min(Math.max(info.weeks, 4), 40);
 
   return (
-    <div className="gradient-mesh-bg min-h-screen pb-20">
+    <div className="gradient-mesh-bg min-h-screen pb-24">
       <div className="app-container px-5 pt-6">
         <h1 className="font-display text-3xl font-semibold mb-6">Sua Gestação</h1>
 

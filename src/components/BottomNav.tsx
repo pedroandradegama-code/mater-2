@@ -14,7 +14,7 @@ export default function BottomNav() {
   const navigate = useNavigate();
 
   return (
-    <nav className="bottom-nav glass-card border-t border-border/50 px-2 py-2">
+    <nav className="bottom-nav px-2 py-2">
       <div className="flex items-center justify-around">
         {navItems.map(({ path, icon: Icon, label }) => {
           const active = location.pathname === path;

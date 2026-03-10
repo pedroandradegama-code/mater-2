@@ -102,10 +102,10 @@
 
 @layer components {
   .glass-card {
-    background: rgba(255, 255, 255, 0.55);
+    background: rgba(255, 255, 255, 0.6);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.8);
     border-radius: 24px;
     box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
   }
@@ -116,10 +116,10 @@
   }
 
   .glass-card-elevated {
-    background: rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.85);
     border-radius: 28px;
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.12);
   }
@@ -151,6 +151,17 @@
     @apply fixed bottom-0 left-1/2 -translate-x-1/2 z-50;
     max-width: 430px;
     width: 100%;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .dark .bottom-nav {
+    background: hsl(var(--glass-bg));
+    border-top: 1px solid hsl(var(--glass-border));
   }
 
   .scrollbar-hide::-webkit-scrollbar {

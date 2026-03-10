@@ -15,13 +15,18 @@ import { ptBR } from 'date-fns/locale';
 import { toast } from 'sonner';
 import { DatePickerButton } from '@/components/WheelDatePicker';
 
+const HOURS = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0'));
+const MINUTES = ['00', '15', '30', '45'];
+
 export default function Agenda() {
   const { profile } = useProfile();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [formDate, setFormDate] = useState<Date | undefined>();
-  const [form, setForm] = useState({ hora: '', tipo: 'pre-natal', medico: '', local: '', observacoes: '' });
+  const [hora, setHora] = useState('09');
+  const [minuto, setMinuto] = useState('00');
+  const [form, setForm] = useState({ tipo: 'pre-natal', medico: '', local: '', observacoes: '' });
 
   const { data: consultas = [] } = useQuery({
     queryKey: ['consultas', user?.id],
@@ -36,7 +41,7 @@ export default function Agenda() {
     mutationFn: async () => {
       if (!formDate) throw new Error('Data obrigatória');
       const dateStr = format(formDate, 'yyyy-MM-dd');
-      const dateTime = new Date(`${dateStr}T${form.hora || '00:00'}`).toISOString();
+      const dateTime = new Date(`${dateStr}T${hora}:${minuto}:00`).toISOString();
       const { error } = await supabase.from('consultas').insert({
         user_id: user!.id,
         data: dateTime,
@@ -51,7 +56,9 @@ export default function Agenda() {
       queryClient.invalidateQueries({ queryKey: ['consultas'] });
       setDialogOpen(false);
       setFormDate(undefined);
-      setForm({ hora: '', tipo: 'pre-natal', medico: '', local: '', observacoes: '' });
+      setHora('09');
+      setMinuto('00');
+      setForm({ tipo: 'pre-natal', medico: '', local: '', observacoes: '' });
       toast.success('Consulta adicionada!');
     },
   });
@@ -64,7 +71,7 @@ export default function Agenda() {
   };
 
   return (
-    <div className="gradient-mesh-bg min-h-screen pb-20">
+    <div className="gradient-mesh-bg min-h-screen pb-24">
       <div className="app-container px-5 pt-6">
         <div className="flex items-center justify-between mb-4">
           <h1 className="font-display text-3xl font-semibold">Agenda</h1>
@@ -76,7 +83,29 @@ export default function Agenda() {
               <DialogHeader><DialogTitle className="font-display text-xl">Nova Consulta</DialogTitle></DialogHeader>
               <div className="space-y-3">
                 <DatePickerButton value={formDate} onChange={setFormDate} label="Data da consulta" minYear={2024} maxYear={2030} />
-                <Input type="time" value={form.hora} onChange={e => setForm(f => ({ ...f, hora: e.target.value }))} className="rounded-xl" />
+                
+                {/* Time picker with selects */}
+                <div className="flex items-center gap-2">
+                  <div className="flex-1">
+                    <label className="text-xs text-muted-foreground mb-1 block">Hora</label>
+                    <Select value={hora} onValueChange={setHora}>
+                      <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {HOURS.map(h => <SelectItem key={h} value={h}>{h}h</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div className="flex-1">
+                    <label className="text-xs text-muted-foreground mb-1 block">Minuto</label>
+                    <Select value={minuto} onValueChange={setMinuto}>
+                      <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
+                      <SelectContent>
+                        {MINUTES.map(m => <SelectItem key={m} value={m}>{m}min</SelectItem>)}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
                 <Select value={form.tipo} onValueChange={v => setForm(f => ({ ...f, tipo: v }))}>
                   <SelectTrigger className="rounded-xl"><SelectValue /></SelectTrigger>
                   <SelectContent>
