@@ -34,6 +34,7 @@ export function useProfile() {
       return data as Profile;
     },
     enabled: !!user,
+    refetchInterval: 30000, // Auto-refresh every 30s to pick up plan changes from webhook
   });
 
   // Apply hue based on sex
