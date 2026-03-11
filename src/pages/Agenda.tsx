@@ -4,6 +4,7 @@ import { useProfile } from '@/hooks/useProfile';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import BottomNav from '@/components/BottomNav';
+import UpgradeModal from '@/components/UpgradeModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -27,6 +28,9 @@ export default function Agenda() {
   const [hora, setHora] = useState('09');
   const [minuto, setMinuto] = useState('00');
   const [form, setForm] = useState({ tipo: 'pre-natal', medico: '', local: '', observacoes: '' });
+  const [showUpgrade, setShowUpgrade] = useState(false);
+
+  const isFree = profile?.plano !== 'pago';
 
   const { data: consultas = [] } = useQuery({
     queryKey: ['consultas', user?.id],
@@ -70,6 +74,26 @@ export default function Agenda() {
     return `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(c.tipo)}&dates=${fmt(start)}/${fmt(end)}&location=${encodeURIComponent(c.local || '')}&details=${encodeURIComponent(c.observacoes || '')}`;
   };
 
+  if (isFree) {
+    return (
+      <div className="gradient-mesh-bg min-h-screen pb-24">
+        <div className="app-container px-5 pt-6">
+          <h1 className="font-display text-3xl font-semibold mb-4">Agenda</h1>
+          <div className="glass-card p-8 text-center">
+            <p className="text-4xl mb-3">🌸</p>
+            <p className="font-display text-xl font-semibold mb-2">Recurso Premium</p>
+            <p className="text-sm text-muted-foreground mb-4">A Agenda de consultas faz parte do Mater Completo.</p>
+            <Button onClick={() => setShowUpgrade(true)} className="gradient-hero text-primary-foreground rounded-xl">
+              Desbloquear — R$ 97
+            </Button>
+          </div>
+        </div>
+        <BottomNav />
+        <UpgradeModal open={showUpgrade} onClose={() => setShowUpgrade(false)} />
+      </div>
+    );
+  }
+
   return (
     <div className="gradient-mesh-bg min-h-screen pb-24">
       <div className="app-container px-5 pt-6">
@@ -84,7 +108,6 @@ export default function Agenda() {
               <div className="space-y-3">
                 <DatePickerButton value={formDate} onChange={setFormDate} label="Data da consulta" minYear={2024} maxYear={2030} />
                 
-                {/* Time picker with selects */}
                 <div className="flex items-center gap-2">
                   <div className="flex-1">
                     <label className="text-xs text-muted-foreground mb-1 block">Hora</label>

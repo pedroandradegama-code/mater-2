@@ -5,12 +5,15 @@ import BottomNav from '@/components/BottomNav';
 import UpgradeModal from '@/components/UpgradeModal';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
 import { LogOut } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 import { getHueForSex } from '@/lib/pregnancy-data';
 import { DatePickerButton } from '@/components/WheelDatePicker';
+
+const KIWIFY_URL = 'https://pay.kiwify.com.br/yrK0rg9';
 
 export default function Perfil() {
   const { signOut } = useAuth();
@@ -43,6 +46,8 @@ export default function Perfil() {
     await signOut();
     navigate('/login');
   };
+
+  const isPago = profile?.plano === 'pago';
 
   return (
     <div className="gradient-mesh-bg min-h-screen pb-24">
@@ -92,12 +97,25 @@ export default function Perfil() {
         <div className="glass-card p-5 mb-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold">Plano {profile?.plano === 'pago' ? 'Completo ✨' : 'Gratuito'}</p>
-              <p className="text-xs text-muted-foreground">{profile?.plano === 'pago' ? 'Acesso total' : 'Recursos limitados'}</p>
+              {isPago ? (
+                <>
+                  <Badge className="bg-primary/15 text-primary border-primary/30 mb-1">✦ Mater Completo</Badge>
+                  <p className="text-xs text-muted-foreground">Acesso completo ativo</p>
+                </>
+              ) : (
+                <>
+                  <Badge variant="secondary" className="mb-1">Plano Gratuito</Badge>
+                  <p className="text-xs text-muted-foreground">Recursos limitados</p>
+                </>
+              )}
             </div>
-            {profile?.plano === 'free' && (
-              <Button onClick={() => setShowUpgrade(true)} size="sm" className="gradient-hero text-primary-foreground rounded-xl text-xs">
-                Upgrade
+            {!isPago && (
+              <Button
+                onClick={() => window.open(KIWIFY_URL, '_blank')}
+                size="sm"
+                className="gradient-hero text-primary-foreground rounded-xl text-xs"
+              >
+                Upgrade — R$ 97
               </Button>
             )}
           </div>
