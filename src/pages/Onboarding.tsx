@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { format } from 'date-fns';
 import { useProfile } from '@/hooks/useProfile';
+import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { getHueForSex } from '@/lib/pregnancy-data';
 import { DatePickerButton } from '@/components/WheelDatePicker';
@@ -12,9 +14,12 @@ export default function Onboarding() {
   const [step, setStep] = useState(1);
   const [nome, setNome] = useState('');
   const [dum, setDum] = useState<Date>();
+  const [naoSeiDum, setNaoSeiDum] = useState(false);
   const [sexo, setSexo] = useState('');
   const [nomeBebe, setNomeBebe] = useState('');
   const { updateProfile } = useProfile();
+  const { user } = useAuth();
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const handleSexSelect = (sex: string) => {
@@ -23,19 +28,29 @@ export default function Onboarding() {
   };
 
   const handleComplete = async () => {
-    if (!nome || !dum || !sexo) {
+    if (!nome || !sexo) {
       toast.error('Preencha os campos obrigatórios');
       return;
     }
+    if (!naoSeiDum && !dum) {
+      toast.error('Preencha a data da última menstruação ou marque "Não sei"');
+      return;
+    }
     try {
-      await updateProfile.mutateAsync({
+      const updates = {
         nome,
-        dum: format(dum, 'yyyy-MM-dd'),
+        dum: dum ? format(dum, 'yyyy-MM-dd') : null,
         sexo_bebe: sexo,
         nome_bebe: nomeBebe || null,
         onboarding_completed: true,
-      });
-      navigate('/dashboard');
+      };
+      await updateProfile.mutateAsync(updates);
+      // Optimistically update profile cache to prevent redirect loop
+      queryClient.setQueryData(['profile', user?.id], (old: any) => ({
+        ...old,
+        ...updates,
+      }));
+      navigate('/dashboard', { replace: true });
     } catch {
       toast.error('Erro ao salvar perfil');
     }
@@ -63,8 +78,29 @@ export default function Onboarding() {
         {step === 2 && (
           <div className="space-y-6 animate-fade-in">
             <h2 className="font-display text-3xl text-center">Data da última menstruação</h2>
-            <DatePickerButton value={dum} onChange={setDum} label="Selecione a data" title="Data da última menstruação" />
-            <Button onClick={() => dum && setStep(3)} disabled={!dum} className="w-full gradient-hero text-primary-foreground rounded-xl">
+            {!naoSeiDum && (
+              <DatePickerButton value={dum} onChange={setDum} label="Selecione a data" title="Data da última menstruação" />
+            )}
+            <button
+              onClick={() => { setNaoSeiDum(!naoSeiDum); if (!naoSeiDum) setDum(undefined); }}
+              className={`w-full py-3 px-4 rounded-xl text-sm transition-all border ${
+                naoSeiDum
+                  ? 'bg-primary/10 border-primary text-primary font-medium'
+                  : 'border-border text-muted-foreground hover:border-primary/50'
+              }`}
+            >
+              {naoSeiDum ? '✓ ' : ''}Não sei minha DUM
+            </button>
+            {naoSeiDum && (
+              <p className="text-xs text-muted-foreground text-center">
+                Sem problemas! Você pode adicionar depois no seu perfil.
+              </p>
+            )}
+            <Button
+              onClick={() => (dum || naoSeiDum) && setStep(3)}
+              disabled={!dum && !naoSeiDum}
+              className="w-full gradient-hero text-primary-foreground rounded-xl"
+            >
               Continuar
             </Button>
           </div>

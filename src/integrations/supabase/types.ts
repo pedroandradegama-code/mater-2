@@ -41,6 +41,30 @@ export type Database = {
         }
         Relationships: []
       }
+      checklist_mala: {
+        Row: {
+          checked: boolean
+          created_at: string
+          id: string
+          item_id: string
+          user_id: string
+        }
+        Insert: {
+          checked?: boolean
+          created_at?: string
+          id?: string
+          item_id: string
+          user_id: string
+        }
+        Update: {
+          checked?: boolean
+          created_at?: string
+          id?: string
+          item_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       consultas: {
         Row: {
           created_at: string
@@ -79,6 +103,7 @@ export type Database = {
           created_at: string
           data: string
           foto_url: string | null
+          fotos: Json | null
           humor: string | null
           id: string
           semana: number | null
@@ -89,6 +114,7 @@ export type Database = {
           created_at?: string
           data?: string
           foto_url?: string | null
+          fotos?: Json | null
           humor?: string | null
           id?: string
           semana?: number | null
@@ -99,10 +125,38 @@ export type Database = {
           created_at?: string
           data?: string
           foto_url?: string | null
+          fotos?: Json | null
           humor?: string | null
           id?: string
           semana?: number | null
           texto_livre?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      nome_favoritos: {
+        Row: {
+          created_at: string
+          id: string
+          nome: string
+          origem: string | null
+          significado: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          nome: string
+          origem?: string | null
+          significado?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          nome?: string
+          origem?: string | null
+          significado?: string | null
           user_id?: string
         }
         Relationships: []

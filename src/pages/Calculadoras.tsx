@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useProfile } from '@/hooks/useProfile';
 import BottomNav from '@/components/BottomNav';
 import { calculatePregnancyInfo, chineseTable, getZodiacSign } from '@/lib/pregnancy-data';
+import { zodiacDetails, getTrioPhrase } from '@/lib/zodiac-data';
 import { format, addDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
@@ -227,6 +228,7 @@ function IdadeGestacional({ dum: defaultDum, gemelar }: { dum?: Date; gemelar: b
         <ResultRow label="Idade" value={`${info.weeks} semanas e ${info.days} dias`} />
         <ResultRow label="Trimestre" value={`${info.trimester}º trimestre`} />
         <ResultRow label="DPP" value={format(dppAdjusted, "dd/MM/yyyy")} />
+        <p className="text-xs text-muted-foreground -mt-1 text-right">(Data Provável do Parto)</p>
         <ResultRow label="Progresso" value={`${Math.round(info.progress)}%`} />
         <ResultRow label="Dias restantes" value={`${daysRemainingAdjusted} dias`} />
         {gemelar && <p className="text-xs text-muted-foreground">* DPP ajustada para gestação gemelar (-2 semanas)</p>}
@@ -393,37 +395,102 @@ function TabelaChinesa({ dum }: { dum?: Date }) {
   );
 }
 
+function SignCard({ title, sign, compatWith }: { title: string; sign: ReturnType<typeof getZodiacSign>; compatWith?: string }) {
+  const detail = zodiacDetails[sign.name];
+  if (!detail) return null;
+  const compat = compatWith ? detail.compatibility[compatWith] : null;
+  return (
+    <div className="glass-card p-4 space-y-2">
+      <p className="text-xs text-muted-foreground">{title}</p>
+      <div className="flex items-center gap-2">
+        <span className="text-3xl">{detail.emoji}</span>
+        <div>
+          <p className="font-display text-lg font-semibold">{detail.name}</p>
+          <p className="text-xs text-muted-foreground">{detail.dates}</p>
+        </div>
+      </div>
+      <div className="flex items-center gap-2 text-xs">
+        <span>{detail.elementIcon} {detail.element}</span>
+        <span className="text-muted-foreground">•</span>
+        <span>🪐 {detail.planet}</span>
+      </div>
+      <ul className="space-y-1">
+        {detail.traits.map((t, i) => (
+          <li key={i} className="text-xs flex items-start gap-1.5">
+            <span className="text-primary mt-0.5">✦</span> {t}
+          </li>
+        ))}
+      </ul>
+      {compat && (
+        <div className="border-t border-border pt-2 mt-2">
+          <p className="text-xs font-medium">
+            {compat.icon} Compatibilidade {compat.level === 'otima' ? 'ótima' : compat.level === 'boa' ? 'boa' : 'desafiadora'}
+          </p>
+          <p className="text-xs text-muted-foreground">{compat.phrase}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function Signos({ dum }: { dum?: Date }) {
+  const [momBirth, setMomBirth] = useState<Date>();
   const [dadBirth, setDadBirth] = useState<Date>();
   const dpp = dum ? addDays(dum, 280) : undefined;
 
   const babySign = dpp ? getZodiacSign(dpp) : null;
+  const momSign = momBirth ? getZodiacSign(momBirth) : null;
   const dadSign = dadBirth ? getZodiacSign(dadBirth) : null;
 
   return (
     <div className="space-y-4 animate-fade-in">
       <h2 className="font-display text-2xl font-semibold">Signos</h2>
-      <div className="glass-card p-5 space-y-4">
-        {babySign && (
-          <div className="text-center">
-            <p className="text-3xl">{babySign.emoji}</p>
-            <p className="font-display text-xl font-semibold">{babySign.name}</p>
-            <p className="text-sm text-muted-foreground">{babySign.desc}</p>
-            <p className="text-xs text-muted-foreground mt-1">Baseado na DPP: {dpp && format(dpp, "dd/MM/yyyy")}</p>
-          </div>
-        )}
-        <div className="border-t border-border pt-3">
-          <p className="text-sm text-muted-foreground mb-2 text-center">Signo do pai (opcional)</p>
+
+      {babySign && (
+        <SignCard title="👶 Signo do bebê" sign={babySign} />
+      )}
+      {babySign && (
+        <p className="text-xs text-muted-foreground text-center">Baseado na DPP: {dpp && format(dpp, "dd/MM/yyyy")}</p>
+      )}
+
+      <div className="space-y-3">
+        <div>
+          <p className="text-sm text-muted-foreground mb-2">Signo da mamãe (opcional)</p>
+          <DatePickerButton value={momBirth} onChange={setMomBirth} label="Data de nascimento da mãe" title="Nascimento da mãe" minYear={1950} maxYear={2010} />
+          {momSign && babySign && (
+            <div className="mt-3">
+              <SignCard title="👩 Signo da mamãe" sign={momSign} compatWith={babySign.name} />
+            </div>
+          )}
+        </div>
+
+        <div>
+          <p className="text-sm text-muted-foreground mb-2">Signo do pai (opcional)</p>
           <DatePickerButton value={dadBirth} onChange={setDadBirth} label="Data de nascimento do pai" title="Nascimento do pai" minYear={1950} maxYear={2010} />
-          {dadSign && (
-            <div className="text-center mt-3">
-              <p className="text-2xl">{dadSign.emoji}</p>
-              <p className="font-semibold">{dadSign.name}</p>
-              <p className="text-xs text-muted-foreground">{dadSign.desc}</p>
+          {dadSign && babySign && (
+            <div className="mt-3">
+              <SignCard title="🧑 Signo do pai" sign={dadSign} compatWith={babySign.name} />
             </div>
           )}
         </div>
       </div>
+
+      {/* Trio astrológico */}
+      {babySign && (momSign || dadSign) && (
+        <div className="glass-card p-5 text-center space-y-3">
+          <h3 className="font-display text-lg font-semibold">Seu trio astrológico</h3>
+          <div className="flex items-center justify-center gap-4 text-3xl">
+            <span>{zodiacDetails[babySign.name]?.emoji}</span>
+            {momSign && <span>{zodiacDetails[momSign.name]?.emoji}</span>}
+            {dadSign && <span>{zodiacDetails[dadSign.name]?.emoji}</span>}
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {getTrioPhrase(babySign.name, momSign?.name || dadSign?.name || '', dadSign && momSign ? dadSign.name : undefined)}
+          </p>
+        </div>
+      )}
+
+      <p className="text-xs text-muted-foreground text-center italic">Apenas por diversão 🔮</p>
     </div>
   );
 }

@@ -84,7 +84,7 @@ export default function Agenda() {
             <p className="font-display text-xl font-semibold mb-2">Recurso Premium</p>
             <p className="text-sm text-muted-foreground mb-4">A Agenda de consultas faz parte do Mater Completo.</p>
             <Button onClick={() => setShowUpgrade(true)} className="gradient-hero text-primary-foreground rounded-xl">
-              Desbloquear — R$ 97
+              Desbloquear — R$ 19
             </Button>
           </div>
         </div>

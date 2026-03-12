@@ -29,12 +29,11 @@ export default function Dashboard() {
     enabled: !!user,
   });
 
-  if (!profile?.dum) return null;
-
-  const dum = new Date(profile.dum);
-  const info = calculatePregnancyInfo(dum);
-  const weekData = getWeekData(Math.min(info.weeks, 40));
-  const emoji = weekEmojis[Math.min(Math.max(info.weeks, 4), 40)] || '👶';
+  const hasDum = !!profile?.dum;
+  const dum = hasDum ? new Date(profile.dum!) : undefined;
+  const info = dum ? calculatePregnancyInfo(dum) : null;
+  const weekData = info ? getWeekData(Math.min(info.weeks, 40)) : null;
+  const emoji = info ? (weekEmojis[Math.min(Math.max(info.weeks, 4), 40)] || '👶') : '👶';
 
   const quickLinks = [
     { icon: Calculator, label: 'Calculadoras', path: '/calculadoras', emoji: '🧮' },
@@ -59,48 +58,56 @@ export default function Dashboard() {
         <div className="flex items-center justify-between mb-6 animate-fade-in">
           <div>
             <p className="text-sm text-muted-foreground">{getGreeting()}</p>
-            <h1 className="font-display text-2xl font-semibold">{profile.nome} ✨</h1>
+            <h1 className="font-display text-2xl font-semibold">{profile?.nome} ✨</h1>
           </div>
           <button className="glass-card p-2.5 rounded-full">
             <Bell size={20} className="text-muted-foreground" />
           </button>
         </div>
 
-        {/* Hero Card with decorative circles */}
-        <div className="gradient-hero rounded-[28px] p-6 text-primary-foreground mb-4 animate-fade-in relative overflow-hidden">
-          {/* Decorative circles */}
-          <div className="absolute -top-[30px] -right-[30px] w-[120px] h-[120px] rounded-full bg-white/10" />
-          <div className="absolute -bottom-[20px] left-[20px] w-[70px] h-[70px] rounded-full bg-white/[0.07]" />
-
-          <div className="relative z-10">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <div className="text-4xl font-display font-bold">
-                  {info.weeks}<span className="text-lg font-normal opacity-80">sem</span> {info.days}<span className="text-lg font-normal opacity-80">d</span>
+        {/* Hero Card */}
+        {info ? (
+          <div className="gradient-hero rounded-[28px] p-6 text-primary-foreground mb-4 animate-fade-in relative overflow-hidden">
+            <div className="absolute -top-[30px] -right-[30px] w-[120px] h-[120px] rounded-full bg-white/10" />
+            <div className="absolute -bottom-[20px] left-[20px] w-[70px] h-[70px] rounded-full bg-white/[0.07]" />
+            <div className="relative z-10">
+              <div className="flex items-start justify-between mb-4">
+                <div>
+                  <div className="text-4xl font-display font-bold">
+                    {info.weeks}<span className="text-lg font-normal opacity-80">sem</span> {info.days}<span className="text-lg font-normal opacity-80">d</span>
+                  </div>
+                  <p className="text-sm opacity-80 mt-1">{info.trimester}º trimestre</p>
                 </div>
-                <p className="text-sm opacity-80 mt-1">{info.trimester}º trimestre</p>
+                <div className="text-5xl">{emoji}</div>
               </div>
-              <div className="text-5xl">{emoji}</div>
+              <div className="mb-3">
+                <div className="flex justify-between text-xs opacity-80 mb-1">
+                  <span>{Math.round(info.progress)}% concluída</span>
+                  <span>{info.daysRemaining} dias restantes</span>
+                </div>
+                <div className="h-2 bg-primary-foreground/20 rounded-full overflow-hidden">
+                  <div className="h-full bg-primary-foreground/80 rounded-full transition-all" style={{ width: `${info.progress}%` }} />
+                </div>
+              </div>
+              <div>
+                <p className="text-sm opacity-90">
+                  DPP: {format(info.dpp, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                </p>
+                <p className="text-xs opacity-60">(Data Provável do Parto)</p>
+              </div>
             </div>
-
-            <div className="mb-3">
-              <div className="flex justify-between text-xs opacity-80 mb-1">
-                <span>{Math.round(info.progress)}% concluída</span>
-                <span>{info.daysRemaining} dias restantes</span>
-              </div>
-              <div className="h-2 bg-primary-foreground/20 rounded-full overflow-hidden">
-                <div className="h-full bg-primary-foreground/80 rounded-full transition-all" style={{ width: `${info.progress}%` }} />
-              </div>
-            </div>
-
-            <p className="text-sm opacity-90">
-              DPP: {format(info.dpp, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
-            </p>
           </div>
-        </div>
+        ) : (
+          <div className="glass-card p-6 mb-4 animate-fade-in text-center">
+            <p className="text-muted-foreground text-sm mb-2">DUM não informada</p>
+            <button onClick={() => navigate('/perfil')} className="text-primary text-sm font-medium hover:underline">
+              Adicionar no perfil →
+            </button>
+          </div>
+        )}
 
         {/* Week comparison card */}
-        {weekData && (
+        {weekData && info && (
           <div className="glass-card p-5 mb-4 animate-fade-in">
             <h3 className="font-display text-lg font-semibold mb-3">Semana {info.weeks} — Comparativo</h3>
             <div className="flex items-center gap-4">
