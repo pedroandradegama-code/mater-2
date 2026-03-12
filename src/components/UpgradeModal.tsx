@@ -39,7 +39,7 @@ export default function UpgradeModal({ open, onClose }: UpgradeModalProps) {
         </div>
 
         <div className="text-center py-2">
-          <p className="text-3xl font-display font-bold text-primary">R$ 97</p>
+          <p className="text-3xl font-display font-bold text-primary">R$ 19</p>
           <p className="text-xs text-muted-foreground mt-1">pagamento único · acesso imediato</p>
         </div>
 

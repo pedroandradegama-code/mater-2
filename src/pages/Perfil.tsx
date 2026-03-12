@@ -115,7 +115,7 @@ export default function Perfil() {
                 size="sm"
                 className="gradient-hero text-primary-foreground rounded-xl text-xs"
               >
-                Upgrade — R$ 97
+                Upgrade — R$ 19
               </Button>
             )}
           </div>
