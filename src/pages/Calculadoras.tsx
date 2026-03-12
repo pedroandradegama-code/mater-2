@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useProfile } from '@/hooks/useProfile';
 import BottomNav from '@/components/BottomNav';
 import { calculatePregnancyInfo, chineseTable, getZodiacSign } from '@/lib/pregnancy-data';
+import { zodiacDetails, getTrioPhrase } from '@/lib/zodiac-data';
 import { format, addDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
