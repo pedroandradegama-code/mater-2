@@ -228,6 +228,7 @@ function IdadeGestacional({ dum: defaultDum, gemelar }: { dum?: Date; gemelar: b
         <ResultRow label="Idade" value={`${info.weeks} semanas e ${info.days} dias`} />
         <ResultRow label="Trimestre" value={`${info.trimester}º trimestre`} />
         <ResultRow label="DPP" value={format(dppAdjusted, "dd/MM/yyyy")} />
+        <p className="text-xs text-muted-foreground -mt-1 text-right">(Data Provável do Parto)</p>
         <ResultRow label="Progresso" value={`${Math.round(info.progress)}%`} />
         <ResultRow label="Dias restantes" value={`${daysRemainingAdjusted} dias`} />
         {gemelar && <p className="text-xs text-muted-foreground">* DPP ajustada para gestação gemelar (-2 semanas)</p>}
