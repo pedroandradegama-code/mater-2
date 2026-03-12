@@ -14,6 +14,8 @@ import Agenda from "./pages/Agenda";
 import Diario from "./pages/Diario";
 import FAQ from "./pages/FAQ";
 import Perfil from "./pages/Perfil";
+import Mala from "./pages/Mala";
+import NomeBebe from "./pages/NomeBebe";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -64,6 +66,8 @@ const App = () => (
             <Route path="/diario" element={<ProtectedRoute><Diario /></ProtectedRoute>} />
             <Route path="/faq" element={<ProtectedRoute><FAQ /></ProtectedRoute>} />
             <Route path="/perfil" element={<ProtectedRoute><Perfil /></ProtectedRoute>} />
+            <Route path="/mala" element={<ProtectedRoute><Mala /></ProtectedRoute>} />
+            <Route path="/nomes" element={<ProtectedRoute><NomeBebe /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

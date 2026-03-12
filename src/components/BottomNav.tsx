@@ -15,7 +15,7 @@ export default function BottomNav() {
 
   return (
     <nav className="bottom-nav px-2 py-2">
-      <div className="flex items-center justify-around">
+      <div className="flex items-center justify-around max-w-md mx-auto">
         {navItems.map(({ path, icon: Icon, label }) => {
           const active = location.pathname === path;
           return (
