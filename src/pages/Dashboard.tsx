@@ -40,6 +40,8 @@ export default function Dashboard() {
     { icon: CalendarDays, label: 'Agenda', path: '/agenda', emoji: '📅' },
     { icon: BookOpen, label: 'Diário', path: '/diario', emoji: '📖' },
     { icon: MessageCircle, label: 'FAQ', path: '/faq', emoji: '💬' },
+    { icon: CalendarDays, label: 'Mala', path: '/mala', emoji: '🧳' },
+    { icon: MessageCircle, label: 'Nomes', path: '/nomes', emoji: '👶' },
   ];
 
   const formatConsultaTime = (data: string) => {
