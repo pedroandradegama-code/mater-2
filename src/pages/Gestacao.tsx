@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
 import { calculatePregnancyInfo, weeklyData, weekEmojis, parseLocalDate } from '@/lib/pregnancy-data';
 import BottomNav from '@/components/BottomNav';
