@@ -1,5 +1,5 @@
 import { useProfile } from '@/hooks/useProfile';
-import { calculatePregnancyInfo, weeklyData, weekEmojis } from '@/lib/pregnancy-data';
+import { calculatePregnancyInfo, weeklyData, weekEmojis, parseLocalDate } from '@/lib/pregnancy-data';
 import BottomNav from '@/components/BottomNav';
 import { Check } from 'lucide-react';
 
