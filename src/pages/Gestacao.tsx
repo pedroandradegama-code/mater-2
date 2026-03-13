@@ -12,6 +12,7 @@ const vaccines = [
 
 export default function Gestacao() {
   const { profile } = useProfile();
+  const navigate = useNavigate();
   if (!profile?.dum) return null;
 
   const dum = parseLocalDate(profile.dum);
