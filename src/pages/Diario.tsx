@@ -13,7 +13,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { calculatePregnancyInfo } from '@/lib/pregnancy-data';
+import { calculatePregnancyInfo, parseLocalDate } from '@/lib/pregnancy-data';
 
 const moods = [
   { emoji: '😊', label: 'Feliz' },
