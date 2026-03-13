@@ -10,6 +10,7 @@ import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import Calculadoras from "./pages/Calculadoras";
 import Gestacao from "./pages/Gestacao";
+import PlanoParto from "./pages/PlanoParto";
 import Agenda from "./pages/Agenda";
 import Diario from "./pages/Diario";
 import FAQ from "./pages/FAQ";
