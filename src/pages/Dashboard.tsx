@@ -42,6 +42,7 @@ export default function Dashboard() {
     { icon: MessageCircle, label: 'FAQ', path: '/faq', emoji: '💬' },
     { icon: CalendarDays, label: 'Mala', path: '/mala', emoji: '🧳' },
     { icon: MessageCircle, label: 'Nomes', path: '/nomes', emoji: '👶' },
+    { icon: BookOpen, label: 'Plano de Parto', path: '/plano-parto', emoji: '📋' },
   ];
 
   const formatConsultaTime = (data: string) => {
