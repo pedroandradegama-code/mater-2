@@ -10,6 +10,7 @@ import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
 import Calculadoras from "./pages/Calculadoras";
 import Gestacao from "./pages/Gestacao";
+import PlanoParto from "./pages/PlanoParto";
 import Agenda from "./pages/Agenda";
 import Diario from "./pages/Diario";
 import FAQ from "./pages/FAQ";
@@ -62,6 +63,7 @@ const App = () => (
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/calculadoras" element={<ProtectedRoute><Calculadoras /></ProtectedRoute>} />
             <Route path="/gestacao" element={<ProtectedRoute><Gestacao /></ProtectedRoute>} />
+            <Route path="/plano-parto" element={<ProtectedRoute><PlanoParto /></ProtectedRoute>} />
             <Route path="/agenda" element={<ProtectedRoute><Agenda /></ProtectedRoute>} />
             <Route path="/diario" element={<ProtectedRoute><Diario /></ProtectedRoute>} />
             <Route path="/faq" element={<ProtectedRoute><FAQ /></ProtectedRoute>} />

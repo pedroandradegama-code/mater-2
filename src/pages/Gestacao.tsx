@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
 import { calculatePregnancyInfo, weeklyData, weekEmojis, parseLocalDate } from '@/lib/pregnancy-data';
 import BottomNav from '@/components/BottomNav';
@@ -11,6 +12,7 @@ const vaccines = [
 
 export default function Gestacao() {
   const { profile } = useProfile();
+  const navigate = useNavigate();
   if (!profile?.dum) return null;
 
   const dum = parseLocalDate(profile.dum);
@@ -55,6 +57,18 @@ export default function Gestacao() {
             );
           })}
         </div>
+
+        {/* Plano de Parto */}
+        <button onClick={() => navigate('/plano-parto')} className="w-full glass-card p-5 mb-6 text-left hover:scale-[1.02] transition-transform">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl gradient-hero flex items-center justify-center text-2xl text-primary-foreground">📋</div>
+            <div className="flex-1">
+              <h3 className="font-display text-lg font-semibold">Plano de Parto</h3>
+              <p className="text-xs text-muted-foreground">Crie seu plano personalizado para compartilhar com o médico</p>
+            </div>
+            <span className="text-muted-foreground">→</span>
+          </div>
+        </button>
 
         {/* Vaccines */}
         <h2 className="font-display text-2xl font-semibold mb-3">Calendário Vacinal</h2>

@@ -161,6 +161,33 @@ export type Database = {
         }
         Relationships: []
       }
+      plano_parto: {
+        Row: {
+          created_at: string
+          id: string
+          pdf_url: string | null
+          respostas: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pdf_url?: string | null
+          respostas?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pdf_url?: string | null
+          respostas?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
