@@ -72,6 +72,12 @@ export function calculatePregnancyInfo(dum: Date) {
   return { weeks, days, dpp, daysRemaining, progress, trimester, diffDays };
 }
 
+/** Parse a "YYYY-MM-DD" string as a local date (avoids UTC timezone shift) */
+export function parseLocalDate(dateStr: string): Date {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
 export function getHueForSex(sex: string | null): number {
   switch (sex) {
     case 'menina': return 330;
