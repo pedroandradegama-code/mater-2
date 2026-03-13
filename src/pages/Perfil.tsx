@@ -10,7 +10,7 @@ import { LogOut } from 'lucide-react';
 import { format } from 'date-fns';
 import { toast } from 'sonner';
 import { useNavigate } from 'react-router-dom';
-import { getHueForSex } from '@/lib/pregnancy-data';
+import { getHueForSex, parseLocalDate } from '@/lib/pregnancy-data';
 import { DatePickerButton } from '@/components/WheelDatePicker';
 
 const KIWIFY_URL = 'https://pay.kiwify.com.br/yrK0rg9';
@@ -22,7 +22,7 @@ export default function Perfil() {
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [nome, setNome] = useState(profile?.nome || '');
   const [nomeBebe, setNomeBebe] = useState(profile?.nome_bebe || '');
-  const [dum, setDum] = useState<Date | undefined>(profile?.dum ? new Date(profile.dum) : undefined);
+  const [dum, setDum] = useState<Date | undefined>(profile?.dum ? parseLocalDate(profile.dum) : undefined);
   const [sexo, setSexo] = useState(profile?.sexo_bebe || '');
   const [saving, setSaving] = useState(false);
 

@@ -8,7 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ChevronDown, Share2 } from 'lucide-react';
-import { calculatePregnancyInfo } from '@/lib/pregnancy-data';
+import { calculatePregnancyInfo, parseLocalDate } from '@/lib/pregnancy-data';
 import { Button } from '@/components/ui/button';
 
 interface ChecklistCategory {
@@ -123,7 +123,7 @@ export default function Mala() {
   const { profile } = useProfile();
   const queryClient = useQueryClient();
 
-  const currentWeek = profile?.dum ? calculatePregnancyInfo(new Date(profile.dum)).weeks : 0;
+  const currentWeek = profile?.dum ? calculatePregnancyInfo(parseLocalDate(profile.dum)).weeks : 0;
 
   const { data: checkedItems = [] } = useQuery({
     queryKey: ['checklist-mala', user?.id],

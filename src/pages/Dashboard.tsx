@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
-import { calculatePregnancyInfo, getWeekData, weekEmojis, getGreeting } from '@/lib/pregnancy-data';
+import { calculatePregnancyInfo, getWeekData, weekEmojis, getGreeting, parseLocalDate } from '@/lib/pregnancy-data';
 import { Bell, Calculator, CalendarDays, BookOpen, MessageCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -30,7 +30,7 @@ export default function Dashboard() {
   });
 
   const hasDum = !!profile?.dum;
-  const dum = hasDum ? new Date(profile.dum!) : undefined;
+  const dum = hasDum ? parseLocalDate(profile.dum!) : undefined;
   const info = dum ? calculatePregnancyInfo(dum) : null;
   const weekData = info ? getWeekData(Math.min(info.weeks, 40)) : null;
   const emoji = info ? (weekEmojis[Math.min(Math.max(info.weeks, 4), 40)] || '👶') : '👶';
@@ -40,6 +40,8 @@ export default function Dashboard() {
     { icon: CalendarDays, label: 'Agenda', path: '/agenda', emoji: '📅' },
     { icon: BookOpen, label: 'Diário', path: '/diario', emoji: '📖' },
     { icon: MessageCircle, label: 'FAQ', path: '/faq', emoji: '💬' },
+    { icon: CalendarDays, label: 'Mala', path: '/mala', emoji: '🧳' },
+    { icon: MessageCircle, label: 'Nomes', path: '/nomes', emoji: '👶' },
   ];
 
   const formatConsultaTime = (data: string) => {
@@ -131,7 +133,7 @@ export default function Dashboard() {
         )}
 
         {/* Quick access grid */}
-        <div className="grid grid-cols-4 gap-3 mb-4">
+        <div className="grid grid-cols-3 gap-3 mb-4">
           {quickLinks.map(link => (
             <button
               key={link.path}

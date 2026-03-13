@@ -1,5 +1,5 @@
 import { useProfile } from '@/hooks/useProfile';
-import { calculatePregnancyInfo, weeklyData, weekEmojis } from '@/lib/pregnancy-data';
+import { calculatePregnancyInfo, weeklyData, weekEmojis, parseLocalDate } from '@/lib/pregnancy-data';
 import BottomNav from '@/components/BottomNav';
 import { Check } from 'lucide-react';
 
@@ -13,7 +13,7 @@ export default function Gestacao() {
   const { profile } = useProfile();
   if (!profile?.dum) return null;
 
-  const dum = new Date(profile.dum);
+  const dum = parseLocalDate(profile.dum);
   const info = calculatePregnancyInfo(dum);
   const currentWeek = Math.min(Math.max(info.weeks, 4), 40);
 

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useProfile } from '@/hooks/useProfile';
 import BottomNav from '@/components/BottomNav';
-import { calculatePregnancyInfo, chineseTable, getZodiacSign } from '@/lib/pregnancy-data';
+import { calculatePregnancyInfo, chineseTable, getZodiacSign, parseLocalDate } from '@/lib/pregnancy-data';
 import { zodiacDetails, getTrioPhrase } from '@/lib/zodiac-data';
 import { format, addDays } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -191,7 +191,7 @@ export default function Calculadoras() {
 }
 
 function CalculatorView({ id, profile, gemelar }: { id: string; profile: any; gemelar: boolean }) {
-  const dum = profile?.dum ? new Date(profile.dum) : undefined;
+  const dum = profile?.dum ? parseLocalDate(profile.dum) : undefined;
   switch (id) {
     case 'idade': return <IdadeGestacional dum={dum} gemelar={gemelar} />;
     case 'meses': return <SemanasMeses />;
