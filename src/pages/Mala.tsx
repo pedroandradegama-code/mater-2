@@ -123,7 +123,7 @@ export default function Mala() {
   const { profile } = useProfile();
   const queryClient = useQueryClient();
 
-  const currentWeek = profile?.dum ? calculatePregnancyInfo(new Date(profile.dum)).weeks : 0;
+  const currentWeek = profile?.dum ? calculatePregnancyInfo(parseLocalDate(profile.dum)).weeks : 0;
 
   const { data: checkedItems = [] } = useQuery({
     queryKey: ['checklist-mala', user?.id],

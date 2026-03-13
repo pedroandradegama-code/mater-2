@@ -59,7 +59,7 @@ export default function Diario() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isFree = profile?.plano !== 'pago';
-  const currentWeek = profile?.dum ? calculatePregnancyInfo(new Date(profile.dum)).weeks : 0;
+  const currentWeek = profile?.dum ? calculatePregnancyInfo(parseLocalDate(profile.dum)).weeks : 0;
 
   const { data: entries = [] } = useQuery({
     queryKey: ['diario', user?.id],

@@ -191,7 +191,7 @@ export default function Calculadoras() {
 }
 
 function CalculatorView({ id, profile, gemelar }: { id: string; profile: any; gemelar: boolean }) {
-  const dum = profile?.dum ? new Date(profile.dum) : undefined;
+  const dum = profile?.dum ? parseLocalDate(profile.dum) : undefined;
   switch (id) {
     case 'idade': return <IdadeGestacional dum={dum} gemelar={gemelar} />;
     case 'meses': return <SemanasMeses />;

@@ -22,7 +22,7 @@ export default function Perfil() {
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [nome, setNome] = useState(profile?.nome || '');
   const [nomeBebe, setNomeBebe] = useState(profile?.nome_bebe || '');
-  const [dum, setDum] = useState<Date | undefined>(profile?.dum ? new Date(profile.dum) : undefined);
+  const [dum, setDum] = useState<Date | undefined>(profile?.dum ? parseLocalDate(profile.dum) : undefined);
   const [sexo, setSexo] = useState(profile?.sexo_bebe || '');
   const [saving, setSaving] = useState(false);
 

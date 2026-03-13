@@ -13,7 +13,7 @@ export default function Gestacao() {
   const { profile } = useProfile();
   if (!profile?.dum) return null;
 
-  const dum = new Date(profile.dum);
+  const dum = parseLocalDate(profile.dum);
   const info = calculatePregnancyInfo(dum);
   const currentWeek = Math.min(Math.max(info.weeks, 4), 40);
 
