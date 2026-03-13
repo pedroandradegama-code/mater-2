@@ -30,7 +30,7 @@ export default function Dashboard() {
   });
 
   const hasDum = !!profile?.dum;
-  const dum = hasDum ? new Date(profile.dum!) : undefined;
+  const dum = hasDum ? parseLocalDate(profile.dum!) : undefined;
   const info = dum ? calculatePregnancyInfo(dum) : null;
   const weekData = info ? getWeekData(Math.min(info.weeks, 40)) : null;
   const emoji = info ? (weekEmojis[Math.min(Math.max(info.weeks, 4), 40)] || '👶') : '👶';
