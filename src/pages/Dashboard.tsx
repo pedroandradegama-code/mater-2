@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
-import { calculatePregnancyInfo, getWeekData, weekEmojis, getGreeting } from '@/lib/pregnancy-data';
+import { calculatePregnancyInfo, getWeekData, weekEmojis, getGreeting, parseLocalDate } from '@/lib/pregnancy-data';
 import { Bell, Calculator, CalendarDays, BookOpen, MessageCircle } from 'lucide-react';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
