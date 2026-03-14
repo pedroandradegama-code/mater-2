@@ -18,6 +18,7 @@ import Perfil from "./pages/Perfil";
 import Mala from "./pages/Mala";
 import NomeBebe from "./pages/NomeBebe";
 import NotFound from "./pages/NotFound";
+import PWAInstallBanner from "./components/PWAInstallBanner";
 
 const queryClient = new QueryClient();
 
