@@ -55,6 +55,7 @@ const App = () => (
     <AuthProvider>
       <TooltipProvider>
         <Sonner />
+        <PWAInstallBanner />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
