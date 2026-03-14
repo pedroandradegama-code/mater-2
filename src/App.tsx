@@ -18,6 +18,7 @@ import Perfil from "./pages/Perfil";
 import Mala from "./pages/Mala";
 import NomeBebe from "./pages/NomeBebe";
 import NotFound from "./pages/NotFound";
+import PWAInstallBanner from "./components/PWAInstallBanner";
 
 const queryClient = new QueryClient();
 
@@ -54,6 +55,7 @@ const App = () => (
     <AuthProvider>
       <TooltipProvider>
         <Sonner />
+        <PWAInstallBanner />
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
