@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['Cormorant Garamond', 'serif'],
+        display: ['Fraunces', 'serif'],
         body: ['DM Sans', 'sans-serif'],
       },
       colors: {
@@ -26,6 +26,8 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
+          light: "hsl(var(--primary-light))",
+          mid: "hsl(var(--primary-mid))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

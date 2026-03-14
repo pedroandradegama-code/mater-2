@@ -134,6 +134,65 @@ export type Database = {
         }
         Relationships: []
       }
+      enquetes: {
+        Row: {
+          created_at: string
+          id: string
+          opcoes: Json
+          pergunta: string
+          semana_max: number
+          semana_min: number
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          opcoes?: Json
+          pergunta: string
+          semana_max: number
+          semana_min: number
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          opcoes?: Json
+          pergunta?: string
+          semana_max?: number
+          semana_min?: number
+        }
+        Relationships: []
+      }
+      enquetes_respostas: {
+        Row: {
+          created_at: string
+          enquete_id: string
+          id: string
+          opcao_escolhida: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          enquete_id: string
+          id?: string
+          opcao_escolhida: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          enquete_id?: string
+          id?: string
+          opcao_escolhida?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "enquetes_respostas_enquete_id_fkey"
+            columns: ["enquete_id"]
+            isOneToOne: false
+            referencedRelation: "enquetes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       nome_favoritos: {
         Row: {
           created_at: string
