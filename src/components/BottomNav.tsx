@@ -1,12 +1,18 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, Calculator, Sprout, BookOpen, User } from 'lucide-react';
+import {
+  HomeIcon,
+  CalcIcon,
+  SproutIcon,
+  BookIcon,
+  UserIcon,
+} from '@/components/dashboard/DashboardIcons';
 
 const navItems = [
-  { path: '/dashboard', icon: Home, label: 'Início' },
-  { path: '/calculadoras', icon: Calculator, label: 'Calc.' },
-  { path: '/gestacao', icon: Sprout, label: 'Gestação' },
-  { path: '/diario', icon: BookOpen, label: 'Diário' },
-  { path: '/perfil', icon: User, label: 'Perfil' },
+  { path: '/dashboard', Icon: HomeIcon, label: 'Início' },
+  { path: '/calculadoras', Icon: CalcIcon, label: 'Calc.' },
+  { path: '/gestacao', Icon: SproutIcon, label: 'Gestação' },
+  { path: '/diario', Icon: BookIcon, label: 'Diário' },
+  { path: '/perfil', Icon: UserIcon, label: 'Perfil' },
 ];
 
 export default function BottomNav() {
@@ -16,7 +22,7 @@ export default function BottomNav() {
   return (
     <nav className="bottom-nav px-2 py-2">
       <div className="flex items-center justify-around max-w-md mx-auto">
-        {navItems.map(({ path, icon: Icon, label }) => {
+        {navItems.map(({ path, Icon, label }) => {
           const active = location.pathname === path;
           return (
             <button
@@ -24,12 +30,12 @@ export default function BottomNav() {
               onClick={() => navigate(path)}
               className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-xl transition-all ${
                 active
-                  ? 'text-primary bg-primary/10'
+                  ? 'text-primary'
                   : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              <Icon size={20} strokeWidth={active ? 2.5 : 1.8} />
-              <span className="text-[10px] font-medium">{label}</span>
+              <Icon className="w-6 h-6" active={active} />
+              <span className={`text-[10px] ${active ? 'font-semibold' : 'font-medium'}`}>{label}</span>
             </button>
           );
         })}
