@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { getHueForSex } from '@/lib/pregnancy-data';
+import { applyThemeForSex } from '@/lib/pregnancy-data';
 import { DatePickerButton } from '@/components/WheelDatePicker';
 
 export default function Onboarding() {
@@ -24,7 +24,7 @@ export default function Onboarding() {
 
   const handleSexSelect = (sex: string) => {
     setSexo(sex);
-    document.documentElement.style.setProperty('--hue', String(getHueForSex(sex)));
+    applyThemeForSex(sex);
   };
 
   const handleComplete = async () => {

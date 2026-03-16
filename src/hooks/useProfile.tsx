@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { useEffect } from 'react';
-import { getHueForSex } from '@/lib/pregnancy-data';
+import { applyThemeForSex } from '@/lib/pregnancy-data';
 
 export interface Profile {
   id: string;
@@ -40,7 +40,7 @@ export function useProfile() {
   // Apply hue based on sex
   useEffect(() => {
     if (query.data?.sexo_bebe) {
-      document.documentElement.style.setProperty('--hue', String(getHueForSex(query.data.sexo_bebe)));
+      applyThemeForSex(query.data.sexo_bebe);
     }
   }, [query.data?.sexo_bebe]);
 

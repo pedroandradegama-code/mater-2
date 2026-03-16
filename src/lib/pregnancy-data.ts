@@ -80,9 +80,64 @@ export function parseLocalDate(dateStr: string): Date {
 
 export function getHueForSex(sex: string | null): number {
   switch (sex) {
-    case 'menina': return 330;
+    case 'menina': return 338;
     case 'menino': return 210;
     default: return 280;
+  }
+}
+
+/** Apply full theme palette based on baby sex */
+export function applyThemeForSex(sex: string | null) {
+  const root = document.documentElement;
+  switch (sex) {
+    case 'menino':
+      root.style.setProperty('--primary', '210 73% 43%');
+      root.style.setProperty('--primary-light', '210 100% 94%');
+      root.style.setProperty('--primary-mid', '210 82% 52%');
+      root.style.setProperty('--ring', '210 73% 43%');
+      root.style.setProperty('--sidebar-primary', '210 73% 43%');
+      root.style.setProperty('--sidebar-ring', '210 73% 43%');
+      root.style.setProperty('--border', '210 73% 43% / 0.08');
+      root.style.setProperty('--sidebar-border', '210 73% 43% / 0.08');
+      root.style.setProperty('--card-border-color', 'rgba(24, 91, 194, 0.08)');
+      root.style.setProperty('--background', '210 60% 98%');
+      root.style.setProperty('--surface-2', '210 60% 98%');
+      root.style.setProperty('--secondary', '210 40% 95%');
+      root.style.setProperty('--muted', '210 20% 95%');
+      root.style.setProperty('--sidebar-accent', '210 40% 96%');
+      break;
+    case 'menina':
+      root.style.setProperty('--primary', '338 73% 43%');
+      root.style.setProperty('--primary-light', '340 100% 94%');
+      root.style.setProperty('--primary-mid', '330 82% 52%');
+      root.style.setProperty('--ring', '338 73% 43%');
+      root.style.setProperty('--sidebar-primary', '338 73% 43%');
+      root.style.setProperty('--sidebar-ring', '338 73% 43%');
+      root.style.setProperty('--border', '338 73% 43% / 0.08');
+      root.style.setProperty('--sidebar-border', '338 73% 43% / 0.08');
+      root.style.setProperty('--card-border-color', 'rgba(194, 24, 91, 0.08)');
+      root.style.setProperty('--background', '340 60% 98%');
+      root.style.setProperty('--surface-2', '340 60% 98%');
+      root.style.setProperty('--secondary', '340 40% 95%');
+      root.style.setProperty('--muted', '340 20% 95%');
+      root.style.setProperty('--sidebar-accent', '340 40% 96%');
+      break;
+    default: // surpresa → purple
+      root.style.setProperty('--primary', '280 73% 43%');
+      root.style.setProperty('--primary-light', '280 100% 94%');
+      root.style.setProperty('--primary-mid', '280 82% 52%');
+      root.style.setProperty('--ring', '280 73% 43%');
+      root.style.setProperty('--sidebar-primary', '280 73% 43%');
+      root.style.setProperty('--sidebar-ring', '280 73% 43%');
+      root.style.setProperty('--border', '280 73% 43% / 0.08');
+      root.style.setProperty('--sidebar-border', '280 73% 43% / 0.08');
+      root.style.setProperty('--card-border-color', 'rgba(91, 24, 194, 0.08)');
+      root.style.setProperty('--background', '280 60% 98%');
+      root.style.setProperty('--surface-2', '280 60% 98%');
+      root.style.setProperty('--secondary', '280 40% 95%');
+      root.style.setProperty('--muted', '280 20% 95%');
+      root.style.setProperty('--sidebar-accent', '280 40% 96%');
+      break;
   }
 }
 
