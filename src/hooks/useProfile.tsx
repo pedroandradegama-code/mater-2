@@ -40,7 +40,7 @@ export function useProfile() {
   // Apply hue based on sex
   useEffect(() => {
     if (query.data?.sexo_bebe) {
-      document.documentElement.style.setProperty('--hue', String(getHueForSex(query.data.sexo_bebe)));
+      applyThemeForSex(query.data.sexo_bebe);
     }
   }, [query.data?.sexo_bebe]);
 
