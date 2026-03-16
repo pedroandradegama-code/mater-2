@@ -2,7 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
 import { useEffect } from 'react';
-import { getHueForSex } from '@/lib/pregnancy-data';
+import { applyThemeForSex } from '@/lib/pregnancy-data';
 
 export interface Profile {
   id: string;
