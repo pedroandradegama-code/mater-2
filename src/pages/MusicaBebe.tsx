@@ -503,7 +503,7 @@ function PlayerView({ record }: { record: any }) {
       a.click();
       URL.revokeObjectURL(url);
     } catch {
-      toast({ title: "Erro ao baixar", description: "Tente novamente.", variant: "destructive" });
+      toast.error("Erro ao baixar. Tente novamente.");
     }
   };
 
