@@ -142,7 +142,7 @@ export default function Dashboard() {
                   <span className="font-display text-xl font-medium text-primary/70 mt-1">sem</span>
                 </div>
                 <p className="text-sm text-muted-foreground mb-3">
-                  {info.days} dias · {info.trimester}º trimestre
+                  <span className="font-bold">{info.days} dias</span> · {info.trimester}º trimestre
                 </p>
                 {/* Progress */}
                 <div className="mb-3">
