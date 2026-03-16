@@ -228,7 +228,7 @@ export default function Dashboard() {
                   <div className="w-10 h-10 rounded-[10px] bg-primary-light flex items-center justify-center flex-shrink-0">
                     <Icon className="w-5 h-5 text-primary" />
                   </div>
-                  <span className="text-sm font-medium text-foreground flex-1 text-left">{link.label}</span>
+                  <span className="text-xs font-medium text-muted-foreground flex-1 text-left">{link.label}</span>
                   <ChevronRight size={16} className="text-muted-foreground flex-shrink-0" />
                 </button>
               );
