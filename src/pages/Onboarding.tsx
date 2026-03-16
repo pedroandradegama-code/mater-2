@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
-import { getHueForSex } from '@/lib/pregnancy-data';
+import { applyThemeForSex } from '@/lib/pregnancy-data';
 import { DatePickerButton } from '@/components/WheelDatePicker';
 
 export default function Onboarding() {
