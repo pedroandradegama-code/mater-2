@@ -492,11 +492,19 @@ function PlayerView({ record }: { record: any }) {
     }
   };
 
-  const handleDownload = () => {
-    const a = document.createElement('a');
-    a.href = record.audio_url;
-    a.download = `musica-${nomeBebe.toLowerCase().replace(/\s+/g, '-')}.mp3`;
-    a.click();
+  const handleDownload = async () => {
+    try {
+      const response = await fetch(record.audio_url);
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `musica-${nomeBebe.toLowerCase().replace(/\s+/g, '-')}.mp3`;
+      a.click();
+      URL.revokeObjectURL(url);
+    } catch {
+      toast({ title: "Erro ao baixar", description: "Tente novamente.", variant: "destructive" });
+    }
   };
 
   return (
