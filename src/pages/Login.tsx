@@ -52,16 +52,6 @@ export default function Login() {
           </Button>
         </form>
 
-        <div className="my-6 flex items-center gap-3">
-          <div className="flex-1 h-px bg-border" />
-          <span className="text-xs text-muted-foreground">ou</span>
-          <div className="flex-1 h-px bg-border" />
-        </div>
-
-        <Button variant="outline" onClick={handleGoogle} className="w-full rounded-xl">
-          Entrar com Google
-        </Button>
-
         <p className="text-center text-sm text-muted-foreground mt-6">
           Não tem conta?{' '}
           <Link to="/cadastro" className="text-primary font-medium hover:underline">

@@ -19,6 +19,7 @@ import {
   NomesIcon,
   PlanoPartoIcon,
   EnqueteIcon,
+  MusicaIcon,
   EstetoscopioIcon,
   CalendarioVazioIcon,
   BalancaIcon,
