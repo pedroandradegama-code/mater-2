@@ -75,7 +75,7 @@ export default function Perfil() {
                 { value: 'menino', label: 'Menino 💙' },
                 { value: 'surpresa', label: 'Surpresa 🎁' },
               ].map(opt => (
-                <button key={opt.value} onClick={() => { setSexo(opt.value); document.documentElement.style.setProperty('--hue', String(getHueForSex(opt.value))); }}
+                <button key={opt.value} onClick={() => { setSexo(opt.value); applyThemeForSex(opt.value); }}
                   className={`py-2 px-3 rounded-xl text-xs font-medium transition-all ${sexo === opt.value ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>
                   {opt.label}
                 </button>
