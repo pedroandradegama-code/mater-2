@@ -24,7 +24,7 @@ export default function Onboarding() {
 
   const handleSexSelect = (sex: string) => {
     setSexo(sex);
-    document.documentElement.style.setProperty('--hue', String(getHueForSex(sex)));
+    applyThemeForSex(sex);
   };
 
   const handleComplete = async () => {
