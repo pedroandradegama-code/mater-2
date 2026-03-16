@@ -152,9 +152,12 @@ export default function Dashboard() {
                   <p className="text-[11px] text-muted-foreground mt-1">{Math.round(info.progress)}% concluída</p>
                 </div>
                 {/* DPP */}
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><rect x="2" y="3" width="12" height="11" rx="2" /><path d="M2 7h12" /><path d="M5 1v3" /><path d="M11 1v3" /></svg>
-                  <span>DPP · {format(info.dpp, "dd MMM yyyy", { locale: ptBR })}</span>
+                <div className="text-sm text-muted-foreground">
+                  <div className="flex items-center gap-1.5">
+                    <svg className="w-4 h-4" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"><rect x="2" y="3" width="12" height="11" rx="2" /><path d="M2 7h12" /><path d="M5 1v3" /><path d="M11 1v3" /></svg>
+                    <span>DPP · {format(info.dpp, "dd MMM yyyy", { locale: ptBR })}</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground/70 ml-5.5">(Data Provável do Parto)</p>
                 </div>
               </div>
               {/* Right side — Fetus illustration */}

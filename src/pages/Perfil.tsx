@@ -103,20 +103,20 @@ export default function Perfil() {
                   <p className="text-xs text-muted-foreground">Acesso completo ativo</p>
                 </>
               ) : (
-                <>
-                  <Badge variant="secondary" className="mb-1">Plano Gratuito</Badge>
-                  <p className="text-xs text-muted-foreground">Recursos limitados</p>
-                </>
+                <Badge variant="secondary" className="mb-1">Plano Gratuito</Badge>
               )}
             </div>
             {!isPago && (
-              <Button
-                onClick={() => window.open(KIWIFY_URL, '_blank')}
-                size="sm"
-                className="gradient-hero text-primary-foreground rounded-xl text-xs"
-              >
-                Upgrade — R$ 19
-              </Button>
+              <div className="text-right">
+                <Button
+                  onClick={() => window.open(KIWIFY_URL, '_blank')}
+                  size="sm"
+                  className="gradient-hero text-primary-foreground rounded-xl text-xs mb-1"
+                >
+                  Upgrade — R$ 19
+                </Button>
+                <p className="text-[10px] text-muted-foreground">Explore mais Recursos</p>
+              </div>
             )}
           </div>
         </div>
