@@ -193,6 +193,48 @@ export type Database = {
           },
         ]
       }
+      musica_bebe: {
+        Row: {
+          audio_url: string | null
+          created_at: string
+          elevenlabs_generation_id: string | null
+          estilo: string
+          id: string
+          idioma: string
+          nome_bebe: string | null
+          prompt_gerado: string | null
+          status: string
+          temas: Json
+          user_id: string
+        }
+        Insert: {
+          audio_url?: string | null
+          created_at?: string
+          elevenlabs_generation_id?: string | null
+          estilo: string
+          id?: string
+          idioma: string
+          nome_bebe?: string | null
+          prompt_gerado?: string | null
+          status?: string
+          temas?: Json
+          user_id: string
+        }
+        Update: {
+          audio_url?: string | null
+          created_at?: string
+          elevenlabs_generation_id?: string | null
+          estilo?: string
+          id?: string
+          idioma?: string
+          nome_bebe?: string | null
+          prompt_gerado?: string | null
+          status?: string
+          temas?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
       nome_favoritos: {
         Row: {
           created_at: string

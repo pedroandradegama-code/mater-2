@@ -17,6 +17,7 @@ import FAQ from "./pages/FAQ";
 import Perfil from "./pages/Perfil";
 import Mala from "./pages/Mala";
 import NomeBebe from "./pages/NomeBebe";
+import MusicaBebe from "./pages/MusicaBebe";
 import NotFound from "./pages/NotFound";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 
@@ -72,6 +73,7 @@ const App = () => (
             <Route path="/perfil" element={<ProtectedRoute><Perfil /></ProtectedRoute>} />
             <Route path="/mala" element={<ProtectedRoute><Mala /></ProtectedRoute>} />
             <Route path="/nomes" element={<ProtectedRoute><NomeBebe /></ProtectedRoute>} />
+            <Route path="/musica-bebe" element={<ProtectedRoute><MusicaBebe /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

@@ -19,6 +19,7 @@ import {
   NomesIcon,
   PlanoPartoIcon,
   EnqueteIcon,
+  MusicaIcon,
   EstetoscopioIcon,
   CalendarioVazioIcon,
   BalancaIcon,
@@ -81,6 +82,7 @@ export default function Dashboard() {
     { icon: MalaIcon, label: 'Mala da Maternidade', path: '/mala' },
     { icon: NomesIcon, label: 'Nomes do Bebê', path: '/nomes' },
     { icon: PlanoPartoIcon, label: 'Plano de Parto', path: '/plano-parto' },
+    { icon: MusicaIcon, label: 'Música do Bebê', path: '/musica-bebe' },
     { icon: EnqueteIcon, label: 'Enquetes', path: '#enquetes' },
   ];
 

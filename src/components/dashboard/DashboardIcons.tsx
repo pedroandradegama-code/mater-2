@@ -1,5 +1,16 @@
 // SVG icons for dashboard — all custom, no emojis
 
+export function MusicaIcon({ className = "w-7 h-7" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M10 22V8l12-4v14" />
+      <circle cx="7" cy="22" r="3" fill="currentColor" fillOpacity="0.1" />
+      <circle cx="19" cy="18" r="3" fill="currentColor" fillOpacity="0.1" />
+      <path d="M10 14l12-4" />
+    </svg>
+  );
+}
+
 export function CalculadoraIcon({ className = "w-7 h-7" }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 28 28" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

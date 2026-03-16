@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
-import { lovable } from '@/integrations/lovable';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
@@ -22,12 +22,6 @@ export default function Login() {
       navigate('/dashboard');
     }
     setLoading(false);
-  };
-
-  const handleGoogle = async () => {
-    await lovable.auth.signInWithOAuth('google', {
-      redirect_uri: window.location.origin + '/dashboard',
-    });
   };
 
   return (
@@ -57,16 +51,6 @@ export default function Login() {
             {loading ? 'Entrando...' : 'Entrar'}
           </Button>
         </form>
-
-        <div className="my-6 flex items-center gap-3">
-          <div className="flex-1 h-px bg-border" />
-          <span className="text-xs text-muted-foreground">ou</span>
-          <div className="flex-1 h-px bg-border" />
-        </div>
-
-        <Button variant="outline" onClick={handleGoogle} className="w-full rounded-xl">
-          Entrar com Google
-        </Button>
 
         <p className="text-center text-sm text-muted-foreground mt-6">
           Não tem conta?{' '}
