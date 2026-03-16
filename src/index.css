@@ -165,11 +165,7 @@
 
   /* Dashboard mesh background */
   .dashboard-bg {
-    background: hsl(340 60% 98%);
+    background: hsl(var(--background));
     min-height: 100vh;
-  }
-
-  .dark .dashboard-bg {
-    background: hsl(280 20% 8%);
   }
 }

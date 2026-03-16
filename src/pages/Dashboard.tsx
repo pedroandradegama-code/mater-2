@@ -127,9 +127,9 @@ export default function Dashboard() {
           <div
             className="rounded-[28px] p-6 mb-4 animate-fade-up"
             style={{
-              background: 'radial-gradient(ellipse at top left, hsl(340 100% 94%) 0%, hsl(270 60% 97%) 50%, hsl(340 80% 96%) 100%)',
-              border: '1px solid rgba(194, 24, 91, 0.12)',
-              boxShadow: '0 8px 32px rgba(194, 24, 91, 0.10)',
+              background: `radial-gradient(ellipse at top left, hsl(var(--primary-light)) 0%, hsl(var(--background)) 50%, hsl(var(--secondary)) 100%)`,
+              border: `1px solid var(--card-border-color)`,
+              boxShadow: `0 8px 32px hsl(var(--primary) / 0.10)`,
             }}
           >
             <div className="flex items-start">
@@ -142,7 +142,7 @@ export default function Dashboard() {
                   <span className="font-display text-xl font-medium text-primary/70 mt-1">sem</span>
                 </div>
                 <p className="text-sm text-muted-foreground mb-3">
-                  {info.days} dias · {info.trimester}º trimestre
+                  <span className="font-bold">{info.days} dias</span> · {info.trimester}º trimestre
                 </p>
                 {/* Progress */}
                 <div className="mb-3">
@@ -228,7 +228,7 @@ export default function Dashboard() {
                   <div className="w-10 h-10 rounded-[10px] bg-primary-light flex items-center justify-center flex-shrink-0">
                     <Icon className="w-5 h-5 text-primary" />
                   </div>
-                  <span className="text-sm font-medium text-foreground flex-1 text-left">{link.label}</span>
+                  <span className="text-xs font-medium text-muted-foreground flex-1 text-left">{link.label}</span>
                   <ChevronRight size={16} className="text-muted-foreground flex-shrink-0" />
                 </button>
               );

@@ -149,10 +149,10 @@ function CreationFlow({ profile, userId, onCreated }: { profile: any; userId: st
   const toggleTema = (id: string) => {
     if (temas.includes(id)) {
       setTemas(temas.filter(t => t !== id));
-    } else if (temas.length < 4) {
+    } else if (temas.length < 3) {
       setTemas([...temas, id]);
     } else {
-      toast('Máximo de 4 temas atingido 🎵');
+      toast('Máximo de 3 temas atingido 🎵');
     }
   };
 
