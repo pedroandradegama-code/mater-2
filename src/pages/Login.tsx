@@ -24,12 +24,6 @@ export default function Login() {
     setLoading(false);
   };
 
-  const handleGoogle = async () => {
-    await lovable.auth.signInWithOAuth('google', {
-      redirect_uri: window.location.origin + '/dashboard',
-    });
-  };
-
   return (
     <div className="gradient-mesh-bg min-h-screen flex items-center justify-center p-6">
       <div className="glass-card-elevated w-full max-w-sm p-8 animate-fade-in">
