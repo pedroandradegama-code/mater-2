@@ -107,13 +107,16 @@ export default function Perfil() {
               )}
             </div>
             {!isPago && (
-              <Button
-                onClick={() => window.open(KIWIFY_URL, '_blank')}
-                size="sm"
-                className="gradient-hero text-primary-foreground rounded-xl text-xs"
-              >
-                Upgrade — R$ 19
-              </Button>
+              <div className="text-right">
+                <Button
+                  onClick={() => window.open(KIWIFY_URL, '_blank')}
+                  size="sm"
+                  className="gradient-hero text-primary-foreground rounded-xl text-xs mb-1"
+                >
+                  Upgrade — R$ 19
+                </Button>
+                <p className="text-[10px] text-muted-foreground">Explore mais Recursos</p>
+              </div>
             )}
           </div>
         </div>
