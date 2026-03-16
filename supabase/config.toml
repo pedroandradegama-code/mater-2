@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.suggest-names]
 verify_jwt = false
+
+[functions.elevenlabs-music-generator]
+verify_jwt = false
