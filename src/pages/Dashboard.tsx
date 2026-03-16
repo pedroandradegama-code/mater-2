@@ -127,9 +127,9 @@ export default function Dashboard() {
           <div
             className="rounded-[28px] p-6 mb-4 animate-fade-up"
             style={{
-              background: 'radial-gradient(ellipse at top left, hsl(340 100% 94%) 0%, hsl(270 60% 97%) 50%, hsl(340 80% 96%) 100%)',
-              border: '1px solid rgba(194, 24, 91, 0.12)',
-              boxShadow: '0 8px 32px rgba(194, 24, 91, 0.10)',
+              background: `radial-gradient(ellipse at top left, hsl(var(--primary-light)) 0%, hsl(var(--background)) 50%, hsl(var(--secondary)) 100%)`,
+              border: `1px solid var(--card-border-color)`,
+              boxShadow: `0 8px 32px hsl(var(--primary) / 0.10)`,
             }}
           >
             <div className="flex items-start">
