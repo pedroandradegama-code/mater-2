@@ -103,10 +103,7 @@ export default function Perfil() {
                   <p className="text-xs text-muted-foreground">Acesso completo ativo</p>
                 </>
               ) : (
-                <>
-                  <Badge variant="secondary" className="mb-1">Plano Gratuito</Badge>
-                  <p className="text-xs text-muted-foreground">Recursos limitados</p>
-                </>
+                <Badge variant="secondary" className="mb-1">Plano Gratuito</Badge>
               )}
             </div>
             {!isPago && (
