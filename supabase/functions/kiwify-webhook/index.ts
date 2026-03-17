@@ -37,7 +37,8 @@ serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     )
 
-    const { data, error } = await supabase
+    // Update profile plan
+    const { error } = await supabase
       .from('profiles')
       .update({ plano: 'pago' })
       .eq('email', email.toLowerCase())
@@ -48,6 +49,42 @@ serve(async (req) => {
         JSON.stringify({ error: error.message }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       )
+    }
+
+    // Try to register affiliate sale
+    const affiliateEmail =
+      body?.affiliate?.email ||
+      body?.Affiliate?.email ||
+      body?.data?.affiliate?.email ||
+      body?.data?.Affiliate?.email ||
+      null
+
+    const orderId =
+      body?.order_id ||
+      body?.Order?.id ||
+      body?.data?.order_id ||
+      null
+
+    if (affiliateEmail) {
+      console.log('Afiliada detectada:', affiliateEmail)
+
+      const { data: afiliada } = await supabase
+        .from('afiliadas')
+        .select('id')
+        .eq('email', affiliateEmail.toLowerCase())
+        .single()
+
+      if (afiliada) {
+        await supabase.from('afiliadas_vendas').insert({
+          afiliada_id: afiliada.id,
+          email_compradora: email.toLowerCase(),
+          valor_venda: 19.00,
+          comissao: 9.50,
+          status_pagamento: 'pendente',
+          kiwify_order_id: orderId,
+        })
+        console.log('Venda registrada para afiliada:', affiliateEmail)
+      }
     }
 
     console.log('Plano atualizado com sucesso para:', email)
