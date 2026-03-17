@@ -19,6 +19,7 @@ import Mala from "./pages/Mala";
 import NomeBebe from "./pages/NomeBebe";
 import MusicaBebe from "./pages/MusicaBebe";
 import NotFound from "./pages/NotFound";
+import AdminAfiliadas from "./pages/AdminAfiliadas";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 
 const queryClient = new QueryClient();
