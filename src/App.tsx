@@ -19,6 +19,7 @@ import Mala from "./pages/Mala";
 import NomeBebe from "./pages/NomeBebe";
 import MusicaBebe from "./pages/MusicaBebe";
 import NotFound from "./pages/NotFound";
+import AdminAfiliadas from "./pages/AdminAfiliadas";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 
 const queryClient = new QueryClient();
@@ -74,6 +75,7 @@ const App = () => (
             <Route path="/mala" element={<ProtectedRoute><Mala /></ProtectedRoute>} />
             <Route path="/nomes" element={<ProtectedRoute><NomeBebe /></ProtectedRoute>} />
             <Route path="/musica-bebe" element={<ProtectedRoute><MusicaBebe /></ProtectedRoute>} />
+            <Route path="/admin/afiliadas" element={<ProtectedRoute><AdminAfiliadas /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
