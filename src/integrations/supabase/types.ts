@@ -14,6 +14,93 @@ export type Database = {
   }
   public: {
     Tables: {
+      afiliadas: {
+        Row: {
+          codigo_afiliada: string | null
+          created_at: string | null
+          email: string
+          id: string
+          indicada_por: string | null
+          link_kiwify: string | null
+          nome: string
+          profissao: string | null
+          status: string | null
+          whatsapp: string | null
+        }
+        Insert: {
+          codigo_afiliada?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          indicada_por?: string | null
+          link_kiwify?: string | null
+          nome: string
+          profissao?: string | null
+          status?: string | null
+          whatsapp?: string | null
+        }
+        Update: {
+          codigo_afiliada?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          indicada_por?: string | null
+          link_kiwify?: string | null
+          nome?: string
+          profissao?: string | null
+          status?: string | null
+          whatsapp?: string | null
+        }
+        Relationships: []
+      }
+      afiliadas_vendas: {
+        Row: {
+          afiliada_id: string | null
+          comissao: number | null
+          data_venda: string | null
+          email_compradora: string | null
+          id: string
+          kiwify_order_id: string | null
+          status_pagamento: string | null
+          valor_venda: number | null
+        }
+        Insert: {
+          afiliada_id?: string | null
+          comissao?: number | null
+          data_venda?: string | null
+          email_compradora?: string | null
+          id?: string
+          kiwify_order_id?: string | null
+          status_pagamento?: string | null
+          valor_venda?: number | null
+        }
+        Update: {
+          afiliada_id?: string | null
+          comissao?: number | null
+          data_venda?: string | null
+          email_compradora?: string | null
+          id?: string
+          kiwify_order_id?: string | null
+          status_pagamento?: string | null
+          valor_venda?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "afiliadas_vendas_afiliada_id_fkey"
+            columns: ["afiliada_id"]
+            isOneToOne: false
+            referencedRelation: "afiliadas"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "afiliadas_vendas_afiliada_id_fkey"
+            columns: ["afiliada_id"]
+            isOneToOne: false
+            referencedRelation: "afiliadas_performance"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cartas: {
         Row: {
           created_at: string
@@ -333,7 +420,24 @@ export type Database = {
       }
     }
     Views: {
-      [_ in never]: never
+      afiliadas_performance: {
+        Row: {
+          codigo_afiliada: string | null
+          comissao_paga: number | null
+          comissao_pendente: number | null
+          created_at: string | null
+          email: string | null
+          id: string | null
+          indicada_por: string | null
+          link_kiwify: string | null
+          nome: string | null
+          profissao: string | null
+          status: string | null
+          total_vendas: number | null
+          whatsapp: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
       [_ in never]: never
