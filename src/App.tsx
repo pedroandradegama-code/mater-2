@@ -75,6 +75,7 @@ const App = () => (
             <Route path="/mala" element={<ProtectedRoute><Mala /></ProtectedRoute>} />
             <Route path="/nomes" element={<ProtectedRoute><NomeBebe /></ProtectedRoute>} />
             <Route path="/musica-bebe" element={<ProtectedRoute><MusicaBebe /></ProtectedRoute>} />
+            <Route path="/admin/afiliadas" element={<ProtectedRoute><AdminAfiliadas /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
