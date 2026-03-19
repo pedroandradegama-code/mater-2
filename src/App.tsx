@@ -20,6 +20,7 @@ import NomeBebe from "./pages/NomeBebe";
 import MusicaBebe from "./pages/MusicaBebe";
 import NotFound from "./pages/NotFound";
 import AdminAfiliadas from "./pages/AdminAfiliadas";
+import CurvaPeso from "./pages/CurvaPeso";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 
 const queryClient = new QueryClient();
