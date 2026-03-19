@@ -349,6 +349,36 @@ export type Database = {
         }
         Relationships: []
       }
+      peso_gestacional: {
+        Row: {
+          created_at: string
+          data: string
+          id: string
+          observacao: string | null
+          peso: number
+          semana: number
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data?: string
+          id?: string
+          observacao?: string | null
+          peso: number
+          semana: number
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data?: string
+          id?: string
+          observacao?: string | null
+          peso?: number
+          semana?: number
+          user_id?: string
+        }
+        Relationships: []
+      }
       plano_parto: {
         Row: {
           created_at: string
