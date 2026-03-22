@@ -122,6 +122,20 @@ function IconHourglass({ className }: { className?: string }) {
   );
 }
 
+function IconCalendarForward({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="10" width="36" height="32" rx="6" stroke="currentColor" strokeWidth="2.5" fill="hsl(var(--primary) / 0.1)" />
+      <path d="M6 20h36" stroke="currentColor" strokeWidth="2" />
+      <circle cx="16" cy="6" r="2" fill="currentColor" />
+      <circle cx="32" cy="6" r="2" fill="currentColor" />
+      <path d="M16 4v8M32 4v8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M22 28l6 3-6 3z" fill="currentColor" opacity="0.6" />
+      <path d="M30 28v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 const calculators = [
   { id: 'idade', title: 'Idade Gestacional', desc: 'Semanas, dias e DPP', icon: IconCalendarPregnancy, featured: true },
   { id: 'meses', title: 'Semanas → Meses', desc: 'Converta semanas em meses', icon: IconMonthWheel },
