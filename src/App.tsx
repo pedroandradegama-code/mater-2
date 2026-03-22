@@ -21,6 +21,7 @@ import MusicaBebe from "./pages/MusicaBebe";
 import NotFound from "./pages/NotFound";
 import AdminAfiliadas from "./pages/AdminAfiliadas";
 import CurvaPeso from "./pages/CurvaPeso";
+import Eventos from "./pages/Eventos";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 
 const queryClient = new QueryClient();
