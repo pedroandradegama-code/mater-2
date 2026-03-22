@@ -280,6 +280,63 @@ export type Database = {
           },
         ]
       }
+      eventos: {
+        Row: {
+          created_at: string
+          data_hora: string
+          id: string
+          image_url: string | null
+          local: string
+          mensagem: string | null
+          nome_bebe: string | null
+          nome_familia: string
+          rsvp: string | null
+          status: string
+          template_id: string
+          templated_render_id: string | null
+          tipo_evento: string
+          titulo_evento: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data_hora: string
+          id?: string
+          image_url?: string | null
+          local: string
+          mensagem?: string | null
+          nome_bebe?: string | null
+          nome_familia: string
+          rsvp?: string | null
+          status?: string
+          template_id: string
+          templated_render_id?: string | null
+          tipo_evento: string
+          titulo_evento: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data_hora?: string
+          id?: string
+          image_url?: string | null
+          local?: string
+          mensagem?: string | null
+          nome_bebe?: string | null
+          nome_familia?: string
+          rsvp?: string | null
+          status?: string
+          template_id?: string
+          templated_render_id?: string | null
+          tipo_evento?: string
+          titulo_evento?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       musica_bebe: {
         Row: {
           audio_url: string | null
