@@ -147,6 +147,7 @@ const calculators = [
   { id: 'ultrassom', title: 'Melhor 3D/4D', desc: 'Momento ideal do ultrassom', icon: IconUltrasound },
   { id: 'contracoes', title: 'Contrações', desc: 'Registre duração e intervalo', icon: IconPulse },
   { id: 'contagem', title: 'Contagem Regressiva', desc: 'Quanto falta pro grande dia', icon: IconHourglass },
+  { id: 'datafutura', title: 'Data → Semanas', desc: 'Idade gestacional em uma data', icon: IconCalendarForward },
 ];
 
 export default function Calculadoras() {
