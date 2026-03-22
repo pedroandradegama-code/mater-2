@@ -218,6 +218,7 @@ function CalculatorView({ id, profile, gemelar }: { id: string; profile: any; ge
     case 'ultrassom': return <Ultrassom dum={dum} />;
     case 'contracoes': return <Contracoes />;
     case 'contagem': return <ContagemRegressiva dum={dum} gemelar={gemelar} />;
+    case 'datafutura': return <DataFuturaSemanas dum={dum} />;
     default: return null;
   }
 }
