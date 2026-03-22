@@ -21,6 +21,7 @@ import MusicaBebe from "./pages/MusicaBebe";
 import NotFound from "./pages/NotFound";
 import AdminAfiliadas from "./pages/AdminAfiliadas";
 import CurvaPeso from "./pages/CurvaPeso";
+import Eventos from "./pages/Eventos";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 
 const queryClient = new QueryClient();
@@ -77,6 +78,7 @@ const App = () => (
             <Route path="/nomes" element={<ProtectedRoute><NomeBebe /></ProtectedRoute>} />
             <Route path="/musica-bebe" element={<ProtectedRoute><MusicaBebe /></ProtectedRoute>} />
             <Route path="/curva-peso" element={<ProtectedRoute><CurvaPeso /></ProtectedRoute>} />
+            <Route path="/eventos" element={<ProtectedRoute><Eventos /></ProtectedRoute>} />
             <Route path="/admin/afiliadas" element={<ProtectedRoute><AdminAfiliadas /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>

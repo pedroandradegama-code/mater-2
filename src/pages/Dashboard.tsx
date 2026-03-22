@@ -79,6 +79,7 @@ export default function Dashboard() {
     { icon: AgendaIcon, label: 'Agenda', path: '/agenda' },
     { icon: DiarioIcon, label: 'Diário', path: '/diario' },
     { icon: BalancaIcon, label: 'Curva de Peso', path: '/curva-peso' },
+    { icon: AgendaIcon, label: 'Eventos & Convites', path: '/eventos' },
     { icon: FAQIcon, label: 'FAQ', path: '/faq' },
     { icon: MalaIcon, label: 'Mala da Maternidade', path: '/mala' },
     { icon: NomesIcon, label: 'Nomes do Bebê', path: '/nomes' },

@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.elevenlabs-music-generator]
 verify_jwt = false
+
+[functions.templated-render]
+verify_jwt = false
