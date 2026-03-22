@@ -631,6 +631,44 @@ function ContagemRegressiva({ dum, gemelar }: { dum?: Date; gemelar: boolean }) 
   );
 }
 
+function DataFuturaSemanas({ dum }: { dum?: Date }) {
+  const [targetDate, setTargetDate] = useState<Date | undefined>();
+
+  if (!dum) return <p className="text-muted-foreground text-center">DUM não informada no perfil</p>;
+
+  const calcResult = targetDate ? (() => {
+    const diffMs = targetDate.getTime() - dum.getTime();
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const weeks = Math.floor(diffDays / 7);
+    const days = diffDays % 7;
+    const trimester = weeks < 13 ? 1 : weeks < 27 ? 2 : 3;
+    return { weeks, days, trimester, diffDays };
+  })() : null;
+
+  return (
+    <div className="space-y-4 animate-fade-in">
+      <h2 className="font-display text-2xl font-semibold">Data → Semanas</h2>
+      <p className="text-sm text-muted-foreground">Selecione uma data para saber a idade gestacional naquele momento</p>
+      <DatePickerButton value={targetDate} onChange={setTargetDate} label="Selecione a data" />
+      {calcResult && (
+        <div className="glass-card p-5 space-y-3">
+          {calcResult.diffDays < 0 ? (
+            <p className="text-sm text-muted-foreground text-center">A data selecionada é anterior à DUM</p>
+          ) : calcResult.weeks > 42 ? (
+            <p className="text-sm text-muted-foreground text-center">A data ultrapassa 42 semanas de gestação</p>
+          ) : (
+            <>
+              <ResultRow label="Idade gestacional" value={`${calcResult.weeks} semanas e ${calcResult.days} dias`} />
+              <ResultRow label="Trimestre" value={`${calcResult.trimester}º trimestre`} />
+              <ResultRow label="Data selecionada" value={format(targetDate!, "dd/MM/yyyy")} />
+            </>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ResultRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between items-center py-1">
