@@ -122,6 +122,20 @@ function IconHourglass({ className }: { className?: string }) {
   );
 }
 
+function IconCalendarForward({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="10" width="36" height="32" rx="6" stroke="currentColor" strokeWidth="2.5" fill="hsl(var(--primary) / 0.1)" />
+      <path d="M6 20h36" stroke="currentColor" strokeWidth="2" />
+      <circle cx="16" cy="6" r="2" fill="currentColor" />
+      <circle cx="32" cy="6" r="2" fill="currentColor" />
+      <path d="M16 4v8M32 4v8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+      <path d="M22 28l6 3-6 3z" fill="currentColor" opacity="0.6" />
+      <path d="M30 28v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 const calculators = [
   { id: 'idade', title: 'Idade Gestacional', desc: 'Semanas, dias e DPP', icon: IconCalendarPregnancy, featured: true },
   { id: 'meses', title: 'Semanas → Meses', desc: 'Converta semanas em meses', icon: IconMonthWheel },
@@ -133,6 +147,7 @@ const calculators = [
   { id: 'ultrassom', title: 'Melhor 3D/4D', desc: 'Momento ideal do ultrassom', icon: IconUltrasound },
   { id: 'contracoes', title: 'Contrações', desc: 'Registre duração e intervalo', icon: IconPulse },
   { id: 'contagem', title: 'Contagem Regressiva', desc: 'Quanto falta pro grande dia', icon: IconHourglass },
+  { id: 'datafutura', title: 'Data → Semanas', desc: 'Idade gestacional em uma data', icon: IconCalendarForward },
 ];
 
 export default function Calculadoras() {
@@ -203,6 +218,7 @@ function CalculatorView({ id, profile, gemelar }: { id: string; profile: any; ge
     case 'ultrassom': return <Ultrassom dum={dum} />;
     case 'contracoes': return <Contracoes />;
     case 'contagem': return <ContagemRegressiva dum={dum} gemelar={gemelar} />;
+    case 'datafutura': return <DataFuturaSemanas dum={dum} />;
     default: return null;
   }
 }
@@ -611,6 +627,44 @@ function ContagemRegressiva({ dum, gemelar }: { dum?: Date; gemelar: boolean }) 
           ))}
         </div>
       </div>
+    </div>
+  );
+}
+
+function DataFuturaSemanas({ dum }: { dum?: Date }) {
+  const [targetDate, setTargetDate] = useState<Date | undefined>();
+
+  if (!dum) return <p className="text-muted-foreground text-center">DUM não informada no perfil</p>;
+
+  const calcResult = targetDate ? (() => {
+    const diffMs = targetDate.getTime() - dum.getTime();
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    const weeks = Math.floor(diffDays / 7);
+    const days = diffDays % 7;
+    const trimester = weeks < 13 ? 1 : weeks < 27 ? 2 : 3;
+    return { weeks, days, trimester, diffDays };
+  })() : null;
+
+  return (
+    <div className="space-y-4 animate-fade-in">
+      <h2 className="font-display text-2xl font-semibold">Data → Semanas</h2>
+      <p className="text-sm text-muted-foreground">Selecione uma data para saber a idade gestacional naquele momento</p>
+      <DatePickerButton value={targetDate} onChange={setTargetDate} label="Selecione a data" />
+      {calcResult && (
+        <div className="glass-card p-5 space-y-3">
+          {calcResult.diffDays < 0 ? (
+            <p className="text-sm text-muted-foreground text-center">A data selecionada é anterior à DUM</p>
+          ) : calcResult.weeks > 42 ? (
+            <p className="text-sm text-muted-foreground text-center">A data ultrapassa 42 semanas de gestação</p>
+          ) : (
+            <>
+              <ResultRow label="Idade gestacional" value={`${calcResult.weeks} semanas e ${calcResult.days} dias`} />
+              <ResultRow label="Trimestre" value={`${calcResult.trimester}º trimestre`} />
+              <ResultRow label="Data selecionada" value={format(targetDate!, "dd/MM/yyyy")} />
+            </>
+          )}
+        </div>
+      )}
     </div>
   );
 }
