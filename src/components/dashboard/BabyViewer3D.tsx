@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 
 // Escala do bebê por semana gestacional (semana 4 a 40)
-// Modelo é term (38s), então escala 1.0 = semana 38+
 function getBabyScale(week: number): number {
   if (week <= 6)  return 0.08;
   if (week <= 8)  return 0.12;
@@ -30,46 +29,54 @@ interface BabyViewer3DProps {
 }
 
 export function BabyViewer3D({ week, sex, className = 'w-[110px] h-[110px]' }: BabyViewer3DProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const scale = getBabyScale(week);
 
-  // Cor de iluminação baseada no sexo (igual ao tema dinâmico do app)
   const lightColor = sex === 'menina'
-    ? '#f9a8d4'   // rose
+    ? '#f9a8d4'
     : sex === 'menino'
-    ? '#93c5fd'   // blue
-    : '#c4b5fd';  // purple (surpresa)
+    ? '#93c5fd'
+    : '#c4b5fd';
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Remove existing model-viewer if any
+    const existing = container.querySelector('model-viewer');
+    if (existing) existing.remove();
+
+    const mv = document.createElement('model-viewer') as any;
+    mv.setAttribute('src', '/models/baby.glb');
+    mv.setAttribute('alt', `Bebê na semana ${week}`);
+    mv.setAttribute('auto-rotate', '');
+    mv.setAttribute('auto-rotate-delay', '0');
+    mv.setAttribute('rotation-per-second', '20deg');
+    mv.setAttribute('interaction-prompt', 'none');
+    mv.setAttribute('shadow-intensity', '0.4');
+    mv.setAttribute('exposure', '0.85');
+    mv.setAttribute('scale', `${scale} ${scale} ${scale}`);
+    mv.setAttribute('camera-orbit', '0deg 75deg 2m');
+    mv.setAttribute('environment-image', 'neutral');
+    mv.style.width = '100%';
+    mv.style.height = '100%';
+    mv.style.background = 'transparent';
+    mv.style.setProperty('--progress-bar-color', 'transparent');
+    mv.style.setProperty('--progress-mask', 'transparent');
+
+    const style = document.createElement('style');
+    style.textContent = `model-viewer::part(default-progress-bar) { display: none; }`;
+    mv.appendChild(style);
+
+    container.insertBefore(mv, container.firstChild);
+
+    return () => {
+      mv.remove();
+    };
+  }, [week, scale]);
 
   return (
-    <div className={`${className} relative`} style={{ borderRadius: '50%', overflow: 'hidden' }}>
-      {/* @ts-ignore — model-viewer é web component, TypeScript não conhece */}
-      <model-viewer
-        src="/models/baby.glb"
-        alt={`Bebê na semana ${week}`}
-        auto-rotate
-        auto-rotate-delay="0"
-        rotation-per-second="20deg"
-        camera-controls={false}
-        interaction-prompt="none"
-        shadow-intensity="0.4"
-        exposure="0.85"
-        scale={`${scale} ${scale} ${scale}`}
-        camera-orbit="0deg 75deg 2m"
-        style={{
-          width: '100%',
-          height: '100%',
-          background: 'transparent',
-          '--progress-bar-color': 'transparent',
-          '--progress-mask': 'transparent',
-        } as React.CSSProperties}
-        environment-image="neutral"
-      >
-        {/* Iluminação suave baseada no sexo */}
-        <style>{`
-          model-viewer::part(default-progress-bar) { display: none; }
-        `}</style>
-      </model-viewer>
-
-      {/* Overlay de glow sutil baseado no sexo */}
+    <div ref={containerRef} className={`${className} relative`} style={{ borderRadius: '50%', overflow: 'hidden' }}>
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
