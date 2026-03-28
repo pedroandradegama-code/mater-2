@@ -2,23 +2,23 @@ import { useEffect, useRef } from 'react';
 
 // Escala do bebê por semana gestacional (semana 4 a 40)
 function getBabyScale(week: number): number {
-  if (week <= 6)  return 0.08;
-  if (week <= 8)  return 0.12;
-  if (week <= 10) return 0.18;
-  if (week <= 12) return 0.25;
-  if (week <= 14) return 0.32;
-  if (week <= 16) return 0.40;
-  if (week <= 18) return 0.48;
-  if (week <= 20) return 0.55;
-  if (week <= 22) return 0.62;
-  if (week <= 24) return 0.68;
-  if (week <= 26) return 0.74;
-  if (week <= 28) return 0.79;
-  if (week <= 30) return 0.83;
-  if (week <= 32) return 0.87;
-  if (week <= 34) return 0.91;
-  if (week <= 36) return 0.95;
-  if (week <= 38) return 0.98;
+  if (week <= 6)  return 0.02;
+  if (week <= 8)  return 0.04;
+  if (week <= 10) return 0.07;
+  if (week <= 12) return 0.12;
+  if (week <= 14) return 0.18;
+  if (week <= 16) return 0.25;
+  if (week <= 18) return 0.33;
+  if (week <= 20) return 0.40;
+  if (week <= 22) return 0.48;
+  if (week <= 24) return 0.55;
+  if (week <= 26) return 0.62;
+  if (week <= 28) return 0.69;
+  if (week <= 30) return 0.75;
+  if (week <= 32) return 0.82;
+  if (week <= 34) return 0.88;
+  if (week <= 36) return 0.93;
+  if (week <= 38) return 0.97;
   return 1.0;
 }
 
@@ -56,7 +56,14 @@ export function BabyViewer3D({ week, sex, className = 'w-[110px] h-[110px]' }: B
     mv.setAttribute('shadow-intensity', '0.4');
     mv.setAttribute('exposure', '0.85');
     mv.setAttribute('scale', `${scale} ${scale} ${scale}`);
-    mv.setAttribute('camera-orbit', '0deg 75deg 2m');
+    mv.setAttribute('camera-orbit', '0deg 75deg 1.2m');
+    mv.setAttribute('min-camera-orbit', 'auto auto 1.2m');
+    mv.setAttribute('max-camera-orbit', 'auto auto 1.2m');
+    mv.setAttribute('camera-target', '0m 0m 0m');
+    mv.setAttribute('field-of-view', '30deg');
+    mv.setAttribute('min-field-of-view', '30deg');
+    mv.setAttribute('max-field-of-view', '30deg');
+    mv.setAttribute('disable-zoom', '');
     mv.setAttribute('environment-image', 'neutral');
     mv.style.width = '100%';
     mv.style.height = '100%';
