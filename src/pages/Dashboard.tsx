@@ -156,6 +156,7 @@ const toolGroups: ToolGroup[] = [
       { icon: AgendaIcon,      label: 'Agenda & consultas',  path: '/agenda',      paid: true },
       { icon: ExamesIcon,      label: 'Meus Exames',         path: '/meus-exames', paid: true },
       { icon: EventosIcon,     label: 'Eventos & Convites',  path: '/eventos',     paid: true },
+      { icon: MusicaIcon,      label: 'Playlists por Mood',  path: '/playlists' },
       { icon: PlanoPartoIcon,  label: 'Plano de Parto',      path: '/plano-parto', paid: true },
       { icon: MalaIcon,        label: 'Mala da Maternidade', path: '/mala',        paid: true },
       { icon: NomesIcon,       label: 'Nomes do Bebê',       path: '/nomes',       paid: true },
