@@ -22,7 +22,12 @@ import NotFound from "./pages/NotFound";
 import AdminAfiliadas from "./pages/AdminAfiliadas";
 import CurvaPeso from "./pages/CurvaPeso";
 import Eventos from "./pages/Eventos";
+import Explorar from "./pages/Explorar";
+import MeusExames from "./pages/MeusExames";
+import JornadaSaude from "./pages/JornadaSaude";
+import PassaporteMamae from "./pages/PassaporteMamae";
 import PWAInstallBanner from "./components/PWAInstallBanner";
+import logoSrc from "@/assets/LogoMater01.png";
 
 const queryClient = new QueryClient();
 
@@ -34,7 +39,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     return (
       <div className="gradient-mesh-bg min-h-screen flex items-center justify-center">
         <div className="text-center animate-fade-in">
-          <h1 className="font-display text-4xl font-semibold mb-2">Mater</h1>
+          <img src={logoSrc} alt="Mater" className="h-12 mx-auto mb-2" />
           <p className="text-muted-foreground text-sm">Carregando...</p>
         </div>
       </div>
@@ -68,6 +73,7 @@ const App = () => (
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/calculadoras" element={<ProtectedRoute><Calculadoras /></ProtectedRoute>} />
+            <Route path="/explorar" element={<ProtectedRoute><Explorar /></ProtectedRoute>} />
             <Route path="/gestacao" element={<ProtectedRoute><Gestacao /></ProtectedRoute>} />
             <Route path="/plano-parto" element={<ProtectedRoute><PlanoParto /></ProtectedRoute>} />
             <Route path="/agenda" element={<ProtectedRoute><Agenda /></ProtectedRoute>} />
@@ -79,6 +85,9 @@ const App = () => (
             <Route path="/musica-bebe" element={<ProtectedRoute><MusicaBebe /></ProtectedRoute>} />
             <Route path="/curva-peso" element={<ProtectedRoute><CurvaPeso /></ProtectedRoute>} />
             <Route path="/eventos" element={<ProtectedRoute><Eventos /></ProtectedRoute>} />
+            <Route path="/meus-exames" element={<ProtectedRoute><MeusExames /></ProtectedRoute>} />
+            <Route path="/jornada-saude" element={<ProtectedRoute><JornadaSaude /></ProtectedRoute>} />
+            <Route path="/passaporte" element={<ProtectedRoute><PassaporteMamae /></ProtectedRoute>} />
             <Route path="/admin/afiliadas" element={<ProtectedRoute><AdminAfiliadas /></ProtectedRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
