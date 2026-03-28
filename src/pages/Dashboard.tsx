@@ -263,6 +263,9 @@ export default function Dashboard() {
                     <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${info.progress}%` }} />
                   </div>
                   <p className="text-[11px] text-muted-foreground mt-1">{Math.round(info.progress)}% concluída</p>
+                  <p className="text-[9px] text-muted-foreground/40 mt-1">
+                    Modelo 3D: <a href="https://sketchfab.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-1">Sketchfab</a> · CC BY 4.0
+                  </p>
                 </div>
                 <div className="text-sm text-muted-foreground">
                   <div className="flex items-center gap-1.5">
