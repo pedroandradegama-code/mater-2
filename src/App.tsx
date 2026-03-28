@@ -26,6 +26,7 @@ import Explorar from "./pages/Explorar";
 import MeusExames from "./pages/MeusExames";
 import JornadaSaude from "./pages/JornadaSaude";
 import PassaporteMamae from "./pages/PassaporteMamae";
+import Playlists from "./pages/Playlists";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 import logoSrc from "@/assets/LogoMater01.png";
 
@@ -85,6 +86,7 @@ const App = () => (
             <Route path="/musica-bebe" element={<ProtectedRoute><MusicaBebe /></ProtectedRoute>} />
             <Route path="/curva-peso" element={<ProtectedRoute><CurvaPeso /></ProtectedRoute>} />
             <Route path="/eventos" element={<ProtectedRoute><Eventos /></ProtectedRoute>} />
+            <Route path="/playlists" element={<ProtectedRoute><Playlists /></ProtectedRoute>} />
             <Route path="/meus-exames" element={<ProtectedRoute><MeusExames /></ProtectedRoute>} />
             <Route path="/jornada-saude" element={<ProtectedRoute><JornadaSaude /></ProtectedRoute>} />
             <Route path="/passaporte" element={<ProtectedRoute><PassaporteMamae /></ProtectedRoute>} />
