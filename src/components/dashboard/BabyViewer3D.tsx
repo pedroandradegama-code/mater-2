@@ -56,7 +56,14 @@ export function BabyViewer3D({ week, sex, className = 'w-[110px] h-[110px]' }: B
     mv.setAttribute('shadow-intensity', '0.4');
     mv.setAttribute('exposure', '0.85');
     mv.setAttribute('scale', `${scale} ${scale} ${scale}`);
-    mv.setAttribute('camera-orbit', '0deg 75deg 2m');
+    mv.setAttribute('camera-orbit', '0deg 75deg 1.2m');
+    mv.setAttribute('min-camera-orbit', 'auto auto 1.2m');
+    mv.setAttribute('max-camera-orbit', 'auto auto 1.2m');
+    mv.setAttribute('camera-target', '0m 0m 0m');
+    mv.setAttribute('field-of-view', '30deg');
+    mv.setAttribute('min-field-of-view', '30deg');
+    mv.setAttribute('max-field-of-view', '30deg');
+    mv.setAttribute('disable-zoom', '');
     mv.setAttribute('environment-image', 'neutral');
     mv.style.width = '100%';
     mv.style.height = '100%';
