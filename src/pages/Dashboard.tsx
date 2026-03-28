@@ -9,6 +9,7 @@ import BottomNav from '@/components/BottomNav';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import EnqueteSemanal from '@/components/dashboard/EnqueteSemanal';
+import { BabyViewer3D } from '@/components/dashboard/BabyViewer3D';
 import {
   FetusIllustration,
   CalculadoraIcon,
@@ -271,7 +272,13 @@ export default function Dashboard() {
                   <p className="text-[10px] text-muted-foreground/70 ml-5.5">(Data Provável do Parto)</p>
                 </div>
               </div>
-              <div className="animate-float ml-2"><FetusIllustration /></div>
+              <div className="ml-2" style={{ filter: 'drop-shadow(0 4px 16px hsl(var(--primary) / 0.25))' }}>
+                <BabyViewer3D
+                  week={weeksDisplay}
+                  sex={profile?.sexo_bebe as 'menina' | 'menino' | 'surpresa' | null}
+                  className="w-[110px] h-[110px]"
+                />
+              </div>
             </div>
           </div>
         ) : (
