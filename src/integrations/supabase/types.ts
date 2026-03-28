@@ -337,6 +337,81 @@ export type Database = {
         }
         Relationships: []
       }
+      eventos_assistenciais_agendados: {
+        Row: {
+          created_at: string
+          data_agendada: string | null
+          id: string
+          nome: string
+          realizado: boolean
+          semana_prevista: number | null
+          tipo: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          data_agendada?: string | null
+          id?: string
+          nome: string
+          realizado?: boolean
+          semana_prevista?: number | null
+          tipo?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          data_agendada?: string | null
+          id?: string
+          nome?: string
+          realizado?: boolean
+          semana_prevista?: number | null
+          tipo?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      exames: {
+        Row: {
+          arquivo_nome: string | null
+          arquivo_tipo: string | null
+          arquivo_url: string | null
+          categoria: string
+          created_at: string
+          data_coleta: string | null
+          id: string
+          nome_exame: string
+          observacoes: string | null
+          semana_gestacional: number | null
+          user_id: string
+        }
+        Insert: {
+          arquivo_nome?: string | null
+          arquivo_tipo?: string | null
+          arquivo_url?: string | null
+          categoria?: string
+          created_at?: string
+          data_coleta?: string | null
+          id?: string
+          nome_exame: string
+          observacoes?: string | null
+          semana_gestacional?: number | null
+          user_id: string
+        }
+        Update: {
+          arquivo_nome?: string | null
+          arquivo_tipo?: string | null
+          arquivo_url?: string | null
+          categoria?: string
+          created_at?: string
+          data_coleta?: string | null
+          id?: string
+          nome_exame?: string
+          observacoes?: string | null
+          semana_gestacional?: number | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       musica_bebe: {
         Row: {
           audio_url: string | null
@@ -406,6 +481,33 @@ export type Database = {
         }
         Relationships: []
       }
+      passaporte: {
+        Row: {
+          card_url: string | null
+          created_at: string
+          frase_gerada: string | null
+          id: string
+          respostas: Json
+          user_id: string
+        }
+        Insert: {
+          card_url?: string | null
+          created_at?: string
+          frase_gerada?: string | null
+          id?: string
+          respostas?: Json
+          user_id: string
+        }
+        Update: {
+          card_url?: string | null
+          created_at?: string
+          frase_gerada?: string | null
+          id?: string
+          respostas?: Json
+          user_id?: string
+        }
+        Relationships: []
+      }
       peso_gestacional: {
         Row: {
           created_at: string
@@ -465,7 +567,9 @@ export type Database = {
       }
       profiles: {
         Row: {
+          avatar_url: string | null
           created_at: string
+          date_reference: string | null
           dum: string | null
           email: string | null
           id: string
@@ -473,12 +577,16 @@ export type Database = {
           nome_bebe: string | null
           onboarding_completed: boolean
           plano: string
+          primeira_gestacao: boolean | null
           sexo_bebe: string | null
           updated_at: string
           user_id: string
+          usg_1t_date: string | null
         }
         Insert: {
+          avatar_url?: string | null
           created_at?: string
+          date_reference?: string | null
           dum?: string | null
           email?: string | null
           id?: string
@@ -486,12 +594,16 @@ export type Database = {
           nome_bebe?: string | null
           onboarding_completed?: boolean
           plano?: string
+          primeira_gestacao?: boolean | null
           sexo_bebe?: string | null
           updated_at?: string
           user_id: string
+          usg_1t_date?: string | null
         }
         Update: {
+          avatar_url?: string | null
           created_at?: string
+          date_reference?: string | null
           dum?: string | null
           email?: string | null
           id?: string
@@ -499,9 +611,11 @@ export type Database = {
           nome_bebe?: string | null
           onboarding_completed?: boolean
           plano?: string
+          primeira_gestacao?: boolean | null
           sexo_bebe?: string | null
           updated_at?: string
           user_id?: string
+          usg_1t_date?: string | null
         }
         Relationships: []
       }
