@@ -3,6 +3,7 @@ import {
   HomeIcon,
   UserIcon,
 } from '@/components/dashboard/DashboardIcons';
+import CentralIA from '@/components/CentralIA';
 
 function ExplorarIcon({ active }: { active?: boolean }) {
   return (
@@ -22,16 +23,6 @@ function MeuEspacoIcon({ active }: { active?: boolean }) {
   );
 }
 
-function MusicaNavIcon() {
-  return (
-    <svg className="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-      <path d="M9 18V5l12-2v13" />
-      <circle cx="6" cy="18" r="3" fill="currentColor" fillOpacity={0.15} />
-      <circle cx="18" cy="16" r="3" fill="currentColor" fillOpacity={0.15} />
-    </svg>
-  );
-}
-
 const EXPLORAR_PATHS = ['/explorar', '/calculadoras', '/gestacao', '/faq', '/curva-peso', '/jornada-saude'];
 const MEU_ESPACO_PATHS = ['/diario', '/agenda', '/mala', '/plano-parto', '/nomes', '/eventos', '/meus-exames', '/passaporte'];
 
@@ -42,7 +33,6 @@ export default function BottomNav() {
 
   const isHome     = path === '/dashboard';
   const isExplorar = EXPLORAR_PATHS.includes(path);
-  const isMusica   = path === '/musica-bebe';
   const isMeuEspaco = MEU_ESPACO_PATHS.includes(path);
   const isPerfil   = path === '/perfil';
 
@@ -70,22 +60,8 @@ export default function BottomNav() {
           <span className={`text-[10px] ${isExplorar ? 'font-semibold' : 'font-medium'}`}>Explorar</span>
         </button>
 
-        <button
-          onClick={() => navigate('/musica-bebe')}
-          className="flex flex-col items-center gap-1 -mt-5 transition-all"
-        >
-          <div
-            className={`w-14 h-14 rounded-full flex items-center justify-center shadow-lg transition-all text-primary-foreground ${
-              isMusica ? 'bg-primary scale-105' : 'bg-primary'
-            }`}
-            style={{ boxShadow: `0 4px 18px hsl(var(--primary) / 0.45)` }}
-          >
-            <MusicaNavIcon />
-          </div>
-          <span className={`text-[10px] font-medium mt-0.5 ${isMusica ? 'text-primary font-semibold' : 'text-muted-foreground'}`}>
-            Música
-          </span>
-        </button>
+        {/* Central AI Assistant Button */}
+        <CentralIA />
 
         <button
           onClick={() => navigate('/diario')}
