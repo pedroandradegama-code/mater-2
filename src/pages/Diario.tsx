@@ -14,6 +14,7 @@ import { ptBR } from 'date-fns/locale';
 import { toast } from 'sonner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { calculatePregnancyInfo, parseLocalDate } from '@/lib/pregnancy-data';
+import { compressImageForUpload, getUploadContentType, sanitizeUploadFileName } from '@/lib/file-upload';
 
 const moods = [
   { emoji: '😊', label: 'Feliz' },
@@ -23,23 +24,6 @@ const moods = [
   { emoji: '✨', label: 'Radiante' },
   { emoji: '😢', label: 'Emotiva' },
 ];
-
-function compressImage(file: File, maxWidth = 1200, quality = 0.8): Promise<Blob> {
-  return new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      const ratio = Math.min(maxWidth / img.width, 1);
-      canvas.width = img.width * ratio;
-      canvas.height = img.height * ratio;
-      const ctx = canvas.getContext('2d')!;
-      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      canvas.toBlob(blob => blob ? resolve(blob) : reject(new Error('Compression failed')), 'image/jpeg', quality);
-    };
-    img.onerror = reject;
-    img.src = URL.createObjectURL(file);
-  });
-}
 
 export default function Diario() {
   const { profile } = useProfile();
@@ -64,7 +48,7 @@ export default function Diario() {
   const { data: entries = [] } = useQuery({
     queryKey: ['diario', user?.id],
     queryFn: async () => {
-      const { data } = await supabase.from('diario').select('*').eq('user_id', user!.id).order('created_at', { ascending: false });
+      const { data } = await (supabase as any).from('diario').select('*').eq('user_id', user!.id).order('created_at', { ascending: false });
       return data || [];
     },
     enabled: !!user,
@@ -73,7 +57,7 @@ export default function Diario() {
   const { data: cartas = [] } = useQuery({
     queryKey: ['cartas', user?.id],
     queryFn: async () => {
-      const { data } = await supabase.from('cartas').select('*').eq('user_id', user!.id).order('created_at', { ascending: false });
+      const { data } = await (supabase as any).from('cartas').select('*').eq('user_id', user!.id).order('created_at', { ascending: false });
       return data || [];
     },
     enabled: !!user,
@@ -97,9 +81,9 @@ export default function Diario() {
   const uploadPhotos = async (entryId: string): Promise<string[]> => {
     const urls: string[] = [];
     for (const file of selectedPhotos) {
-      const compressed = await compressImage(file);
-      const path = `${user!.id}/${entryId}/${Date.now()}_${file.name}`;
-      const { error } = await supabase.storage.from('diario-fotos').upload(path, compressed, { contentType: 'image/jpeg' });
+      const { file: preparedFile, contentType } = await compressImageForUpload(file, 1200, 0.8);
+      const path = `${user!.id}/${entryId}/${Date.now()}_${sanitizeUploadFileName(file.name)}`;
+      const { error } = await supabase.storage.from('diario-fotos').upload(path, preparedFile, { contentType: contentType || getUploadContentType(file) });
       if (error) throw error;
       const { data: urlData } = supabase.storage.from('diario-fotos').getPublicUrl(path);
       urls.push(urlData.publicUrl);
@@ -110,7 +94,7 @@ export default function Diario() {
   const addEntry = useMutation({
     mutationFn: async () => {
       setUploading(true);
-      const { data: inserted, error } = await supabase.from('diario').insert({
+      const { data: inserted, error } = await (supabase as any).from('diario').insert({
         user_id: user!.id,
         semana: currentWeek,
         humor,
@@ -120,7 +104,7 @@ export default function Diario() {
 
       if (selectedPhotos.length > 0 && inserted) {
         const photoUrls = await uploadPhotos(inserted.id);
-        await supabase.from('diario').update({ fotos: photoUrls } as any).eq('id', inserted.id);
+        await (supabase as any).from('diario').update({ fotos: photoUrls } as any).eq('id', inserted.id);
       }
     },
     onSuccess: () => {
@@ -133,14 +117,15 @@ export default function Diario() {
       setUploading(false);
       toast.success('Entrada salva! 💕');
     },
-    onError: () => {
+    onError: (error: any) => {
       setUploading(false);
+      toast.error(error?.message || 'Erro ao salvar entrada');
     },
   });
 
   const addCarta = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from('cartas').insert({
+      const { error } = await (supabase as any).from('cartas').insert({
         user_id: user!.id,
         semana: currentWeek,
         texto: cartaTexto,

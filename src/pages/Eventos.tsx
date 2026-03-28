@@ -85,13 +85,13 @@ export default function Eventos() {
   const { data: eventos = [], isLoading } = useQuery<EventoRecord[]>({
     queryKey: ['eventos', user?.id],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('eventos')
         .select('*')
         .eq('user_id', user!.id)
         .order('created_at', { ascending: false });
       if (error) throw error;
-      return (data || []) as unknown as EventoRecord[];
+      return data || [];
     },
     enabled: !!user,
     refetchInterval: (query) => {
@@ -175,7 +175,7 @@ function EventoCard({ evento, onDelete }: { evento: EventoRecord; onDelete: () =
 
   const deleteEvento = useMutation({
     mutationFn: async () => {
-      const { error } = await supabase.from('eventos').delete().eq('id', evento.id);
+      const { error } = await (supabase as any).from('eventos').delete().eq('id', evento.id);
       if (error) throw error;
     },
     onSuccess: () => { onDelete(); toast.success('Evento removido.'); },
@@ -186,7 +186,7 @@ function EventoCard({ evento, onDelete }: { evento: EventoRecord; onDelete: () =
     if (navigator.share) {
       try {
         await navigator.share({ title: evento.titulo_evento, text: `${evento.titulo_evento} — ${evento.data_hora}`, url: evento.image_url });
-      } catch { /* cancelled */ }
+      } catch { /* cancelou */ }
     } else {
       await navigator.clipboard.writeText(evento.image_url);
       toast.success('Link copiado!');
@@ -287,7 +287,7 @@ function CreateView({ profile, onBack, onSuccess }: { profile: any; onBack: () =
 
   const gerar = useMutation({
     mutationFn: async () => {
-      const { data: evt, error: insertErr } = await supabase
+      const { data: evt, error: insertErr } = await (supabase as any)
         .from('eventos')
         .insert({
           user_id: user!.id,
@@ -301,7 +301,7 @@ function CreateView({ profile, onBack, onSuccess }: { profile: any; onBack: () =
           rsvp: form.rsvp || null,
           nome_bebe: form.nome_bebe || null,
           status: 'pending',
-        } as any)
+        })
         .select()
         .single();
       if (insertErr || !evt) throw new Error('Erro ao criar evento');

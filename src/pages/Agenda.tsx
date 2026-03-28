@@ -35,7 +35,7 @@ export default function Agenda() {
   const { data: consultas = [] } = useQuery({
     queryKey: ['consultas', user?.id],
     queryFn: async () => {
-      const { data } = await supabase.from('consultas').select('*').eq('user_id', user!.id).order('data', { ascending: true });
+      const { data } = await (supabase as any).from('consultas').select('*').eq('user_id', user!.id).order('data', { ascending: true });
       return data || [];
     },
     enabled: !!user,
@@ -46,7 +46,7 @@ export default function Agenda() {
       if (!formDate) throw new Error('Data obrigatória');
       const dateStr = format(formDate, 'yyyy-MM-dd');
       const dateTime = new Date(`${dateStr}T${hora}:${minuto}:00`).toISOString();
-      const { error } = await supabase.from('consultas').insert({
+      const { error } = await (supabase as any).from('consultas').insert({
         user_id: user!.id,
         data: dateTime,
         tipo: form.tipo,

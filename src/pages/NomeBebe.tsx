@@ -5,10 +5,10 @@ import { supabase } from '@/integrations/supabase/client';
 import BottomNav from '@/components/BottomNav';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Heart, Search, Share2, Loader2 } from 'lucide-react';
+import { Heart, Search, Share2, Loader2, ChevronDown, ChevronUp } from 'lucide-react';
 import { toast } from 'sonner';
+import { Switch } from '@/components/ui/switch';
 
 const estiloOptions = [
   'Clássico e atemporal',
@@ -53,6 +53,7 @@ export default function NomeBebe() {
   const [sobrenome, setSobrenome] = useState('');
   const [suggestions, setSuggestions] = useState<NameSuggestion[]>([]);
   const [suggestLoading, setSuggestLoading] = useState(false);
+  const [showExtras, setShowExtras] = useState(false);
 
   // Search state
   const [nomeConsulta, setNomeConsulta] = useState('');
@@ -62,7 +63,7 @@ export default function NomeBebe() {
   const { data: favoritos = [] } = useQuery({
     queryKey: ['nome-favoritos', user?.id],
     queryFn: async () => {
-      const { data } = await supabase.from('nome_favoritos').select('*').eq('user_id', user!.id).order('created_at', { ascending: false });
+      const { data } = await (supabase as any).from('nome_favoritos').select('*').eq('user_id', user!.id).order('created_at', { ascending: false });
       return data || [];
     },
     enabled: !!user,
@@ -70,7 +71,7 @@ export default function NomeBebe() {
 
   const addFavorito = useMutation({
     mutationFn: async (name: { nome: string; origem: string; significado: string }) => {
-      const { error } = await supabase.from('nome_favoritos').insert({ user_id: user!.id, ...name });
+      const { error } = await (supabase as any).from('nome_favoritos').insert({ user_id: user!.id, ...name });
       if (error) throw error;
     },
     onSuccess: () => {
@@ -81,7 +82,7 @@ export default function NomeBebe() {
 
   const removeFavorito = useMutation({
     mutationFn: async (id: string) => {
-      await supabase.from('nome_favoritos').delete().eq('id', id);
+      await (supabase as any).from('nome_favoritos').delete().eq('id', id);
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['nome-favoritos'] });
@@ -146,63 +147,81 @@ export default function NomeBebe() {
           </TabsList>
 
           <TabsContent value="sugerir">
-            <div className="space-y-4">
+            <div className="space-y-5">
               {/* Sexo */}
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Sexo do bebê</label>
-                <div className="grid grid-cols-4 gap-2">
-                  {['Menino', 'Menina', 'Surpresa', 'Neutro'].map(s => (
+              <div className="bg-card/60 backdrop-blur-sm rounded-2xl border border-[var(--card-border-color)] p-4">
+                <label className="text-xs font-semibold text-muted-foreground mb-2 block uppercase tracking-wide">Sexo do bebê</label>
+                <div className="grid grid-cols-3 gap-2">
+                  {['Menino', 'Menina', 'Surpresa'].map(s => (
                     <button key={s} onClick={() => setSexo(s)}
-                      className={`py-2 rounded-xl text-xs font-medium transition-all ${sexo === s ? 'bg-primary text-primary-foreground' : 'glass-card'}`}>
-                      {s}
+                      className={`py-2.5 rounded-xl text-xs font-medium transition-all ${sexo === s ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>
+                      {s === 'Menino' ? '💙 ' : s === 'Menina' ? '🎀 ' : '🎁 '}{s}
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* Estilos */}
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Estilo de nome (selecione vários)</label>
+              <div className="bg-card/60 backdrop-blur-sm rounded-2xl border border-[var(--card-border-color)] p-4">
+                <label className="text-xs font-semibold text-muted-foreground mb-2 block uppercase tracking-wide">Estilo de nome</label>
                 <div className="flex flex-wrap gap-2">
                   {estiloOptions.map(e => (
                     <button key={e} onClick={() => toggleEstilo(e)}
-                      className={`px-3 py-1.5 rounded-full text-xs transition-all ${estilos.includes(e) ? 'bg-primary text-primary-foreground' : 'glass-card'}`}>
+                      className={`px-3 py-1.5 rounded-full text-xs transition-all ${estilos.includes(e) ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>
                       {e}
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">Nome da mãe</label>
-                  <Input value={nomeMae} onChange={e => setNomeMae(e.target.value)} className="rounded-xl" placeholder="Maria" />
-                </div>
-                <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">Nome do pai</label>
-                  <Input value={nomePai} onChange={e => setNomePai(e.target.value)} className="rounded-xl" placeholder="João" />
-                </div>
-              </div>
+              {/* Informações adicionais - collapsible */}
+              <div className="bg-card/60 backdrop-blur-sm rounded-2xl border border-[var(--card-border-color)] p-4">
+                <button
+                  onClick={() => setShowExtras(!showExtras)}
+                  className="flex items-center justify-between w-full"
+                >
+                  <div className="flex items-center gap-2">
+                    <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Informações adicionais</label>
+                    <span className="text-[10px] text-muted-foreground/70">(opcional)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch checked={showExtras} onCheckedChange={setShowExtras} />
+                    {showExtras ? <ChevronUp size={14} className="text-muted-foreground" /> : <ChevronDown size={14} className="text-muted-foreground" />}
+                  </div>
+                </button>
 
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Homenagear alguém? (opcional)</label>
-                <Input value={homenagem} onChange={e => setHomenagem(e.target.value)} className="rounded-xl" placeholder="Avó Maria" />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">Letra inicial (opcional)</label>
-                  <Input value={letraInicial} onChange={e => setLetraInicial(e.target.value.slice(0, 1).toUpperCase())} className="rounded-xl" placeholder="A" maxLength={1} />
-                </div>
-                <div>
-                  <label className="text-xs text-muted-foreground mb-1 block">Sobrenome</label>
-                  <Input value={sobrenome} onChange={e => setSobrenome(e.target.value)} className="rounded-xl" placeholder="Silva" />
-                </div>
-              </div>
-
-              <div>
-                <label className="text-xs text-muted-foreground mb-1 block">Significados que importam</label>
-                <Input value={significados} onChange={e => setSignificados(e.target.value)} className="rounded-xl" placeholder="força, luz, natureza..." />
+                {showExtras && (
+                  <div className="space-y-3 mt-4 animate-fade-in">
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-xs text-muted-foreground mb-1 block">Nome da mãe</label>
+                        <Input value={nomeMae} onChange={e => setNomeMae(e.target.value)} className="rounded-xl" placeholder="Maria" />
+                      </div>
+                      <div>
+                        <label className="text-xs text-muted-foreground mb-1 block">Nome do pai</label>
+                        <Input value={nomePai} onChange={e => setNomePai(e.target.value)} className="rounded-xl" placeholder="João" />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs text-muted-foreground mb-1 block">Homenagear alguém?</label>
+                      <Input value={homenagem} onChange={e => setHomenagem(e.target.value)} className="rounded-xl" placeholder="Avó Maria" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-xs text-muted-foreground mb-1 block">Letra inicial</label>
+                        <Input value={letraInicial} onChange={e => setLetraInicial(e.target.value.slice(0, 1).toUpperCase())} className="rounded-xl" placeholder="A" maxLength={1} />
+                      </div>
+                      <div>
+                        <label className="text-xs text-muted-foreground mb-1 block">Sobrenome</label>
+                        <Input value={sobrenome} onChange={e => setSobrenome(e.target.value)} className="rounded-xl" placeholder="Silva" />
+                      </div>
+                    </div>
+                    <div>
+                      <label className="text-xs text-muted-foreground mb-1 block">Significados que importam</label>
+                      <Input value={significados} onChange={e => setSignificados(e.target.value)} className="rounded-xl" placeholder="força, luz, natureza..." />
+                    </div>
+                  </div>
+                )}
               </div>
 
               <Button onClick={handleSuggest} disabled={suggestLoading} className="w-full gradient-hero text-primary-foreground rounded-xl">

@@ -5,6 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from 'sonner';
+import logoSrc from '@/assets/LogoMater01.png';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -27,7 +28,7 @@ export default function Login() {
   return (
     <div className="gradient-mesh-bg min-h-screen flex items-center justify-center p-6">
       <div className="glass-card-elevated w-full max-w-sm p-8 animate-fade-in">
-        <h1 className="font-display text-4xl font-semibold text-center mb-2">Mater</h1>
+        <img src={logoSrc} alt="Mater" className="h-20 mx-auto mb-1" />
         <p className="text-muted-foreground text-center text-sm mb-8">Sua gestação, seu momento ✨</p>
 
         <form onSubmit={handleLogin} className="space-y-4">

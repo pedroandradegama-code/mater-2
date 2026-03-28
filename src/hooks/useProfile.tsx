@@ -15,6 +15,10 @@ export interface Profile {
   onboarding_completed: boolean;
   created_at: string;
   updated_at: string;
+  avatar_url: string | null;
+  usg_1t_date: string | null;
+  date_reference: string | null;
+  primeira_gestacao: boolean | null;
 }
 
 export function useProfile() {
@@ -25,7 +29,7 @@ export function useProfile() {
     queryKey: ['profile', user?.id],
     queryFn: async () => {
       if (!user) return null;
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('profiles')
         .select('*')
         .eq('user_id', user.id)
@@ -34,10 +38,9 @@ export function useProfile() {
       return data as Profile;
     },
     enabled: !!user,
-    refetchInterval: 30000, // Auto-refresh every 30s to pick up plan changes from webhook
+    refetchInterval: 30000,
   });
 
-  // Apply hue based on sex
   useEffect(() => {
     if (query.data?.sexo_bebe) {
       applyThemeForSex(query.data.sexo_bebe);
@@ -47,7 +50,7 @@ export function useProfile() {
   const updateProfile = useMutation({
     mutationFn: async (updates: Partial<Profile>) => {
       if (!user) throw new Error('Not authenticated');
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('profiles')
         .update(updates)
         .eq('user_id', user.id)
@@ -61,5 +64,14 @@ export function useProfile() {
     },
   });
 
-  return { profile: query.data, isLoading: query.isLoading, updateProfile };
+  // Helper: get the effective date for gestational age calculation
+  const getEffectiveDate = (): string | null => {
+    if (!query.data) return null;
+    if (query.data.date_reference === 'usg' && query.data.usg_1t_date) {
+      return query.data.usg_1t_date;
+    }
+    return query.data.dum;
+  };
+
+  return { profile: query.data, isLoading: query.isLoading, updateProfile, getEffectiveDate };
 }

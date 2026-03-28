@@ -390,7 +390,7 @@ export default function PlanoParto() {
       return;
     }
     if (!user) return;
-    supabase
+    (supabase as any)
       .from('plano_parto')
       .select('*')
       .eq('user_id', user.id)
@@ -415,9 +415,9 @@ export default function PlanoParto() {
     setGenerating(true);
     try {
       if (existingPlan) {
-        await supabase.from('plano_parto').update({ respostas: answers as any }).eq('id', existingPlan.id);
+        await (supabase as any).from('plano_parto').update({ respostas: answers as any }).eq('id', existingPlan.id);
       } else {
-        const { data } = await supabase.from('plano_parto').insert({ user_id: user.id, respostas: answers as any }).select().single();
+        const { data } = await (supabase as any).from('plano_parto').insert({ user_id: user.id, respostas: answers as any }).select().single();
         if (data) setExistingPlan(data);
       }
       setGenerated(true);

@@ -61,7 +61,7 @@ export default function MusicaBebe() {
   const { data: musicRecord, isLoading: loadingRecord } = useQuery({
     queryKey: ['musica-bebe', user?.id],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data } = await (supabase as any)
         .from('musica_bebe')
         .select('*')
         .eq('user_id', user!.id)
@@ -168,7 +168,7 @@ function CreationFlow({ profile, userId, onCreated }: { profile: any; userId: st
     setSubmitting(true);
     try {
       // Insert record
-      const { data: record, error: insertError } = await supabase
+      const { data: record, error: insertError } = await (supabase as any)
         .from('musica_bebe')
         .insert({
           user_id: userId,

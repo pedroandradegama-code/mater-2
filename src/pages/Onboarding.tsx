@@ -14,6 +14,8 @@ export default function Onboarding() {
   const [step, setStep] = useState(1);
   const [nome, setNome] = useState('');
   const [dum, setDum] = useState<Date>();
+  const [usgDate, setUsgDate] = useState<Date>();
+  const [dateRef, setDateRef] = useState('dum');
   const [naoSeiDum, setNaoSeiDum] = useState(false);
   const [sexo, setSexo] = useState('');
   const [nomeBebe, setNomeBebe] = useState('');
@@ -32,20 +34,21 @@ export default function Onboarding() {
       toast.error('Preencha os campos obrigatórios');
       return;
     }
-    if (!naoSeiDum && !dum) {
-      toast.error('Preencha a data da última menstruação ou marque "Não sei"');
+    if (!naoSeiDum && !dum && !usgDate) {
+      toast.error('Preencha a data da última menstruação, a data do ultrassom ou marque "Não sei"');
       return;
     }
     try {
       const updates = {
         nome,
         dum: dum ? format(dum, 'yyyy-MM-dd') : null,
+        usg_1t_date: usgDate ? format(usgDate, 'yyyy-MM-dd') : null,
+        date_reference: dateRef,
         sexo_bebe: sexo,
         nome_bebe: nomeBebe || null,
         onboarding_completed: true,
       };
-      await updateProfile.mutateAsync(updates);
-      // Optimistically update profile cache to prevent redirect loop
+      await updateProfile.mutateAsync(updates as any);
       queryClient.setQueryData(['profile', user?.id], (old: any) => ({
         ...old,
         ...updates,
@@ -76,20 +79,46 @@ export default function Onboarding() {
         )}
 
         {step === 2 && (
-          <div className="space-y-6 animate-fade-in">
-            <h2 className="font-display text-3xl text-center">Data da última menstruação</h2>
+          <div className="space-y-5 animate-fade-in">
+            <h2 className="font-display text-2xl text-center">Datas da gestação</h2>
+            
             {!naoSeiDum && (
-              <DatePickerButton value={dum} onChange={setDum} label="Selecione a data" title="Data da última menstruação" />
+              <>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1.5">Data da última menstruação (DUM)</p>
+                  <DatePickerButton value={dum} onChange={setDum} label="Selecione a DUM" title="Data da última menstruação" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1.5">Data pelo Ultrassom 1º Tri (opcional)</p>
+                  <DatePickerButton value={usgDate} onChange={setUsgDate} label="Data do USG (opcional)" title="Data pelo USG 1T" />
+                </div>
+                {dum && usgDate && (
+                  <div>
+                    <p className="text-xs text-muted-foreground mb-1.5">Qual data usar?</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      <button onClick={() => setDateRef('dum')}
+                        className={`py-2 px-3 rounded-xl text-xs font-medium transition-all ${dateRef === 'dum' ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>
+                        DUM
+                      </button>
+                      <button onClick={() => setDateRef('usg')}
+                        className={`py-2 px-3 rounded-xl text-xs font-medium transition-all ${dateRef === 'usg' ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'}`}>
+                        USG 1º Tri
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </>
             )}
+
             <button
-              onClick={() => { setNaoSeiDum(!naoSeiDum); if (!naoSeiDum) setDum(undefined); }}
+              onClick={() => { setNaoSeiDum(!naoSeiDum); if (!naoSeiDum) { setDum(undefined); setUsgDate(undefined); } }}
               className={`w-full py-3 px-4 rounded-xl text-sm transition-all border ${
                 naoSeiDum
                   ? 'bg-primary/10 border-primary text-primary font-medium'
                   : 'border-border text-muted-foreground hover:border-primary/50'
               }`}
             >
-              {naoSeiDum ? '✓ ' : ''}Não sei minha DUM
+              {naoSeiDum ? '✓ ' : ''}Não sei nenhuma data
             </button>
             {naoSeiDum && (
               <p className="text-xs text-muted-foreground text-center">
@@ -97,8 +126,8 @@ export default function Onboarding() {
               </p>
             )}
             <Button
-              onClick={() => (dum || naoSeiDum) && setStep(3)}
-              disabled={!dum && !naoSeiDum}
+              onClick={() => (dum || usgDate || naoSeiDum) && setStep(3)}
+              disabled={!dum && !usgDate && !naoSeiDum}
               className="w-full gradient-hero text-primary-foreground rounded-xl"
             >
               Continuar

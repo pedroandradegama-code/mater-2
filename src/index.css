@@ -16,10 +16,10 @@
     --popover: 0 0% 100%;
     --popover-foreground: 280 30% 10%;
 
-    --primary: 338 73% 43%;
+    --primary: 345 70% 33%;
     --primary-foreground: 0 0% 100%;
-    --primary-light: 340 100% 94%;
-    --primary-mid: 330 82% 52%;
+    --primary-light: 345 60% 94%;
+    --primary-mid: 345 65% 42%;
 
     --secondary: 340 40% 95%;
     --secondary-foreground: 280 20% 25%;
@@ -33,20 +33,20 @@
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 338 73% 43% / 0.08;
+    --border: 345 70% 33% / 0.08;
     --input: 340 20% 90%;
-    --ring: 338 73% 43%;
+    --ring: 345 70% 33%;
 
     --radius: 1.25rem;
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 338 73% 43%;
+    --sidebar-primary: 345 70% 33%;
     --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 340 40% 96%;
     --sidebar-accent-foreground: 280 30% 10%;
-    --sidebar-border: 338 73% 43% / 0.08;
-    --sidebar-ring: 338 73% 43%;
+    --sidebar-border: 345 70% 33% / 0.08;
+    --sidebar-ring: 345 70% 33%;
 
     /* Custom tokens */
     --text-primary: 280 30% 10%;
@@ -66,10 +66,10 @@
     --card-foreground: 280 10% 90%;
     --popover: 280 15% 12%;
     --popover-foreground: 280 10% 90%;
-    --primary: 338 73% 50%;
+    --primary: 345 70% 40%;
     --primary-foreground: 0 0% 100%;
     --primary-light: 340 40% 18%;
-    --primary-mid: 330 82% 55%;
+    --primary-mid: 345 65% 48%;
     --secondary: 280 20% 18%;
     --secondary-foreground: 280 10% 85%;
     --muted: 280 15% 18%;
@@ -78,9 +78,9 @@
     --accent-foreground: 255 30% 90%;
     --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 100%;
-    --border: 338 40% 30% / 0.3;
+    --border: 345 40% 30% / 0.3;
     --input: 280 15% 20%;
-    --ring: 338 73% 50%;
+    --ring: 345 70% 40%;
   }
 }
 

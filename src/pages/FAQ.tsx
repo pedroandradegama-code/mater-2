@@ -54,19 +54,33 @@ const faqData: Record<string, FAQ[]> = {
   ],
 };
 
+const allCategories = Object.keys(faqData);
+
 export default function FAQ() {
   const [search, setSearch] = useState('');
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
-    if (!search) return faqData;
-    const term = search.toLowerCase();
-    const result: Record<string, FAQ[]> = {};
-    Object.entries(faqData).forEach(([cat, items]) => {
-      const matches = items.filter(i => i.q.toLowerCase().includes(term) || i.a.toLowerCase().includes(term));
-      if (matches.length) result[cat] = matches;
-    });
+    let result = faqData;
+    
+    // First filter by category if selected
+    if (activeCategory) {
+      result = { [activeCategory]: faqData[activeCategory] };
+    }
+    
+    // Then filter by search
+    if (search) {
+      const term = search.toLowerCase();
+      const searchResult: Record<string, FAQ[]> = {};
+      Object.entries(result).forEach(([cat, items]) => {
+        const matches = items.filter(i => i.q.toLowerCase().includes(term) || i.a.toLowerCase().includes(term));
+        if (matches.length) searchResult[cat] = matches;
+      });
+      return searchResult;
+    }
+    
     return result;
-  }, [search]);
+  }, [search, activeCategory]);
 
   const categories = Object.keys(filtered);
 
@@ -86,12 +100,20 @@ export default function FAQ() {
         </div>
 
         <div className="flex gap-2 mb-4 overflow-x-auto pb-2 scrollbar-hide">
-          {Object.keys(faqData).map(cat => (
+          <button
+            onClick={() => setActiveCategory(null)}
+            className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors ${
+              !activeCategory ? 'bg-primary text-primary-foreground' : 'glass-card'
+            }`}
+          >
+            Todos
+          </button>
+          {allCategories.map(cat => (
             <button
               key={cat}
-              onClick={() => setSearch(search === cat ? '' : cat)}
+              onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
               className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap transition-colors ${
-                search === cat ? 'bg-primary text-primary-foreground' : 'glass-card'
+                activeCategory === cat ? 'bg-primary text-primary-foreground' : 'glass-card'
               }`}
             >
               {cat}
