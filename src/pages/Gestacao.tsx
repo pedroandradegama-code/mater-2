@@ -47,15 +47,14 @@ export default function Gestacao() {
   const { profile } = useProfile();
   const navigate = useNavigate();
 
-  if (!profile?.dum) return null;
+  const dum = profile?.dum ? parseLocalDate(profile.dum) : null;
+  const info = dum ? calculatePregnancyInfo(dum) : null;
+  const currentWeek = info ? Math.min(Math.max(info.weeks, 4), 40) : 4;
 
-  const dum = parseLocalDate(profile.dum);
-  const info = calculatePregnancyInfo(dum);
-  const currentWeek = Math.min(Math.max(info.weeks, 4), 40);
-
-  // Semana exibida no detalhe (começa na semana atual)
   const [selectedWeek, setSelectedWeek] = useState(currentWeek);
   const [activeTri, setActiveTri] = useState(currentWeek <= 12 ? 0 : currentWeek <= 26 ? 1 : 2);
+
+  if (!profile?.dum) return null;
 
   const selectedData = weeklyData.find(w => w.week === selectedWeek);
   const fetalImage = getFetalImage(selectedWeek);
