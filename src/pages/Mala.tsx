@@ -128,7 +128,7 @@ export default function Mala() {
   const { data: checkedItems = [] } = useQuery({
     queryKey: ['checklist-mala', user?.id],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data } = await (supabase as any)
         .from('checklist_mala')
         .select('item_id, checked')
         .eq('user_id', user!.id);
@@ -141,9 +141,9 @@ export default function Mala() {
     mutationFn: async (itemId: string) => {
       const isChecked = checkedItems.includes(itemId);
       if (isChecked) {
-        await supabase.from('checklist_mala').delete().eq('user_id', user!.id).eq('item_id', itemId);
+        await (supabase as any).from('checklist_mala').delete().eq('user_id', user!.id).eq('item_id', itemId);
       } else {
-        await supabase.from('checklist_mala').upsert({ user_id: user!.id, item_id: itemId, checked: true }, { onConflict: 'user_id,item_id' });
+        await (supabase as any).from('checklist_mala').upsert({ user_id: user!.id, item_id: itemId, checked: true }, { onConflict: 'user_id,item_id' });
       }
     },
     onMutate: async (itemId) => {
@@ -239,12 +239,12 @@ function CategoryChecklist({ category, checkedItems, catChecked, onToggle }: {
 
   return (
     <Collapsible open={open} onOpenChange={setOpen} className="glass-card overflow-hidden">
-      <CollapsibleTrigger className="flex items-center justify-between w-full p-4">
+      <CollapsibleTrigger className="flex items-center w-full p-4">
         <div className="flex items-center gap-2">
           <span className="font-medium text-sm">{category.name}</span>
           <span className="text-xs text-muted-foreground">({catChecked}/{category.items.length})</span>
         </div>
-        <ChevronDown size={16} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown size={16} className={`ml-2 shrink-0 transition-transform sm:ml-auto ${open ? 'rotate-180' : ''}`} />
       </CollapsibleTrigger>
       <CollapsibleContent className="px-4 pb-4 space-y-2">
         {category.items.map(item => {

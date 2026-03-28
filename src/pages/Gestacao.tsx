@@ -58,6 +58,18 @@ export default function Gestacao() {
           })}
         </div>
 
+        {/* Jornada de Saúde */}
+        <button onClick={() => navigate('/jornada-saude')} className="w-full glass-card p-5 mb-6 text-left hover:scale-[1.02] transition-transform">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-2xl gradient-hero flex items-center justify-center text-2xl text-primary-foreground">🩺</div>
+            <div className="flex-1">
+              <h3 className="font-display text-lg font-semibold">Jornada de Saúde</h3>
+              <p className="text-xs text-muted-foreground">Timeline de exames, consultas e vacinas recomendadas</p>
+            </div>
+            <span className="text-muted-foreground">→</span>
+          </div>
+        </button>
+
         {/* Plano de Parto */}
         <button onClick={() => navigate('/plano-parto')} className="w-full glass-card p-5 mb-6 text-left hover:scale-[1.02] transition-transform">
           <div className="flex items-center gap-4">

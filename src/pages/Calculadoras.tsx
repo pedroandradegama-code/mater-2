@@ -14,7 +14,7 @@ import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { DatePickerButton } from '@/components/WheelDatePicker';
 
-// Custom SVG icon components for a more authorial feel
+// Custom SVG icon components
 function IconCalendarPregnancy({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,17 +36,6 @@ function IconMonthWheel({ className }: { className?: string }) {
       <circle cx="24" cy="24" r="10" stroke="currentColor" strokeWidth="2" strokeDasharray="4 3" />
       <path d="M24 6v4M24 38v4M6 24h4M38 24h4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
       <circle cx="24" cy="24" r="3" fill="hsl(var(--primary) / 0.4)" />
-    </svg>
-  );
-}
-
-function IconFertility({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M24 8c-6 0-12 6-12 14s6 18 12 18 12-10 12-18S30 8 24 8z" fill="hsl(var(--primary) / 0.12)" stroke="currentColor" strokeWidth="2.5" />
-      <circle cx="24" cy="24" r="4" fill="hsl(var(--primary) / 0.3)" stroke="currentColor" strokeWidth="2" />
-      <path d="M24 4v4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M18 10l2 2M30 10l-2 2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -122,24 +111,9 @@ function IconHourglass({ className }: { className?: string }) {
   );
 }
 
-function IconCalendarForward({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 48 48" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="6" y="10" width="36" height="32" rx="6" stroke="currentColor" strokeWidth="2.5" fill="hsl(var(--primary) / 0.1)" />
-      <path d="M6 20h36" stroke="currentColor" strokeWidth="2" />
-      <circle cx="16" cy="6" r="2" fill="currentColor" />
-      <circle cx="32" cy="6" r="2" fill="currentColor" />
-      <path d="M16 4v8M32 4v8" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-      <path d="M22 28l6 3-6 3z" fill="currentColor" opacity="0.6" />
-      <path d="M30 28v6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 const calculators = [
   { id: 'idade', title: 'Idade Gestacional', desc: 'Semanas, dias e DPP', icon: IconCalendarPregnancy, featured: true },
   { id: 'meses', title: 'Semanas → Meses', desc: 'Converta semanas em meses', icon: IconMonthWheel },
-  { id: 'fertil', title: 'Período Fértil', desc: 'Janela fértil e ovulação', icon: IconFertility },
   { id: 'imc', title: 'IMC Gestacional', desc: 'Peso e ganho recomendado', icon: IconScale },
   { id: 'hidratacao', title: 'Hidratação', desc: 'Meta diária de água', icon: IconDroplet },
   { id: 'chinesa', title: 'Tabela Chinesa', desc: 'Menino ou menina?', icon: IconYinYang },
@@ -147,7 +121,6 @@ const calculators = [
   { id: 'ultrassom', title: 'Melhor 3D/4D', desc: 'Momento ideal do ultrassom', icon: IconUltrasound },
   { id: 'contracoes', title: 'Contrações', desc: 'Registre duração e intervalo', icon: IconPulse },
   { id: 'contagem', title: 'Contagem Regressiva', desc: 'Quanto falta pro grande dia', icon: IconHourglass },
-  { id: 'datafutura', title: 'Data → Semanas', desc: 'Idade gestacional em uma data', icon: IconCalendarForward },
 ];
 
 export default function Calculadoras() {
@@ -159,8 +132,8 @@ export default function Calculadoras() {
     return (
       <div className="gradient-mesh-bg min-h-screen pb-24">
         <div className="app-container px-5 pt-6">
-          <button onClick={() => setSelected(null)} className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <ArrowLeft size={16} /> Voltar
+          <button onClick={() => setSelected(null)} className="inline-flex items-center gap-1 text-sm text-muted-foreground mb-4 sm:gap-2">
+            <ArrowLeft size={16} className="shrink-0" /> Voltar
           </button>
           <CalculatorView id={selected} profile={profile} gemelar={gemelar} />
         </div>
@@ -210,7 +183,6 @@ function CalculatorView({ id, profile, gemelar }: { id: string; profile: any; ge
   switch (id) {
     case 'idade': return <IdadeGestacional dum={dum} gemelar={gemelar} />;
     case 'meses': return <SemanasMeses />;
-    case 'fertil': return <PeriodoFertil dum={dum} />;
     case 'imc': return <IMCGestacional dum={dum} gemelar={gemelar} />;
     case 'hidratacao': return <Hidratacao />;
     case 'chinesa': return <TabelaChinesa dum={dum} />;
@@ -218,7 +190,6 @@ function CalculatorView({ id, profile, gemelar }: { id: string; profile: any; ge
     case 'ultrassom': return <Ultrassom dum={dum} />;
     case 'contracoes': return <Contracoes />;
     case 'contagem': return <ContagemRegressiva dum={dum} gemelar={gemelar} />;
-    case 'datafutura': return <DataFuturaSemanas dum={dum} />;
     default: return null;
   }
 }
@@ -273,39 +244,6 @@ function SemanasMeses() {
   );
 }
 
-function PeriodoFertil({ dum }: { dum?: Date }) {
-  const [dumDate, setDumDate] = useState<Date | undefined>(dum);
-  const [ciclo, setCiclo] = useState(28);
-
-  if (!dumDate) return (
-    <div className="space-y-3">
-      <p className="text-sm text-muted-foreground">Data da última menstruação</p>
-      <DatePickerButton value={dumDate} onChange={setDumDate} label="Selecione a data" />
-    </div>
-  );
-
-  const ovulation = addDays(dumDate, ciclo - 14);
-  const fertileStart = addDays(ovulation, -5);
-  const fertileEnd = addDays(ovulation, 1);
-  const daysUntil = Math.max(0, Math.ceil((ovulation.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)));
-
-  return (
-    <div className="space-y-4 animate-fade-in">
-      <h2 className="font-display text-2xl font-semibold">Período Fértil</h2>
-      <div className="glass-card p-5 space-y-3">
-        <div className="flex items-center gap-2 mb-2">
-          <span className="text-sm">Duração do ciclo:</span>
-          <Input type="number" value={ciclo} onChange={e => setCiclo(Number(e.target.value))} className="w-20 rounded-xl text-center" />
-          <span className="text-sm">dias</span>
-        </div>
-        <ResultRow label="Próxima ovulação" value={format(ovulation, "dd/MM/yyyy")} />
-        <ResultRow label="Janela fértil" value={`${format(fertileStart, "dd/MM")} a ${format(fertileEnd, "dd/MM")}`} />
-        <ResultRow label="Dias até ovulação" value={`${daysUntil} dias`} />
-      </div>
-    </div>
-  );
-}
-
 function IMCGestacional({ dum, gemelar }: { dum?: Date; gemelar: boolean }) {
   const [pesoAntes, setPesoAntes] = useState('');
   const [altura, setAltura] = useState('');
@@ -335,6 +273,7 @@ function IMCGestacional({ dum, gemelar }: { dum?: Date; gemelar: boolean }) {
             <ResultRow label="Classificação" value={classificacao} />
             <ResultRow label="Ganho atual" value={`${ganhoAtual.toFixed(1)} kg`} />
             <ResultRow label="Ganho recomendado" value={ganhoRecomendado} />
+            {gemelar && <p className="text-xs text-muted-foreground mt-1">* Valores ajustados para gestação gemelar (diretrizes IOM)</p>}
           </div>
         )}
       </div>
@@ -461,37 +400,20 @@ function Signos({ dum }: { dum?: Date }) {
   return (
     <div className="space-y-4 animate-fade-in">
       <h2 className="font-display text-2xl font-semibold">Signos</h2>
-
-      {babySign && (
-        <SignCard title="👶 Signo do bebê" sign={babySign} />
-      )}
-      {babySign && (
-        <p className="text-xs text-muted-foreground text-center">Baseado na DPP: {dpp && format(dpp, "dd/MM/yyyy")}</p>
-      )}
-
+      {babySign && <SignCard title="👶 Signo do bebê" sign={babySign} />}
+      {babySign && <p className="text-xs text-muted-foreground text-center">Baseado na DPP: {dpp && format(dpp, "dd/MM/yyyy")}</p>}
       <div className="space-y-3">
         <div>
           <p className="text-sm text-muted-foreground mb-2">Signo da mamãe (opcional)</p>
           <DatePickerButton value={momBirth} onChange={setMomBirth} label="Data de nascimento da mãe" title="Nascimento da mãe" minYear={1950} maxYear={2010} />
-          {momSign && babySign && (
-            <div className="mt-3">
-              <SignCard title="👩 Signo da mamãe" sign={momSign} compatWith={babySign.name} />
-            </div>
-          )}
+          {momSign && babySign && <div className="mt-3"><SignCard title="👩 Signo da mamãe" sign={momSign} compatWith={babySign.name} /></div>}
         </div>
-
         <div>
           <p className="text-sm text-muted-foreground mb-2">Signo do pai (opcional)</p>
           <DatePickerButton value={dadBirth} onChange={setDadBirth} label="Data de nascimento do pai" title="Nascimento do pai" minYear={1950} maxYear={2010} />
-          {dadSign && babySign && (
-            <div className="mt-3">
-              <SignCard title="🧑 Signo do pai" sign={dadSign} compatWith={babySign.name} />
-            </div>
-          )}
+          {dadSign && babySign && <div className="mt-3"><SignCard title="🧑 Signo do pai" sign={dadSign} compatWith={babySign.name} /></div>}
         </div>
       </div>
-
-      {/* Trio astrológico */}
       {babySign && (momSign || dadSign) && (
         <div className="glass-card p-5 text-center space-y-3">
           <h3 className="font-display text-lg font-semibold">Seu trio astrológico</h3>
@@ -505,7 +427,6 @@ function Signos({ dum }: { dum?: Date }) {
           </p>
         </div>
       )}
-
       <p className="text-xs text-muted-foreground text-center italic">Apenas por diversão 🔮</p>
     </div>
   );
@@ -513,7 +434,6 @@ function Signos({ dum }: { dum?: Date }) {
 
 function Ultrassom({ dum }: { dum?: Date }) {
   const weeks = dum ? calculatePregnancyInfo(dum).weeks : 0;
-
   let color = 'bg-destructive';
   let label = 'Cedo demais';
   let desc = 'Aguarde pelo menos a 24ª semana para um resultado melhor.';
@@ -540,49 +460,94 @@ function Ultrassom({ dum }: { dum?: Date }) {
 function Contracoes() {
   const [contractions, setContractions] = useState<{ time: Date; duration?: number; interval?: number }[]>([]);
   const [isActive, setIsActive] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
   const startRef = useRef<Date | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handlePress = () => {
     if (!isActive) {
       startRef.current = new Date();
       setIsActive(true);
+      setElapsed(0);
+      timerRef.current = setInterval(() => {
+        if (startRef.current) {
+          setElapsed(Math.round((Date.now() - startRef.current.getTime()) / 1000));
+        }
+      }, 100);
     } else {
+      if (timerRef.current) clearInterval(timerRef.current);
       const now = new Date();
       const duration = startRef.current ? Math.round((now.getTime() - startRef.current.getTime()) / 1000) : 0;
       const lastContraction = contractions[0];
       const interval = lastContraction ? Math.round((now.getTime() - lastContraction.time.getTime()) / 1000 / 60) : undefined;
-      setContractions(prev => [{ time: now, duration, interval }, ...prev].slice(0, 5));
+      setContractions(prev => [{ time: now, duration, interval }, ...prev].slice(0, 20));
       setIsActive(false);
+      setElapsed(0);
       startRef.current = null;
     }
   };
 
+  const handleReset = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    setContractions([]);
+    setIsActive(false);
+    setElapsed(0);
+    startRef.current = null;
+  };
+
   const frequentContractions = contractions.filter(c => c.interval && c.interval < 5).length >= 3;
+  const totalCount = contractions.length;
 
   return (
     <div className="space-y-4 animate-fade-in">
       <h2 className="font-display text-2xl font-semibold">Contador de Contrações</h2>
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center gap-3">
         <button
           onClick={handlePress}
-          className={`w-32 h-32 rounded-full flex items-center justify-center text-primary-foreground font-bold text-lg transition-all ${isActive ? 'bg-destructive scale-110 animate-pulse' : 'gradient-hero hover:scale-105'}`}
+          className={`w-32 h-32 rounded-full flex flex-col items-center justify-center font-bold text-lg transition-all shadow-lg ${
+            isActive
+              ? 'bg-destructive text-destructive-foreground scale-110 animate-pulse'
+              : 'bg-primary text-primary-foreground hover:scale-105'
+          }`}
         >
-          {isActive ? 'Soltar' : 'Registrar'}
+          {isActive ? (
+            <>
+              <span className="text-2xl font-display">{elapsed}s</span>
+              <span className="text-xs mt-1">Soltar</span>
+            </>
+          ) : (
+            'Registrar'
+          )}
         </button>
+        {totalCount > 0 && (
+          <p className="text-sm font-semibold text-foreground">
+            {totalCount} contração{totalCount > 1 ? 'ões' : ''} registrada{totalCount > 1 ? 's' : ''}
+          </p>
+        )}
       </div>
       {contractions.length > 0 && (
         <div className="glass-card p-4 space-y-2">
+          <div className="flex justify-between text-[10px] uppercase tracking-widest text-muted-foreground font-semibold px-1 mb-1">
+            <span>#</span>
+            <span>Hora</span>
+            <span>Duração</span>
+            <span>Intervalo</span>
+          </div>
           {contractions.map((c, i) => (
-            <div key={i} className="flex justify-between text-sm py-1 border-b border-border/50 last:border-0">
+            <div key={i} className="flex justify-between text-sm py-1.5 border-b border-border/50 last:border-0 px-1">
+              <span className="font-semibold text-primary w-6">{totalCount - i}</span>
               <span>{format(c.time, 'HH:mm:ss')}</span>
-              <span>{c.duration}s</span>
+              <span className="font-medium">{c.duration}s</span>
               <span>{c.interval ? `${c.interval}min` : '-'}</span>
             </div>
           ))}
+          <button onClick={handleReset} className="w-full mt-2 py-2 rounded-xl bg-muted text-muted-foreground text-xs font-semibold">
+            Limpar tudo
+          </button>
         </div>
       )}
       {frequentContractions && (
-        <div className="glass-card p-4 border-destructive/30">
+        <div className="glass-card p-4 border-2 border-destructive/30 bg-destructive/5">
           <p className="text-sm font-semibold text-destructive">⚠️ Contrações frequentes! Considere ir à maternidade.</p>
         </div>
       )}
@@ -627,44 +592,6 @@ function ContagemRegressiva({ dum, gemelar }: { dum?: Date; gemelar: boolean }) 
           ))}
         </div>
       </div>
-    </div>
-  );
-}
-
-function DataFuturaSemanas({ dum }: { dum?: Date }) {
-  const [targetDate, setTargetDate] = useState<Date | undefined>();
-
-  if (!dum) return <p className="text-muted-foreground text-center">DUM não informada no perfil</p>;
-
-  const calcResult = targetDate ? (() => {
-    const diffMs = targetDate.getTime() - dum.getTime();
-    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-    const weeks = Math.floor(diffDays / 7);
-    const days = diffDays % 7;
-    const trimester = weeks < 13 ? 1 : weeks < 27 ? 2 : 3;
-    return { weeks, days, trimester, diffDays };
-  })() : null;
-
-  return (
-    <div className="space-y-4 animate-fade-in">
-      <h2 className="font-display text-2xl font-semibold">Data → Semanas</h2>
-      <p className="text-sm text-muted-foreground">Selecione uma data para saber a idade gestacional naquele momento</p>
-      <DatePickerButton value={targetDate} onChange={setTargetDate} label="Selecione a data" />
-      {calcResult && (
-        <div className="glass-card p-5 space-y-3">
-          {calcResult.diffDays < 0 ? (
-            <p className="text-sm text-muted-foreground text-center">A data selecionada é anterior à DUM</p>
-          ) : calcResult.weeks > 42 ? (
-            <p className="text-sm text-muted-foreground text-center">A data ultrapassa 42 semanas de gestação</p>
-          ) : (
-            <>
-              <ResultRow label="Idade gestacional" value={`${calcResult.weeks} semanas e ${calcResult.days} dias`} />
-              <ResultRow label="Trimestre" value={`${calcResult.trimester}º trimestre`} />
-              <ResultRow label="Data selecionada" value={format(targetDate!, "dd/MM/yyyy")} />
-            </>
-          )}
-        </div>
-      )}
     </div>
   );
 }

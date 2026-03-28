@@ -27,7 +27,7 @@ export default function EnqueteSemanal({ semana }: { semana: number }) {
   const { data: enquete } = useQuery({
     queryKey: ['enquete', semana],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data } = await (supabase as any)
         .from('enquetes')
         .select('*')
         .lte('semana_min', semana)
@@ -46,7 +46,7 @@ export default function EnqueteSemanal({ semana }: { semana: number }) {
   const { data: allResponses } = useQuery({
     queryKey: ['enquete-respostas', enquete?.id],
     queryFn: async () => {
-      const { data } = await supabase
+      const { data } = await (supabase as any)
         .from('enquetes_respostas')
         .select('*')
         .eq('enquete_id', enquete!.id);
@@ -60,7 +60,7 @@ export default function EnqueteSemanal({ semana }: { semana: number }) {
 
   const voteMutation = useMutation({
     mutationFn: async (opcao: string) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('enquetes_respostas')
         .insert({ enquete_id: enquete!.id, user_id: user!.id, opcao_escolhida: opcao });
       if (error) throw error;
