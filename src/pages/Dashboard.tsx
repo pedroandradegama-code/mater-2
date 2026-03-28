@@ -9,6 +9,7 @@ import BottomNav from '@/components/BottomNav';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import EnqueteSemanal from '@/components/dashboard/EnqueteSemanal';
+import { BabyViewer3D } from '@/components/dashboard/BabyViewer3D';
 import {
   FetusIllustration,
   CalculadoraIcon,
@@ -262,6 +263,9 @@ export default function Dashboard() {
                     <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${info.progress}%` }} />
                   </div>
                   <p className="text-[11px] text-muted-foreground mt-1">{Math.round(info.progress)}% concluída</p>
+                  <p className="text-[9px] text-muted-foreground/40 mt-1">
+                    Modelo 3D: <a href="https://sketchfab.com" target="_blank" rel="noopener noreferrer" className="underline underline-offset-1">Sketchfab</a> · CC BY 4.0
+                  </p>
                 </div>
                 <div className="text-sm text-muted-foreground">
                   <div className="flex items-center gap-1.5">
@@ -271,7 +275,13 @@ export default function Dashboard() {
                   <p className="text-[10px] text-muted-foreground/70 ml-5.5">(Data Provável do Parto)</p>
                 </div>
               </div>
-              <div className="animate-float ml-2"><FetusIllustration /></div>
+              <div className="ml-2" style={{ filter: 'drop-shadow(0 4px 16px hsl(var(--primary) / 0.25))' }}>
+                <BabyViewer3D
+                  week={weeksDisplay}
+                  sex={profile?.sexo_bebe as 'menina' | 'menino' | 'surpresa' | null}
+                  className="w-[110px] h-[110px]"
+                />
+              </div>
             </div>
           </div>
         ) : (
