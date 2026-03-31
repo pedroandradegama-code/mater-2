@@ -28,6 +28,8 @@ import JornadaSaude from "./pages/JornadaSaude";
 import PassaporteMamae from "./pages/PassaporteMamae";
 import Playlists from "./pages/Playlists";
 import PWAInstallBanner from "./components/PWAInstallBanner";
+import { ProfissionalProvider } from "@/hooks/useProfissional";
+import ProfissionalDashboard from "./pages/ProfissionalDashboard";
 import logoSrc from "@/assets/LogoMater01.png";
 
 const queryClient = new QueryClient();
