@@ -65,6 +65,7 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
+      <ProfissionalProvider>
       <TooltipProvider>
         <Sonner />
         <PWAInstallBanner />
