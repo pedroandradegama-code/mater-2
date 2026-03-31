@@ -176,6 +176,8 @@ const toolGroups: ToolGroup[] = [
 export default function Dashboard() {
   const { profile } = useProfile();
   const { user } = useAuth();
+  const { isProfissional } = useProfissional();
+  if (isProfissional) return <Navigate to="/profissional" replace />;
   const navigate = useNavigate();
 
   const isPaid = profile?.plano === 'premium' || profile?.plano === 'pago';
