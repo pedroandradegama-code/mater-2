@@ -582,6 +582,7 @@ export type Database = {
           updated_at: string
           user_id: string
           usg_1t_date: string | null
+          utm_ref: string | null
         }
         Insert: {
           avatar_url?: string | null
@@ -599,6 +600,7 @@ export type Database = {
           updated_at?: string
           user_id: string
           usg_1t_date?: string | null
+          utm_ref?: string | null
         }
         Update: {
           avatar_url?: string | null
@@ -616,8 +618,106 @@ export type Database = {
           updated_at?: string
           user_id?: string
           usg_1t_date?: string | null
+          utm_ref?: string | null
         }
         Relationships: []
+      }
+      profissionais: {
+        Row: {
+          codigo_afiliada: string
+          codigo_convite: string | null
+          created_at: string | null
+          email: string
+          id: string
+          link_kiwify: string | null
+          nome: string | null
+          profissao: string
+          status: string
+          updated_at: string | null
+          user_id: string | null
+        }
+        Insert: {
+          codigo_afiliada: string
+          codigo_convite?: string | null
+          created_at?: string | null
+          email: string
+          id?: string
+          link_kiwify?: string | null
+          nome?: string | null
+          profissao?: string
+          status?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          codigo_afiliada?: string
+          codigo_convite?: string | null
+          created_at?: string | null
+          email?: string
+          id?: string
+          link_kiwify?: string | null
+          nome?: string | null
+          profissao?: string
+          status?: string
+          updated_at?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      profissionais_convites: {
+        Row: {
+          codigo: string
+          created_at: string | null
+          criado_por: string | null
+          email_destino: string | null
+          expires_at: string | null
+          id: string
+          profissional_id: string | null
+          usado: boolean | null
+        }
+        Insert: {
+          codigo: string
+          created_at?: string | null
+          criado_por?: string | null
+          email_destino?: string | null
+          expires_at?: string | null
+          id?: string
+          profissional_id?: string | null
+          usado?: boolean | null
+        }
+        Update: {
+          codigo?: string
+          created_at?: string | null
+          criado_por?: string | null
+          email_destino?: string | null
+          expires_at?: string | null
+          id?: string
+          profissional_id?: string | null
+          usado?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "profissionais_convites_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profissionais"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profissionais_convites_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profissional_dashboard"
+            referencedColumns: ["profissional_id"]
+          },
+          {
+            foreignKeyName: "profissionais_convites_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
+            referencedRelation: "profissional_indicadas"
+            referencedColumns: ["profissional_id"]
+          },
+        ]
       }
     }
     Views: {
@@ -636,6 +736,40 @@ export type Database = {
           status: string | null
           total_vendas: number | null
           whatsapp: string | null
+        }
+        Relationships: []
+      }
+      profissional_dashboard: {
+        Row: {
+          codigo_afiliada: string | null
+          comissao_paga: number | null
+          comissao_pendente: number | null
+          comissao_total: number | null
+          email: string | null
+          link_kiwify: string | null
+          nome: string | null
+          profissao: string | null
+          profissional_id: string | null
+          status: string | null
+          total_cadastros: number | null
+          total_conversoes: number | null
+          user_id: string | null
+        }
+        Relationships: []
+      }
+      profissional_indicadas: {
+        Row: {
+          codigo_afiliada: string | null
+          comissao: number | null
+          data_cadastro: string | null
+          data_venda: string | null
+          email_indicada: string | null
+          nome_indicada: string | null
+          perfil_id: string | null
+          plano: string | null
+          profissional_id: string | null
+          status_pagamento: string | null
+          valor_venda: number | null
         }
         Relationships: []
       }

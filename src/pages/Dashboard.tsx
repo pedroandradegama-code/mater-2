@@ -1,6 +1,7 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import { useProfile } from '@/hooks/useProfile';
 import { useAuth } from '@/hooks/useAuth';
+import { useProfissional } from '@/hooks/useProfissional';
 import { calculatePregnancyInfo, getWeekData, getGreeting, parseLocalDate } from '@/lib/pregnancy-data';
 import { Bell, ChevronRight, Lock } from 'lucide-react';
 import { format } from 'date-fns';
@@ -175,6 +176,8 @@ const toolGroups: ToolGroup[] = [
 export default function Dashboard() {
   const { profile } = useProfile();
   const { user } = useAuth();
+  const { isProfissional } = useProfissional();
+  if (isProfissional) return <Navigate to="/profissional" replace />;
   const navigate = useNavigate();
 
   const isPaid = profile?.plano === 'premium' || profile?.plano === 'pago';

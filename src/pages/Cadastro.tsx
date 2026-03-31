@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,6 +11,15 @@ export default function Cadastro() {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Capture ref and convite params
+  useEffect(() => {
+    const codigoRef = searchParams.get("ref");
+    if (codigoRef) localStorage.setItem("mater_ref", codigoRef);
+    const codigoConvite = searchParams.get("convite");
+    if (codigoConvite) localStorage.setItem("mater_convite", codigoConvite);
+  }, [searchParams]);
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,17 +28,72 @@ export default function Cadastro() {
       return;
     }
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email,
       password,
       options: { emailRedirectTo: window.location.origin, data: { nome } },
     });
     if (error) {
       toast.error(error.message);
-    } else {
-      toast.success('Conta criada! Redirecionando...');
-      navigate('/onboarding');
+      setLoading(false);
+      return;
     }
+
+    const newUser = signUpData?.user;
+
+    // Save utm_ref on profile
+    if (newUser) {
+      const ref = localStorage.getItem("mater_ref");
+      if (ref) {
+        await (supabase as any)
+          .from("profiles")
+          .update({ utm_ref: ref })
+          .eq("user_id", newUser.id);
+        localStorage.removeItem("mater_ref");
+      }
+
+      // Handle professional invite code
+      const codigoConvite = localStorage.getItem("mater_convite");
+      if (codigoConvite) {
+        localStorage.removeItem("mater_convite");
+        const { data: convite } = await (supabase as any)
+          .from("profissionais_convites")
+          .select("*")
+          .eq("codigo", codigoConvite)
+          .eq("usado", false)
+          .maybeSingle();
+
+        if (convite) {
+          const { data: prof } = await (supabase as any)
+            .from("profissionais")
+            .insert({
+              user_id: newUser.id,
+              email: email,
+              nome: nome,
+              codigo_afiliada: convite.codigo,
+              codigo_convite: convite.codigo,
+              status: "ativo",
+            })
+            .select()
+            .single();
+
+          if (prof) {
+            await (supabase as any)
+              .from("profissionais_convites")
+              .update({ usado: true, profissional_id: prof.id })
+              .eq("id", convite.id);
+
+            toast.success('Conta profissional criada! Redirecionando...');
+            navigate('/profissional');
+            setLoading(false);
+            return;
+          }
+        }
+      }
+    }
+
+    toast.success('Conta criada! Redirecionando...');
+    navigate('/onboarding');
     setLoading(false);
   };
 

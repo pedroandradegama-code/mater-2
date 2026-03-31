@@ -28,6 +28,8 @@ import JornadaSaude from "./pages/JornadaSaude";
 import PassaporteMamae from "./pages/PassaporteMamae";
 import Playlists from "./pages/Playlists";
 import PWAInstallBanner from "./components/PWAInstallBanner";
+import { ProfissionalProvider } from "@/hooks/useProfissional";
+import ProfissionalDashboard from "./pages/ProfissionalDashboard";
 import logoSrc from "@/assets/LogoMater01.png";
 
 const queryClient = new QueryClient();
@@ -63,6 +65,7 @@ function AuthRoute({ children }: { children: React.ReactNode }) {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
+      <ProfissionalProvider>
       <TooltipProvider>
         <Sonner />
         <PWAInstallBanner />
@@ -91,10 +94,12 @@ const App = () => (
             <Route path="/jornada-saude" element={<ProtectedRoute><JornadaSaude /></ProtectedRoute>} />
             <Route path="/passaporte" element={<ProtectedRoute><PassaporteMamae /></ProtectedRoute>} />
             <Route path="/admin/afiliadas" element={<ProtectedRoute><AdminAfiliadas /></ProtectedRoute>} />
+            <Route path="/profissional" element={<ProfissionalDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>
+      </ProfissionalProvider>
     </AuthProvider>
   </QueryClientProvider>
 );
