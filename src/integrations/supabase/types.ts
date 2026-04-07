@@ -101,6 +101,87 @@ export type Database = {
           },
         ]
       }
+      cartao_gestante: {
+        Row: {
+          acido_folico: Json | null
+          antecedentes_clinicos: Json | null
+          antecedentes_familiares: Json | null
+          confianca_extracao: number | null
+          consultas_cartao: Json | null
+          created_at: string | null
+          dpp_clinico: string | null
+          dpp_usg: string | null
+          dum: string | null
+          exames: Json | null
+          gestacao_atual: Json | null
+          gestas_previas: Json | null
+          gravidez_planejada: boolean | null
+          grupo_sanguineo: string | null
+          id: string
+          risco: string | null
+          sulfato_ferroso: Json | null
+          tipo_gravidez: string | null
+          ultimo_pdf_processado_em: string | null
+          ultimo_pdf_url: string | null
+          ultrassonografias: Json | null
+          updated_at: string | null
+          user_id: string
+          vacinas: Json | null
+        }
+        Insert: {
+          acido_folico?: Json | null
+          antecedentes_clinicos?: Json | null
+          antecedentes_familiares?: Json | null
+          confianca_extracao?: number | null
+          consultas_cartao?: Json | null
+          created_at?: string | null
+          dpp_clinico?: string | null
+          dpp_usg?: string | null
+          dum?: string | null
+          exames?: Json | null
+          gestacao_atual?: Json | null
+          gestas_previas?: Json | null
+          gravidez_planejada?: boolean | null
+          grupo_sanguineo?: string | null
+          id?: string
+          risco?: string | null
+          sulfato_ferroso?: Json | null
+          tipo_gravidez?: string | null
+          ultimo_pdf_processado_em?: string | null
+          ultimo_pdf_url?: string | null
+          ultrassonografias?: Json | null
+          updated_at?: string | null
+          user_id: string
+          vacinas?: Json | null
+        }
+        Update: {
+          acido_folico?: Json | null
+          antecedentes_clinicos?: Json | null
+          antecedentes_familiares?: Json | null
+          confianca_extracao?: number | null
+          consultas_cartao?: Json | null
+          created_at?: string | null
+          dpp_clinico?: string | null
+          dpp_usg?: string | null
+          dum?: string | null
+          exames?: Json | null
+          gestacao_atual?: Json | null
+          gestas_previas?: Json | null
+          gravidez_planejada?: boolean | null
+          grupo_sanguineo?: string | null
+          id?: string
+          risco?: string | null
+          sulfato_ferroso?: Json | null
+          tipo_gravidez?: string | null
+          ultimo_pdf_processado_em?: string | null
+          ultimo_pdf_url?: string | null
+          ultrassonografias?: Json | null
+          updated_at?: string | null
+          user_id?: string
+          vacinas?: Json | null
+        }
+        Relationships: []
+      }
       cartas: {
         Row: {
           created_at: string
@@ -718,6 +799,33 @@ export type Database = {
             referencedColumns: ["profissional_id"]
           },
         ]
+      }
+      upload_tokens: {
+        Row: {
+          created_at: string | null
+          expires_at: string
+          id: string
+          token: string
+          usado: boolean | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          expires_at?: string
+          id?: string
+          token?: string
+          usado?: boolean | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          expires_at?: string
+          id?: string
+          token?: string
+          usado?: boolean | null
+          user_id?: string
+        }
+        Relationships: []
       }
     }
     Views: {
