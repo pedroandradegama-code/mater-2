@@ -67,7 +67,7 @@ export default function CartaoGestante() {
       .select("*")
       .eq("user_id", user!.id)
       .single();
-    setCartao(data as CartaoData | null);
+    setCartao(data as unknown as CartaoData | null);
     setLoading(false);
   }
 
