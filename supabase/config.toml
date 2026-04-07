@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.templated-render]
 verify_jwt = false
+
+[functions.pdf-cartao-gestante]
+verify_jwt = false
