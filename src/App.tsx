@@ -30,6 +30,8 @@ import Playlists from "./pages/Playlists";
 import PWAInstallBanner from "./components/PWAInstallBanner";
 import { ProfissionalProvider } from "@/hooks/useProfissional";
 import ProfissionalDashboard from "./pages/ProfissionalDashboard";
+import UploadCartao from "@/pages/UploadCartao";
+import CartaoGestante from "@/pages/CartaoGestante";
 import logoSrc from "@/assets/LogoMater01.png";
 
 const queryClient = new QueryClient();
@@ -94,6 +96,8 @@ const App = () => (
             <Route path="/jornada-saude" element={<ProtectedRoute><JornadaSaude /></ProtectedRoute>} />
             <Route path="/passaporte" element={<ProtectedRoute><PassaporteMamae /></ProtectedRoute>} />
             <Route path="/admin/afiliadas" element={<ProtectedRoute><AdminAfiliadas /></ProtectedRoute>} />
+            <Route path="/cartao-gestante" element={<ProtectedRoute><CartaoGestante /></ProtectedRoute>} />
+            <Route path="/upload/cartao" element={<UploadCartao />} />
             <Route path="/profissional" element={<ProfissionalDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
