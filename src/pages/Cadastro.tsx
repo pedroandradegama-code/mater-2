@@ -28,70 +28,69 @@ export default function Cadastro() {
       return;
     }
     setLoading(true);
+    const codigoConvite = localStorage.getItem("mater_convite");
+    const ref = localStorage.getItem("mater_ref");
     const { data: signUpData, error } = await supabase.auth.signUp({
       email,
       password,
-      options: { emailRedirectTo: window.location.origin, data: { nome } },
+      options: {
+        emailRedirectTo: window.location.origin,
+        data: {
+          nome,
+          utm_ref: ref ?? null,
+          convite: codigoConvite ?? null,
+        },
+      },
     });
     if (error) {
       toast.error(error.message);
       setLoading(false);
       return;
     }
-
     const newUser = signUpData?.user;
-
-    // Save utm_ref on profile
-    if (newUser) {
-      const ref = localStorage.getItem("mater_ref");
-      if (ref) {
-        await (supabase as any)
-          .from("profiles")
-          .update({ utm_ref: ref })
-          .eq("user_id", newUser.id);
-        localStorage.removeItem("mater_ref");
-      }
-
-      // Handle professional invite code
-      const codigoConvite = localStorage.getItem("mater_convite");
-      if (codigoConvite) {
-        localStorage.removeItem("mater_convite");
-        const { data: convite } = await (supabase as any)
-          .from("profissionais_convites")
-          .select("*")
-          .eq("codigo", codigoConvite)
-          .eq("usado", false)
-          .maybeSingle();
-
-        if (convite) {
-          const { data: prof } = await (supabase as any)
-            .from("profissionais")
-            .insert({
-              user_id: newUser.id,
-              email: email,
-              nome: nome,
-              codigo_afiliada: convite.codigo,
-              codigo_convite: convite.codigo,
-              status: "ativo",
-            })
-            .select()
-            .single();
-
-          if (prof) {
-            await (supabase as any)
-              .from("profissionais_convites")
-              .update({ usado: true, profissional_id: prof.id })
-              .eq("id", convite.id);
-
-            toast.success('Conta profissional criada! Redirecionando...');
-            navigate('/profissional');
-            setLoading(false);
-            return;
-          }
+    if (!newUser) {
+      toast.error('Erro ao criar conta. Tente novamente.');
+      setLoading(false);
+      return;
+    }
+    localStorage.removeItem("mater_ref");
+    if (codigoConvite) {
+      localStorage.removeItem("mater_convite");
+      const { data: convite, error: conviteError } = await (supabase as any)
+        .from("profissionais_convites")
+        .select("*")
+        .eq("codigo", codigoConvite)
+        .eq("usado", false)
+        .maybeSingle();
+      if (convite && !conviteError) {
+        const { data: prof, error: profError } = await (supabase as any)
+          .from("profissionais")
+          .insert({
+            user_id: newUser.id,
+            email: email,
+            nome: nome,
+            codigo_afiliada: convite.codigo,
+            codigo_convite: convite.codigo,
+            status: "ativo",
+          })
+          .select()
+          .single();
+        if (prof && !profError) {
+          await (supabase as any)
+            .from("profissionais_convites")
+            .update({ usado: true, profissional_id: prof.id })
+            .eq("id", convite.id);
+          toast.success('Conta profissional criada!');
+          navigate('/profissional');
+          setLoading(false);
+          return;
+        } else {
+          console.error("Erro ao inserir profissional:", profError);
         }
+      } else {
+        console.error("Convite não encontrado ou já usado:", conviteError);
       }
     }
-
     toast.success('Conta criada! Redirecionando...');
     navigate('/onboarding');
     setLoading(false);
