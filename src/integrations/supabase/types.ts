@@ -788,6 +788,13 @@ export type Database = {
             foreignKeyName: "profissionais_convites_profissional_id_fkey"
             columns: ["profissional_id"]
             isOneToOne: false
+            referencedRelation: "profissionais_admin_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profissionais_convites_profissional_id_fkey"
+            columns: ["profissional_id"]
+            isOneToOne: false
             referencedRelation: "profissional_dashboard"
             referencedColumns: ["profissional_id"]
           },
@@ -844,6 +851,26 @@ export type Database = {
           status: string | null
           total_vendas: number | null
           whatsapp: string | null
+        }
+        Relationships: []
+      }
+      profissionais_admin_view: {
+        Row: {
+          codigo_afiliada: string | null
+          codigo_convite: string | null
+          comissao_paga: number | null
+          comissao_pendente: number | null
+          comissao_total: number | null
+          created_at: string | null
+          email: string | null
+          id: string | null
+          link_kiwify: string | null
+          nome: string | null
+          profissao: string | null
+          status: string | null
+          total_cadastros: number | null
+          total_conversoes: number | null
+          user_id: string | null
         }
         Relationships: []
       }
