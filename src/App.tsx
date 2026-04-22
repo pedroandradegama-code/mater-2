@@ -20,6 +20,7 @@ import NomeBebe from "./pages/NomeBebe";
 import MusicaBebe from "./pages/MusicaBebe";
 import NotFound from "./pages/NotFound";
 import AdminAfiliadas from "./pages/AdminAfiliadas";
+import AdminProfissionais from "./pages/AdminProfissionais";
 import CurvaPeso from "./pages/CurvaPeso";
 import Eventos from "./pages/Eventos";
 import Explorar from "./pages/Explorar";
@@ -96,6 +97,7 @@ const App = () => (
             <Route path="/jornada-saude" element={<ProtectedRoute><JornadaSaude /></ProtectedRoute>} />
             <Route path="/passaporte" element={<ProtectedRoute><PassaporteMamae /></ProtectedRoute>} />
             <Route path="/admin/afiliadas" element={<ProtectedRoute><AdminAfiliadas /></ProtectedRoute>} />
+            <Route path="/admin/profissionais" element={<ProtectedRoute><AdminProfissionais /></ProtectedRoute>} />
             <Route path="/cartao-gestante" element={<ProtectedRoute><CartaoGestante /></ProtectedRoute>} />
             <Route path="/upload/cartao" element={<UploadCartao />} />
             <Route path="/profissional" element={<ProfissionalDashboard />} />
