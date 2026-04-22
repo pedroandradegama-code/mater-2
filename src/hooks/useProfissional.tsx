@@ -59,6 +59,14 @@ export function ProfissionalProvider({ children }: { children: ReactNode }) {
     if (!authLoading) load();
   }, [user, authLoading]);
 
+  // Escuta eventos de auth para recarregar (evita race condition em signup/login)
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(() => {
+      load();
+    });
+    return () => subscription.unsubscribe();
+  }, []);
+
   return (
     <ProfissionalContext.Provider
       value={{ profissional, isProfissional: !!profissional && profissional.status === "ativo", loading, refresh: load }}
