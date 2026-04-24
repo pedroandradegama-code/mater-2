@@ -38,7 +38,7 @@ import logoSrc from "@/assets/LogoMater01.png";
 
 const queryClient = new QueryClient();
 
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
+function ProtectedRoute({ children, allowProfissional = false }: { children: React.ReactNode; allowProfissional?: boolean }) {
   const { user, loading } = useAuth();
   const { profile, isLoading } = useProfile();
   const { isProfissional, loading: profLoading } = useProfissional();
@@ -55,17 +55,38 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!user) return <Navigate to="/login" replace />;
-  // Profissionais não passam pelo onboarding gestante
-  if (isProfissional) return <>{children}</>;
-  if (profile && !profile.onboarding_completed) return <Navigate to="/onboarding" replace />;
+  // Profissional sempre vai para /profissional, exceto em rotas explicitamente permitidas (admin)
+  if (isProfissional && !allowProfissional) return <Navigate to="/profissional" replace />;
+  if (!isProfissional && profile && !profile.onboarding_completed) return <Navigate to="/onboarding" replace />;
 
+  return <>{children}</>;
+}
+
+function ProfissionalRoute({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+  const { isProfissional, loading: profLoading } = useProfissional();
+
+  if (loading || profLoading) {
+    return (
+      <div className="gradient-mesh-bg min-h-screen flex items-center justify-center">
+        <div className="text-center animate-fade-in">
+          <img src={logoSrc} alt="Mater" className="h-12 mx-auto mb-2" />
+          <p className="text-muted-foreground text-sm">Carregando...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) return <Navigate to="/login" replace />;
+  if (!isProfissional) return <Navigate to="/dashboard" replace />;
   return <>{children}</>;
 }
 
 function AuthRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
-  if (loading) return null;
-  if (user) return <Navigate to="/dashboard" replace />;
+  const { isProfissional, loading: profLoading } = useProfissional();
+  if (loading || profLoading) return null;
+  if (user) return <Navigate to={isProfissional ? "/profissional" : "/dashboard"} replace />;
   return <>{children}</>;
 }
 
@@ -100,11 +121,11 @@ const App = () => (
             <Route path="/meus-exames" element={<ProtectedRoute><MeusExames /></ProtectedRoute>} />
             <Route path="/jornada-saude" element={<ProtectedRoute><JornadaSaude /></ProtectedRoute>} />
             <Route path="/passaporte" element={<ProtectedRoute><PassaporteMamae /></ProtectedRoute>} />
-            <Route path="/admin/afiliadas" element={<ProtectedRoute><AdminAfiliadas /></ProtectedRoute>} />
-            <Route path="/admin/profissionais" element={<ProtectedRoute><AdminProfissionais /></ProtectedRoute>} />
+            <Route path="/admin/afiliadas" element={<ProtectedRoute allowProfissional><AdminAfiliadas /></ProtectedRoute>} />
+            <Route path="/admin/profissionais" element={<ProtectedRoute allowProfissional><AdminProfissionais /></ProtectedRoute>} />
             <Route path="/cartao-gestante" element={<ProtectedRoute><CartaoGestante /></ProtectedRoute>} />
             <Route path="/upload/cartao" element={<UploadCartao />} />
-            <Route path="/profissional" element={<ProfissionalDashboard />} />
+            <Route path="/profissional" element={<ProfissionalRoute><ProfissionalDashboard /></ProfissionalRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

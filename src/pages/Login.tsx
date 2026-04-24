@@ -22,7 +22,7 @@ export default function Login() {
       setLoading(false);
       return;
     }
-    // Verifica se é profissional para redirecionar corretamente
+    // Verifica se é profissional ATIVO antes de navegar (evita flash do /dashboard)
     if (data.user) {
       const { data: prof } = await (supabase as any)
         .from('profissionais')
@@ -30,14 +30,12 @@ export default function Login() {
         .eq('user_id', data.user.id)
         .eq('status', 'ativo')
         .maybeSingle();
-      if (prof) {
-        navigate('/profissional');
-        setLoading(false);
-        return;
-      }
+      setLoading(false);
+      navigate(prof ? '/profissional' : '/dashboard', { replace: true });
+      return;
     }
-    navigate('/dashboard');
     setLoading(false);
+    navigate('/dashboard', { replace: true });
   };
 
   return (
