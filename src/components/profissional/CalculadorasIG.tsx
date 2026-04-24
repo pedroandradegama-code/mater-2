@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calculator, Waves, RotateCcw } from "lucide-react";
+import { Calculator, Waves, RotateCcw, Scale } from "lucide-react";
 
 function parseDate(str: string): Date | null {
   const [y, m, d] = str.split("-").map(Number);
@@ -205,27 +205,125 @@ function CalcPorUSG() {
   );
 }
 
+function CalcIMC() {
+  const [pesoAntes, setPesoAntes] = useState("");
+  const [altura, setAltura] = useState("");
+  const [pesoAtual, setPesoAtual] = useState("");
+  const [gemelar, setGemelar] = useState(false);
+
+  const pa = parseFloat(pesoAntes);
+  const al = parseFloat(altura);
+  const pAt = parseFloat(pesoAtual);
+  const imcPre = pa > 0 && al > 0 ? pa / Math.pow(al / 100, 2) : 0;
+  const ganhoAtual = pAt > 0 && pa > 0 ? pAt - pa : 0;
+
+  let classificacao = "";
+  let ganhoRecomendado = "";
+  let badgeClass = "bg-muted text-foreground";
+  if (imcPre > 0) {
+    if (imcPre < 18.5) {
+      classificacao = "Baixo peso";
+      ganhoRecomendado = gemelar ? "22,7–28,1 kg" : "12,5–18 kg";
+      badgeClass = "bg-blue-50 text-blue-700";
+    } else if (imcPre < 25) {
+      classificacao = "Eutrófica";
+      ganhoRecomendado = gemelar ? "16,8–24,5 kg" : "11,5–16 kg";
+      badgeClass = "bg-primary/10 text-primary";
+    } else if (imcPre < 30) {
+      classificacao = "Sobrepeso";
+      ganhoRecomendado = gemelar ? "14,1–22,7 kg" : "7–11,5 kg";
+      badgeClass = "bg-amber-50 text-amber-700";
+    } else {
+      classificacao = "Obesidade";
+      ganhoRecomendado = gemelar ? "11,3–19,1 kg" : "5–9 kg";
+      badgeClass = "bg-red-50 text-red-700";
+    }
+  }
+
+  function limpar() {
+    setPesoAntes(""); setAltura(""); setPesoAtual(""); setGemelar(false);
+  }
+
+  return (
+    <div className="space-y-4">
+      <p className="text-xs text-muted-foreground">
+        IMC pré-gestacional segundo as faixas IOM/Ministério da Saúde, com ganho de peso recomendado para a gestação.
+      </p>
+
+      <div className="grid gap-3">
+        <div className="space-y-1">
+          <Label>Peso pré-gestacional (kg)</Label>
+          <Input type="number" inputMode="decimal" placeholder="Ex: 62" value={pesoAntes} onChange={(e) => setPesoAntes(e.target.value)} />
+        </div>
+        <div className="space-y-1">
+          <Label>Altura (cm)</Label>
+          <Input type="number" inputMode="decimal" placeholder="Ex: 165" value={altura} onChange={(e) => setAltura(e.target.value)} />
+        </div>
+        <div className="space-y-1">
+          <Label>Peso atual (kg) — opcional</Label>
+          <Input type="number" inputMode="decimal" placeholder="Ex: 68" value={pesoAtual} onChange={(e) => setPesoAtual(e.target.value)} />
+        </div>
+        <label className="flex items-center gap-2 text-sm cursor-pointer pt-1">
+          <input type="checkbox" checked={gemelar} onChange={(e) => setGemelar(e.target.checked)} className="rounded" />
+          <span>Gestação gemelar</span>
+        </label>
+      </div>
+
+      {imcPre > 0 && (
+        <div className="space-y-3 pt-2">
+          <div className="text-center">
+            <p className="text-sm text-muted-foreground">IMC pré-gestacional</p>
+            <p className="text-3xl font-bold text-primary">{imcPre.toFixed(1)}</p>
+            <Badge className={`mt-1 ${badgeClass}`} variant="secondary">{classificacao}</Badge>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-muted/50 rounded-xl p-3 text-center">
+              <p className="text-xs text-muted-foreground">Ganho recomendado</p>
+              <p className="text-sm font-semibold">{ganhoRecomendado}</p>
+            </div>
+            <div className="bg-muted/50 rounded-xl p-3 text-center">
+              <p className="text-xs text-muted-foreground">Ganho atual</p>
+              <p className="text-sm font-semibold">{pAt > 0 ? `${ganhoAtual.toFixed(1)} kg` : "—"}</p>
+            </div>
+          </div>
+
+          {gemelar && <p className="text-xs text-muted-foreground text-center">* Faixas ajustadas para gestação gemelar (IOM)</p>}
+
+          <div className="flex justify-center">
+            <Button variant="ghost" size="sm" onClick={limpar}>
+              <RotateCcw className="w-4 h-4 mr-1" /> Limpar
+            </Button>
+          </div>
+        </div>
+      )}
+
+      <p className="text-xs text-muted-foreground text-center mt-2">Referência: Institute of Medicine (IOM) · Ministério da Saúde</p>
+    </div>
+  );
+}
+
 export function CalculadorasIG() {
   return (
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Calculator className="w-5 h-5 text-primary" />
-          Calculadoras de IG
+          Calculadoras
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="dum">
           <TabsList className="w-full">
-            <TabsTrigger value="dum" className="flex-1">
-              Por DUM
-            </TabsTrigger>
-            <TabsTrigger value="usg" className="flex-1">
-              Por USG 1º Trim.
+            <TabsTrigger value="dum" className="flex-1 text-xs">Por DUM</TabsTrigger>
+            <TabsTrigger value="usg" className="flex-1 text-xs">Por USG 1ºT</TabsTrigger>
+            <TabsTrigger value="imc" className="flex-1 text-xs gap-1">
+              <Scale className="w-3.5 h-3.5" /> IMC
             </TabsTrigger>
           </TabsList>
           <TabsContent value="dum"><CalcPorDUM /></TabsContent>
           <TabsContent value="usg"><CalcPorUSG /></TabsContent>
+          <TabsContent value="imc"><CalcIMC /></TabsContent>
         </Tabs>
       </CardContent>
     </Card>
