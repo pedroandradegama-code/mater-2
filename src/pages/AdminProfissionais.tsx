@@ -76,14 +76,14 @@ export default function AdminProfissionais() {
   const [novoConviteGerado, setNovoConviteGerado] = useState<Convite | null>(null);
 
   useEffect(() => {
-    if (!loading && (!user || user.email !== ADMIN_EMAIL)) {
-      navigate('/dashboard');
+    if (loading) return;
+    if (!user || user.email !== ADMIN_EMAIL) {
+      setLoadingData(false);
+      navigate('/dashboard', { replace: true });
+      return;
     }
+    loadAll();
   }, [user, loading]);
-
-  useEffect(() => {
-    if (user?.email === ADMIN_EMAIL) loadAll();
-  }, [user]);
 
   const loadAll = async () => {
     try {
