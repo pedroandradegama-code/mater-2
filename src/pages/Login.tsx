@@ -16,12 +16,27 @@ export default function Login() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       toast.error(error.message);
-    } else {
-      navigate('/dashboard');
+      setLoading(false);
+      return;
     }
+    // Verifica se é profissional para redirecionar corretamente
+    if (data.user) {
+      const { data: prof } = await (supabase as any)
+        .from('profissionais')
+        .select('id, status')
+        .eq('user_id', data.user.id)
+        .eq('status', 'ativo')
+        .maybeSingle();
+      if (prof) {
+        navigate('/profissional');
+        setLoading(false);
+        return;
+      }
+    }
+    navigate('/dashboard');
     setLoading(false);
   };
 

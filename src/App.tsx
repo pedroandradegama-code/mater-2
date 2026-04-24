@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/hooks/useAuth";
 import { useProfile } from "@/hooks/useProfile";
+import { useProfissional } from "@/hooks/useProfissional";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
 import Onboarding from "./pages/Onboarding";
@@ -40,8 +41,9 @@ const queryClient = new QueryClient();
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
   const { profile, isLoading } = useProfile();
+  const { isProfissional, loading: profLoading } = useProfissional();
 
-  if (loading || isLoading) {
+  if (loading || isLoading || profLoading) {
     return (
       <div className="gradient-mesh-bg min-h-screen flex items-center justify-center">
         <div className="text-center animate-fade-in">
@@ -53,6 +55,8 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
   }
 
   if (!user) return <Navigate to="/login" replace />;
+  // Profissionais não passam pelo onboarding gestante
+  if (isProfissional) return <>{children}</>;
   if (profile && !profile.onboarding_completed) return <Navigate to="/onboarding" replace />;
 
   return <>{children}</>;
