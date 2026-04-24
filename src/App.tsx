@@ -84,8 +84,9 @@ function ProfissionalRoute({ children }: { children: React.ReactNode }) {
 
 function AuthRoute({ children }: { children: React.ReactNode }) {
   const { user, loading } = useAuth();
-  if (loading) return null;
-  if (user) return <Navigate to="/dashboard" replace />;
+  const { isProfissional, loading: profLoading } = useProfissional();
+  if (loading || profLoading) return null;
+  if (user) return <Navigate to={isProfissional ? "/profissional" : "/dashboard"} replace />;
   return <>{children}</>;
 }
 
