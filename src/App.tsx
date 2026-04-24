@@ -120,11 +120,11 @@ const App = () => (
             <Route path="/meus-exames" element={<ProtectedRoute><MeusExames /></ProtectedRoute>} />
             <Route path="/jornada-saude" element={<ProtectedRoute><JornadaSaude /></ProtectedRoute>} />
             <Route path="/passaporte" element={<ProtectedRoute><PassaporteMamae /></ProtectedRoute>} />
-            <Route path="/admin/afiliadas" element={<ProtectedRoute><AdminAfiliadas /></ProtectedRoute>} />
-            <Route path="/admin/profissionais" element={<ProtectedRoute><AdminProfissionais /></ProtectedRoute>} />
+            <Route path="/admin/afiliadas" element={<ProtectedRoute allowProfissional><AdminAfiliadas /></ProtectedRoute>} />
+            <Route path="/admin/profissionais" element={<ProtectedRoute allowProfissional><AdminProfissionais /></ProtectedRoute>} />
             <Route path="/cartao-gestante" element={<ProtectedRoute><CartaoGestante /></ProtectedRoute>} />
             <Route path="/upload/cartao" element={<UploadCartao />} />
-            <Route path="/profissional" element={<ProfissionalDashboard />} />
+            <Route path="/profissional" element={<ProfissionalRoute><ProfissionalDashboard /></ProfissionalRoute>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
