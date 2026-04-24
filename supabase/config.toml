@@ -16,7 +16,7 @@ verify_jwt = false
 verify_jwt = false
 
 [functions.ativar-profissional]
-verify_jwt = true
+verify_jwt = false
 
 [functions.admin-profissionais]
-verify_jwt = true
+verify_jwt = false
