@@ -112,9 +112,6 @@ export default function MusicaBebe() {
   }
 
   // Determine view
-  if (musicRecord?.status === 'done' && musicRecord.audio_url) {
-    return <PlayerView record={musicRecord} />;
-  }
   if (!forceCreate && musicRecord?.status === 'done' && musicRecord.audio_url) {
     return <PlayerView record={musicRecord} canCreateNew={isAdminMusica} onCreateNew={() => setForceCreate(true)} />;
   }
