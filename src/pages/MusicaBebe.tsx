@@ -587,6 +587,15 @@ function PlayerView({ record, canCreateNew, onCreateNew }: { record: any; canCre
           </div>
         </div>
       </div>
+            </div>
+            {canCreateNew && (
+              <Button onClick={onCreateNew} className="w-full mt-3 gradient-hero text-primary-foreground rounded-xl">
+                Criar nova música
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
       <BottomNav />
     </div>
   );
