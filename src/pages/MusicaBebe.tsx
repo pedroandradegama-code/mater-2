@@ -48,12 +48,16 @@ const LOADING_MESSAGES = [
   'Cada nota pensada com carinho...',
 ];
 
+const ADMIN_EMAIL_NOVA_MUSICA = 'pedroandradegama@gmail.com';
+
 export default function MusicaBebe() {
   const { user } = useAuth();
   const { profile } = useProfile();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [showUpgrade, setShowUpgrade] = useState(false);
+  const [forceCreate, setForceCreate] = useState(false);
+  const isAdminMusica = user?.email === ADMIN_EMAIL_NOVA_MUSICA;
 
   const isPaid = profile?.plano === 'premium' || profile?.plano === 'pago';
 
@@ -108,13 +112,13 @@ export default function MusicaBebe() {
   }
 
   // Determine view
-  if (musicRecord?.status === 'done' && musicRecord.audio_url) {
-    return <PlayerView record={musicRecord} />;
+  if (!forceCreate && musicRecord?.status === 'done' && musicRecord.audio_url) {
+    return <PlayerView record={musicRecord} canCreateNew={isAdminMusica} onCreateNew={() => setForceCreate(true)} />;
   }
-  if (musicRecord?.status === 'generating' || musicRecord?.status === 'pending') {
+  if (!forceCreate && (musicRecord?.status === 'generating' || musicRecord?.status === 'pending')) {
     return <GeneratingView record={musicRecord} />;
   }
-  if (musicRecord?.status === 'error') {
+  if (!forceCreate && musicRecord?.status === 'error') {
     return (
       <div className="dashboard-bg min-h-screen pb-24">
         <div className="app-container px-5 pt-6">
@@ -125,6 +129,11 @@ export default function MusicaBebe() {
             <div className="text-5xl mb-4">😔</div>
             <h1 className="font-display text-xl font-bold mb-2">Não foi possível gerar sua música</h1>
             <p className="text-muted-foreground text-sm mb-6">Ocorreu um erro. Sua criação não foi consumida — entre em contato com o suporte.</p>
+            {isAdminMusica && (
+              <Button onClick={() => setForceCreate(true)} className="gradient-hero text-primary-foreground rounded-xl">
+                Criar nova música
+              </Button>
+            )}
           </div>
         </div>
         <BottomNav />
@@ -132,7 +141,7 @@ export default function MusicaBebe() {
     );
   }
 
-  return <CreationFlow profile={profile} userId={user!.id} onCreated={() => queryClient.invalidateQueries({ queryKey: ['musica-bebe'] })} />;
+  return <CreationFlow profile={profile} userId={user!.id} onCreated={() => { setForceCreate(false); queryClient.invalidateQueries({ queryKey: ['musica-bebe'] }); }} />;
 }
 
 /* ==================== CREATION FLOW ==================== */
@@ -449,7 +458,7 @@ function GeneratingView({ record }: { record: any }) {
 }
 
 /* ==================== PLAYER VIEW ==================== */
-function PlayerView({ record }: { record: any }) {
+function PlayerView({ record, canCreateNew, onCreateNew }: { record: any; canCreateNew?: boolean; onCreateNew?: () => void }) {
   const navigate = useNavigate();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -575,6 +584,11 @@ function PlayerView({ record }: { record: any }) {
                 <Download size={16} className="mr-1.5" /> Baixar MP3
               </Button>
             </div>
+            {canCreateNew && (
+              <Button onClick={onCreateNew} className="w-full mt-3 gradient-hero text-primary-foreground rounded-xl">
+                Criar nova música
+              </Button>
+            )}
           </div>
         </div>
       </div>
