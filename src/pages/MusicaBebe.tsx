@@ -48,12 +48,16 @@ const LOADING_MESSAGES = [
   'Cada nota pensada com carinho...',
 ];
 
+const ADMIN_EMAIL_NOVA_MUSICA = 'pedroandradegama@gmail.com';
+
 export default function MusicaBebe() {
   const { user } = useAuth();
   const { profile } = useProfile();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [showUpgrade, setShowUpgrade] = useState(false);
+  const [forceCreate, setForceCreate] = useState(false);
+  const isAdminMusica = user?.email === ADMIN_EMAIL_NOVA_MUSICA;
 
   const isPaid = profile?.plano === 'premium' || profile?.plano === 'pago';
 
