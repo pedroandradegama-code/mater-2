@@ -458,7 +458,7 @@ function GeneratingView({ record }: { record: any }) {
 }
 
 /* ==================== PLAYER VIEW ==================== */
-function PlayerView({ record }: { record: any }) {
+function PlayerView({ record, canCreateNew, onCreateNew }: { record: any; canCreateNew?: boolean; onCreateNew?: () => void }) {
   const navigate = useNavigate();
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
