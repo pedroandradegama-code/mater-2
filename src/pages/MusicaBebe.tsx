@@ -584,10 +584,6 @@ function PlayerView({ record, canCreateNew, onCreateNew }: { record: any; canCre
                 <Download size={16} className="mr-1.5" /> Baixar MP3
               </Button>
             </div>
-          </div>
-        </div>
-      </div>
-            </div>
             {canCreateNew && (
               <Button onClick={onCreateNew} className="w-full mt-3 gradient-hero text-primary-foreground rounded-xl">
                 Criar nova música
